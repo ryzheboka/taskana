@@ -14,6 +14,7 @@ import pro.taskana.task.api.TaskService;
 import pro.taskana.task.api.models.AttachmentSummary;
 import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.internal.models.AttachmentSummaryImpl;
+import pro.taskana.task.internal.models.ObjectReferenceImpl;
 import pro.taskana.task.rest.models.AttachmentSummaryRepresentationModel;
 import pro.taskana.task.rest.models.ObjectReferenceRepresentationModel;
 
@@ -63,7 +64,7 @@ class AttachmentSummaryRepresentationModelAssemblerTest {
   void should_ReturnRepresentationModel_When_ConvertingEntityToRepresentationModel() {
     AttachmentSummaryImpl attachment =
         (AttachmentSummaryImpl) taskService.newAttachment().asSummary();
-    ObjectReference reference = new ObjectReference();
+    ObjectReference reference = new ObjectReferenceImpl();
     ClassificationSummary summary =
         classService.newClassification("ckey", "cdomain", "MANUAL").asSummary();
     reference.setId("abc");
@@ -86,7 +87,7 @@ class AttachmentSummaryRepresentationModelAssemblerTest {
   void should_Equal_When_ComparingEntityWithConvertedEntity() {
     AttachmentSummaryImpl attachment =
         (AttachmentSummaryImpl) taskService.newAttachment().asSummary();
-    ObjectReference reference = new ObjectReference();
+    ObjectReference reference = new ObjectReferenceImpl();
     ClassificationSummary summary =
         classService.newClassification("ckey", "cdomain", "MANUAL").asSummary();
     reference.setId("abc");

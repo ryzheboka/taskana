@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 
-import pro.taskana.task.api.models.ObjectReference;
+import pro.taskana.task.internal.models.ObjectReferenceImpl;
 
 /** This class is the mybatis mapping of ObjectReference. */
 @SuppressWarnings({"checkstyle:LineLength", "checkstyle:Indentation"})
@@ -27,7 +27,7 @@ public interface ObjectReferenceMapper {
   @Result(property = "systemInstance", column = "SYSTEM_INSTANCE")
   @Result(property = "type", column = "TYPE")
   @Result(property = "value", column = "VALUE")
-  ObjectReference findById(@Param("id") String id);
+  ObjectReferenceImpl findById(@Param("id") String id);
 
   @Select(
       "<script>SELECT ID, TASK_ID, COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE "
@@ -42,7 +42,7 @@ public interface ObjectReferenceMapper {
   @Result(property = "systemInstance", column = "SYSTEM_INSTANCE")
   @Result(property = "type", column = "TYPE")
   @Result(property = "value", column = "VALUE")
-  List<ObjectReference> findObjectReferencesByTaskId(@Param("taskId") String taskId);
+  List<ObjectReferenceImpl> findObjectReferencesByTaskId(@Param("taskId") String taskId);
 
   @Select(
       "<script>SELECT ID, COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE "
@@ -60,7 +60,8 @@ public interface ObjectReferenceMapper {
   @Result(property = "systemInstance", column = "SYSTEM_INSTANCE")
   @Result(property = "type", column = "TYPE")
   @Result(property = "value", column = "VALUE")
-  ObjectReference findByObjectReference(@Param("objectReference") ObjectReference objectReference);
+  ObjectReferenceImpl findByObjectReference(
+      @Param("objectReference") ObjectReferenceImpl objectReference);
 
   @SelectProvider(type = ObjectReferenceQuerySqlProvider.class, method = "queryObjectReferences")
   @Result(property = "id", column = "ID")
@@ -69,7 +70,7 @@ public interface ObjectReferenceMapper {
   @Result(property = "systemInstance", column = "SYSTEM_INSTANCE")
   @Result(property = "type", column = "TYPE")
   @Result(property = "value", column = "VALUE")
-  List<ObjectReference> queryObjectReferences(ObjectReferenceQueryImpl objectReference);
+  List<ObjectReferenceImpl> queryObjectReferences(ObjectReferenceQueryImpl objectReference);
 
   @SelectProvider(
       type = ObjectReferenceQuerySqlProvider.class,
@@ -84,14 +85,14 @@ public interface ObjectReferenceMapper {
   @Insert(
       "INSERT INTO OBJECT_REFERENCE (ID, TASK_ID, COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE) "
           + "VALUES (#{ref.id}, #{ref.taskId}, #{ref.company}, #{ref.system}, #{ref.systemInstance}, #{ref.type}, #{ref.value})")
-  void insert(@Param("ref") ObjectReference ref);
+  void insert(@Param("ref") ObjectReferenceImpl ref);
 
   @Update(
       value =
           "UPDATE OBJECT_REFERENCE "
               + "SET COMPANY = #{ref.company}, SYSTEM = #{ref.system}, SYSTEM_INSTANCE = #{ref.systemInstance}, TYPE = #{ref.type}, VALUE = #{ref.value} "
               + "WHERE ID = #{ref.id}")
-  void update(@Param("ref") ObjectReference ref);
+  void update(@Param("ref") ObjectReferenceImpl ref);
 
   @Delete("DELETE FROM OBJECT_REFERENCE WHERE ID = #{id}")
   void delete(String id);

@@ -17,6 +17,7 @@ import pro.taskana.task.api.TaskCustomField;
 import pro.taskana.task.api.TaskService;
 import pro.taskana.task.api.TaskState;
 import pro.taskana.task.api.exceptions.AttachmentPersistenceException;
+import pro.taskana.task.api.exceptions.ObjectReferencePersistenceException;
 import pro.taskana.task.api.exceptions.TaskAlreadyExistException;
 import pro.taskana.task.api.exceptions.TaskNotFoundException;
 import pro.taskana.task.api.models.Attachment;
@@ -196,7 +197,7 @@ public class TaskBuilder {
   public Task buildAndStore(TaskService taskService)
       throws TaskAlreadyExistException, InvalidArgumentException, WorkbasketNotFoundException,
           ClassificationNotFoundException, NotAuthorizedException, AttachmentPersistenceException,
-          TaskNotFoundException {
+          ObjectReferencePersistenceException, TaskNotFoundException {
     try {
       Task task = taskService.createTask(testTask);
       return taskService.getTask(task.getId());
@@ -218,7 +219,7 @@ public class TaskBuilder {
   public TaskSummary buildAndStoreAsSummary(TaskService taskService)
       throws TaskAlreadyExistException, InvalidArgumentException, TaskNotFoundException,
           WorkbasketNotFoundException, ClassificationNotFoundException, NotAuthorizedException,
-          AttachmentPersistenceException {
+          AttachmentPersistenceException, ObjectReferencePersistenceException {
     return buildAndStore(taskService).asSummary();
   }
 

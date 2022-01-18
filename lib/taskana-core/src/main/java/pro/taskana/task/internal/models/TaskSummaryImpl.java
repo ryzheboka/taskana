@@ -434,6 +434,16 @@ public class TaskSummaryImpl implements TaskSummary {
     setClassificationSummary(classificationSummary);
   }
 
+  // auxiliary Method to enable Mybatis to access primaryObjRef
+  public ObjectReferenceImpl getPrimaryObjRefImpl() {
+    return (ObjectReferenceImpl) primaryObjRef;
+  }
+
+  // auxiliary Method to enable Mybatis to access primaryObjRef
+  public void setPrimaryObjRefImpl(ObjectReferenceImpl objectReference) {
+    setPrimaryObjRef(objectReference);
+  }
+
   public String getCustom1() {
     return custom1;
   }

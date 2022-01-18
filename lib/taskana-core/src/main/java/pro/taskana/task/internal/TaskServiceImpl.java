@@ -61,6 +61,7 @@ import pro.taskana.task.api.exceptions.InvalidCallbackStateException;
 import pro.taskana.task.api.exceptions.InvalidOwnerException;
 import pro.taskana.task.api.exceptions.InvalidStateException;
 import pro.taskana.task.api.exceptions.InvalidTaskStateException;
+import pro.taskana.task.api.exceptions.ObjectReferencePersistenceException;
 import pro.taskana.task.api.exceptions.TaskAlreadyExistException;
 import pro.taskana.task.api.exceptions.TaskCommentNotFoundException;
 import pro.taskana.task.api.exceptions.TaskNotFoundException;
@@ -74,6 +75,7 @@ import pro.taskana.task.internal.ServiceLevelHandler.BulkLog;
 import pro.taskana.task.internal.models.AttachmentImpl;
 import pro.taskana.task.internal.models.AttachmentSummaryImpl;
 import pro.taskana.task.internal.models.MinimalTaskSummary;
+import pro.taskana.task.internal.models.ObjectReferenceImpl;
 import pro.taskana.task.internal.models.TaskImpl;
 import pro.taskana.task.internal.models.TaskSummaryImpl;
 import pro.taskana.user.api.models.User;
@@ -180,7 +182,8 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public Task createTask(Task taskToCreate)
       throws NotAuthorizedException, WorkbasketNotFoundException, ClassificationNotFoundException,
-          TaskAlreadyExistException, InvalidArgumentException, AttachmentPersistenceException {
+          TaskAlreadyExistException, InvalidArgumentException, AttachmentPersistenceException,
+          ObjectReferencePersistenceException {
 
     if (createTaskPreprocessorManager.isEnabled()) {
       taskToCreate = createTaskPreprocessorManager.processTaskBeforeCreation(taskToCreate);
@@ -318,7 +321,7 @@ public class TaskServiceImpl implements TaskService {
         if (attachmentImpls == null) {
           attachmentImpls = new ArrayList<>();
         }
-        List<ObjectReference> objectReferences =
+        List<ObjectReferenceImpl> objectReferences =
             objectReferenceMapper.findObjectReferencesByTaskId(resultTask.getId());
         if (objectReferences == null) {
           objectReferences = new ArrayList<>();
@@ -434,7 +437,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public ObjectReference newObjectReference() {
-    return new ObjectReference();
+    return new ObjectReferenceImpl();
   }
 
   @Override
@@ -1457,7 +1460,7 @@ public class TaskServiceImpl implements TaskService {
 
   private void standardSettingsOnTaskCreation(TaskImpl task, Classification classification)
       throws InvalidArgumentException, ClassificationNotFoundException,
-          AttachmentPersistenceException {
+          AttachmentPersistenceException, ObjectReferencePersistenceException {
     final Instant now = Instant.now();
     task.setId(IdGenerator.generateWithPrefix(IdGenerator.ID_PREFIX_TASK));
     if (task.getExternalId() == null) {

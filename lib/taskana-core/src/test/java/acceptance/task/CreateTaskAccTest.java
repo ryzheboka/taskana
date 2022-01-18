@@ -37,6 +37,7 @@ import pro.taskana.task.api.models.AttachmentSummary;
 import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.internal.AttachmentMapper;
+import pro.taskana.task.internal.models.ObjectReferenceImpl;
 import pro.taskana.task.internal.models.TaskImpl;
 import pro.taskana.workbasket.api.WorkbasketService;
 import pro.taskana.workbasket.api.exceptions.WorkbasketNotFoundException;
@@ -79,16 +80,16 @@ class CreateTaskAccTest extends AbstractAccTest {
 
     Task newTask = taskService.newTask("USER-1-1", "DOMAIN_A");
     newTask.setClassificationKey("T2100");
-    ObjectReference objectReference =
+    ObjectReferenceImpl objectReference =
         createObjectReference("COMPANY_A", "SYSTEM_A", "INSTANCE_A", "VNR", "1234567");
     objectReference.setTaskId(newTask.getId());
     newTask.setPrimaryObjRef(objectReference);
 
     ///
-    ObjectReference objectReference1 = new ObjectReference();
-    ObjectReference objectReference2 = new ObjectReference();
+    ObjectReference objectReference1 = new ObjectReferenceImpl();
+    ObjectReference objectReference2 = new ObjectReferenceImpl();
     // objectReference1.setTaskId(newTask.getId());
-    System.out.println(objectReference1.getTaskId());
+    // System.out.println(objectReference1.getTaskId());
     objectReference1.setId("ObjRef11");
     objectReference1.setCompany("Company11");
     objectReference1.setType("Type11");
@@ -106,7 +107,6 @@ class CreateTaskAccTest extends AbstractAccTest {
     newTask.setOwner("user-1-1");
     Task createdTask = taskService.createTask(newTask);
 
-    ///
     Task result = taskService.getTask(newTask.getId());
 
     ///
