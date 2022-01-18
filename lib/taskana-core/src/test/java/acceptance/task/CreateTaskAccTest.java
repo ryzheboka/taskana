@@ -81,9 +81,36 @@ class CreateTaskAccTest extends AbstractAccTest {
     newTask.setClassificationKey("T2100");
     ObjectReference objectReference =
         createObjectReference("COMPANY_A", "SYSTEM_A", "INSTANCE_A", "VNR", "1234567");
+    objectReference.setTaskId(newTask.getId());
     newTask.setPrimaryObjRef(objectReference);
+
+    ///
+    ObjectReference objectReference1 = new ObjectReference();
+    ObjectReference objectReference2 = new ObjectReference();
+    // objectReference1.setTaskId(newTask.getId());
+    System.out.println(objectReference1.getTaskId());
+    objectReference1.setId("ObjRef11");
+    objectReference1.setCompany("Company11");
+    objectReference1.setType("Type11");
+    objectReference1.setValue("Val11");
+    // objectReference2.setTaskId(newTask.getId());
+    objectReference2.setId("ObjRef22");
+    objectReference2.setCompany("Company22");
+    objectReference2.setType("Type22");
+    objectReference2.setValue("Val22");
+
+    newTask.addObjectReference(objectReference1);
+    newTask.addObjectReference(objectReference2);
+
+    ///
     newTask.setOwner("user-1-1");
     Task createdTask = taskService.createTask(newTask);
+
+    ///
+    Task result = taskService.getTask(newTask.getId());
+
+    ///
+
     Instant expectedPlanned = moveForwardToWorkingDay(createdTask.getCreated());
 
     assertThat(createdTask).isNotNull();

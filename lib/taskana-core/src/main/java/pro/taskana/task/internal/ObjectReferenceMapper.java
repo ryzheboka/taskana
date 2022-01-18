@@ -30,6 +30,21 @@ public interface ObjectReferenceMapper {
   ObjectReference findById(@Param("id") String id);
 
   @Select(
+      "<script>SELECT ID, TASK_ID, COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE "
+          + "FROM OBJECT_REFERENCE "
+          + "WHERE TASK_ID = #{taskId}"
+          + "<if test=\"_databaseId == 'db2'\">with UR </if> "
+          + "</script>")
+  @Result(property = "id", column = "ID")
+  @Result(property = "taskId", column = "TASK_ID")
+  @Result(property = "company", column = "COMPANY")
+  @Result(property = "system", column = "SYSTEM")
+  @Result(property = "systemInstance", column = "SYSTEM_INSTANCE")
+  @Result(property = "type", column = "TYPE")
+  @Result(property = "value", column = "VALUE")
+  List<ObjectReference> findObjectReferencesByTaskId(@Param("taskId") String taskId);
+
+  @Select(
       "<script>SELECT ID, COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE "
           + "FROM OBJECT_REFERENCE "
           + "WHERE COMPANY = #{objectReference.company} "
@@ -67,8 +82,8 @@ public interface ObjectReferenceMapper {
   List<String> queryObjectReferenceColumnValues(ObjectReferenceQueryImpl objectReference);
 
   @Insert(
-      "INSERT INTO OBJECT_REFERENCE (ID,  COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE) "
-          + "VALUES (#{ref.id}, #{ref.company}, #{ref.system}, #{ref.systemInstance}, #{ref.type}, #{ref.value})")
+      "INSERT INTO OBJECT_REFERENCE (ID, TASK_ID, COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE) "
+          + "VALUES (#{ref.id}, #{ref.taskId}, #{ref.company}, #{ref.system}, #{ref.systemInstance}, #{ref.type}, #{ref.value})")
   void insert(@Param("ref") ObjectReference ref);
 
   @Update(

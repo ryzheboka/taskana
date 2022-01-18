@@ -141,6 +141,13 @@ public interface TaskSummary {
   List<AttachmentSummary> getAttachmentSummaries();
 
   /**
+   * Gets the object references of the task.
+   *
+   * @return the task's object references
+   */
+  List<ObjectReference> getObjectReferences();
+
+  /**
    * Gets the domain of the task.
    *
    * @return the task's domain

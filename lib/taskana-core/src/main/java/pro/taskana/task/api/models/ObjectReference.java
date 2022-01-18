@@ -7,6 +7,7 @@ import pro.taskana.common.api.exceptions.InvalidArgumentException;
 /** ObjectReference entity. */
 public class ObjectReference {
   private String id;
+  private String taskId;
   private String company;
   private String system;
   private String systemInstance;
@@ -47,6 +48,14 @@ public class ObjectReference {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public String getTaskId() {
+    return taskId;
+  }
+
+  public void setTaskId(String taskId) {
+    this.taskId = taskId;
   }
 
   public String getCompany() {
@@ -120,6 +129,8 @@ public class ObjectReference {
     return "ObjectReference ["
         + "id="
         + this.id
+        + ", taskId="
+        + this.taskId
         + ", company="
         + this.company
         + ", system="

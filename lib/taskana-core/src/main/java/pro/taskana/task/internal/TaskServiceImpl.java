@@ -102,6 +102,8 @@ public class TaskServiceImpl implements TaskService {
   private final ServiceLevelHandler serviceLevelHandler;
   private final AttachmentHandler attachmentHandler;
   private final AttachmentMapper attachmentMapper;
+  private final ObjectReferenceMapper objectReferenceMapper;
+  private final ObjectReferenceHandler objectReferenceHandler;
   private final UserMapper userMapper;
   private final HistoryEventManager historyEventManager;
   private final CreateTaskPreprocessorManager createTaskPreprocessorManager;
@@ -112,11 +114,13 @@ public class TaskServiceImpl implements TaskService {
       TaskMapper taskMapper,
       TaskCommentMapper taskCommentMapper,
       AttachmentMapper attachmentMapper,
+      ObjectReferenceMapper objectReferenceMapper,
       UserMapper userMapper) {
     this.taskanaEngine = taskanaEngine;
     this.taskMapper = taskMapper;
     this.workbasketService = taskanaEngine.getEngine().getWorkbasketService();
     this.attachmentMapper = attachmentMapper;
+    this.objectReferenceMapper = objectReferenceMapper;
     this.userMapper = userMapper;
     this.classificationService = taskanaEngine.getEngine().getClassificationService();
     this.historyEventManager = taskanaEngine.getHistoryEventManager();
@@ -128,6 +132,7 @@ public class TaskServiceImpl implements TaskService {
     this.serviceLevelHandler =
         new ServiceLevelHandler(taskanaEngine, taskMapper, attachmentMapper, this);
     this.attachmentHandler = new AttachmentHandler(attachmentMapper, classificationService);
+    this.objectReferenceHandler = new ObjectReferenceHandler(objectReferenceMapper);
   }
 
   @Override
@@ -313,12 +318,16 @@ public class TaskServiceImpl implements TaskService {
         if (attachmentImpls == null) {
           attachmentImpls = new ArrayList<>();
         }
-
+        List<ObjectReference> objectReferences =
+            objectReferenceMapper.findObjectReferencesByTaskId(resultTask.getId());
+        if (objectReferences == null) {
+          objectReferences = new ArrayList<>();
+        }
         Map<String, ClassificationSummary> classificationSummariesById =
             findClassificationForTaskImplAndAttachments(resultTask, attachmentImpls);
         addClassificationSummariesToAttachments(attachmentImpls, classificationSummariesById);
         resultTask.setAttachments(new ArrayList<>(attachmentImpls));
-
+        resultTask.setObjectReferences(new ArrayList<>(objectReferences));
         String classificationId = resultTask.getClassificationSummary().getId();
         ClassificationSummary classification = classificationSummariesById.get(classificationId);
         if (classification == null) {
@@ -421,6 +430,11 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public Attachment newAttachment() {
     return new AttachmentImpl();
+  }
+
+  @Override
+  public ObjectReference newObjectReference() {
+    return new ObjectReference();
   }
 
   @Override
@@ -1480,6 +1494,7 @@ public class TaskServiceImpl implements TaskService {
     setDefaultTaskReceivedDateFromAttachments(task);
 
     attachmentHandler.insertNewAttachmentsOnTaskCreation(task);
+    objectReferenceHandler.insertNewObjectReferenceOnTaskCreation(task);
     // This has to be called after the AttachmentHandler because the AttachmentHandler fetches
     // the Classifications of the Attachments.
     // This is necessary to guarantee that the following calculation is correct.

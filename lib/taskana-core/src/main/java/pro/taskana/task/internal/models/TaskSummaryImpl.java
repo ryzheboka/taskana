@@ -46,6 +46,7 @@ public class TaskSummaryImpl implements TaskSummary {
   protected boolean isTransferred;
   // All objects have to be serializable
   protected List<AttachmentSummary> attachmentSummaries = new ArrayList<>();
+  protected List<ObjectReference> objectReferences = new ArrayList<>();
   protected String custom1;
   protected String custom2;
   protected String custom3;
@@ -88,6 +89,7 @@ public class TaskSummaryImpl implements TaskSummary {
     isRead = copyFrom.isRead;
     isTransferred = copyFrom.isTransferred;
     attachmentSummaries = new ArrayList<>(copyFrom.attachmentSummaries);
+    objectReferences = new ArrayList<>(copyFrom.objectReferences);
     custom1 = copyFrom.custom1;
     custom2 = copyFrom.custom2;
     custom3 = copyFrom.custom3;
@@ -269,6 +271,15 @@ public class TaskSummaryImpl implements TaskSummary {
   }
 
   @Override
+  public List<ObjectReference> getObjectReferences() {
+    return objectReferences;
+  }
+
+  public void setObjectReferences(List<ObjectReference> objectReferences) {
+    this.objectReferences = objectReferences;
+  }
+
+  @Override
   public String getDomain() {
     return workbasketSummary == null ? null : workbasketSummary.getDomain();
   }
@@ -404,6 +415,13 @@ public class TaskSummaryImpl implements TaskSummary {
       this.attachmentSummaries = new ArrayList<>();
     }
     this.attachmentSummaries.add(attachmentSummary);
+  }
+
+  public void addObjectReference(ObjectReference objectReference) {
+    if (this.objectReferences == null) {
+      this.objectReferences = new ArrayList<>();
+    }
+    this.objectReferences.add(objectReference);
   }
 
   // auxiliary Method to enable Mybatis to access classificationSummary
@@ -592,6 +610,7 @@ public class TaskSummaryImpl implements TaskSummary {
         isRead,
         isTransferred,
         attachmentSummaries,
+        objectReferences,
         custom1,
         custom2,
         custom3,
@@ -647,6 +666,7 @@ public class TaskSummaryImpl implements TaskSummary {
         && Objects.equals(ownerLongName, other.ownerLongName)
         && Objects.equals(primaryObjRef, other.primaryObjRef)
         && Objects.equals(attachmentSummaries, other.attachmentSummaries)
+        && Objects.equals(objectReferences, other.objectReferences)
         && Objects.equals(custom1, other.custom1)
         && Objects.equals(custom2, other.custom2)
         && Objects.equals(custom3, other.custom3)
@@ -717,6 +737,8 @@ public class TaskSummaryImpl implements TaskSummary {
         + isTransferred
         + ", attachmentSummaries="
         + attachmentSummaries
+        + ", objectReferences="
+        + objectReferences
         + ", custom1="
         + custom1
         + ", custom2="

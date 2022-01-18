@@ -313,6 +313,12 @@ public interface TaskService {
   Attachment newAttachment();
 
   /**
+   * Returns a not inserted instance of {@link ObjectReference}.
+   *
+   * @return an empty new ObjectReference
+   */
+  ObjectReference newObjectReference();
+  /**
    * Update a task.
    *
    * @param task the task to be updated in the database
