@@ -30,7 +30,6 @@ import pro.taskana.common.test.rest.TaskanaSpringBootTest;
 import pro.taskana.task.api.TaskService;
 import pro.taskana.task.api.TaskState;
 import pro.taskana.task.api.models.AttachmentSummary;
-import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.TaskSummary;
 import pro.taskana.task.internal.models.AttachmentSummaryImpl;
 import pro.taskana.task.internal.models.ObjectReferenceImpl;
@@ -67,7 +66,7 @@ class TaskSummaryRepresentationModelAssemblerTest {
   @Test
   void should_ReturnRepresentationModel_When_ConvertingEntityToRepresentationModel()
       throws Exception {
-    ObjectReference primaryObjRef = new ObjectReferenceImpl();
+    ObjectReferenceImpl primaryObjRef = new ObjectReferenceImpl();
     primaryObjRef.setId("abc");
     ClassificationSummary classification =
         this.classificationService.newClassification("ckey", "cdomain", "MANUAL").asSummary();
@@ -223,7 +222,7 @@ class TaskSummaryRepresentationModelAssemblerTest {
   @Test
   void should_Equal_When_ComparingEntityWithConvertedEntity() {
     // given
-    ObjectReference primaryObjRef = new ObjectReferenceImpl();
+    ObjectReferenceImpl primaryObjRef = new ObjectReferenceImpl();
     primaryObjRef.setId("abc");
     final WorkbasketSummary workbasket =
         workbasketService.newWorkbasket("key", "domain").asSummary();

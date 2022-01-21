@@ -26,7 +26,7 @@ public class ObjectReferenceRepresentationModelAssembler
   }
 
   public ObjectReference toEntity(ObjectReferenceRepresentationModel repModel) {
-    ObjectReference objectReference = new ObjectReferenceImpl();
+    ObjectReferenceImpl objectReference = new ObjectReferenceImpl();
     objectReference.setId(repModel.getId());
     objectReference.setCompany(repModel.getCompany());
     objectReference.setSystem(repModel.getSystem());

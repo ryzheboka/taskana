@@ -340,7 +340,7 @@ public interface TaskService {
   Task updateTask(Task task)
       throws InvalidArgumentException, TaskNotFoundException, ConcurrencyException,
           ClassificationNotFoundException, NotAuthorizedException, AttachmentPersistenceException,
-          InvalidStateException;
+          ObjectReferencePersistenceException, InvalidStateException;
 
   /**
    * Transfers a list of {@linkplain Task Tasks} to another {@linkplain

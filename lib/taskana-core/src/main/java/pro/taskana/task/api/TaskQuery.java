@@ -1458,6 +1458,10 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   TaskQuery orderByAttachmentReceived(SortDirection sortDirection);
 
   // endregion
+  // region object reference
+  TaskQuery objectReferenceValueIn(String... value);
+
+  // endregion
   // region customAttributes
 
   /**

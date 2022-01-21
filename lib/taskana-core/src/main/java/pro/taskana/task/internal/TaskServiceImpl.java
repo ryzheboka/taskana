@@ -238,7 +238,7 @@ public class TaskServiceImpl implements TaskService {
       Classification classification =
           this.classificationService.getClassification(classificationKey, workbasket.getDomain());
       task.setClassificationSummary(classification.asSummary());
-      ObjectReference.validate(task.getPrimaryObjRef(), "primary ObjectReference", "Task");
+      ObjectReferenceImpl.validate(task.getPrimaryObjRef(), "primary ObjectReference", "Task");
       standardSettingsOnTaskCreation(task, classification);
       setCallbackStateOnTaskCreation(task);
       priorityServiceManager.calculatePriorityOfTask(task).ifPresent(task::setPriority);
@@ -443,7 +443,8 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public Task updateTask(Task task)
       throws InvalidArgumentException, TaskNotFoundException, ConcurrencyException,
-          NotAuthorizedException, AttachmentPersistenceException, InvalidStateException,
+          NotAuthorizedException, AttachmentPersistenceException,
+          ObjectReferencePersistenceException, InvalidStateException,
           ClassificationNotFoundException {
     String userId = taskanaEngine.getEngine().getCurrentUserContext().getUserid();
     TaskImpl newTaskImpl = (TaskImpl) task;
@@ -454,7 +455,9 @@ public class TaskServiceImpl implements TaskService {
       checkConcurrencyAndSetModified(newTaskImpl, oldTaskImpl);
 
       attachmentHandler.insertAndDeleteAttachmentsOnTaskUpdate(newTaskImpl, oldTaskImpl);
-      ObjectReference.validate(newTaskImpl.getPrimaryObjRef(), "primary ObjectReference", "Task");
+      objectReferenceHandler.insertAndDeleteObjectReferencesOnTaskUpdate(newTaskImpl, oldTaskImpl);
+      ObjectReferenceImpl.validate(
+          newTaskImpl.getPrimaryObjRef(), "primary ObjectReference", "Task");
 
       standardUpdateActions(oldTaskImpl, newTaskImpl);
 
@@ -572,6 +575,7 @@ public class TaskServiceImpl implements TaskService {
 
       if (!taskIds.isEmpty()) {
         attachmentMapper.deleteMultipleByTaskIds(taskIds);
+        objectReferenceMapper.deleteMultipleByTaskIds(taskIds);
         taskMapper.deleteMultiple(taskIds);
 
         if (taskanaEngine.getEngine().isHistoryEnabled()
@@ -605,7 +609,7 @@ public class TaskServiceImpl implements TaskService {
       ObjectReference selectionCriteria, Map<TaskCustomField, String> customFieldsToUpdate)
       throws InvalidArgumentException {
 
-    ObjectReference.validate(selectionCriteria, "ObjectReference", "updateTasks call");
+    ObjectReferenceImpl.validate(selectionCriteria, "ObjectReference", "updateTasks call");
     validateCustomFields(customFieldsToUpdate);
     TaskCustomPropertySelector fieldSelector = new TaskCustomPropertySelector();
     TaskImpl updated = initUpdatedTask(customFieldsToUpdate, fieldSelector);
@@ -969,7 +973,7 @@ public class TaskServiceImpl implements TaskService {
     // splitting Augmentation into steps of maximal 32000 tasks
     // reason: DB2 has a maximum for parameters in a query
     return CollectionUtil.partitionBasedOnSize(taskSummaries, 32000).stream()
-        .map(this::augmentTaskSummariesByContainedSummariesWithoutPartitioning)
+        .map(this::appendComplexAttributesToTaskSummariesWithoutPartitioning)
         .flatMap(Collection::stream)
         .collect(Collectors.toList());
   }
@@ -992,7 +996,7 @@ public class TaskServiceImpl implements TaskService {
     return Pair.of(filteredTasks, bulkLog);
   }
 
-  private List<TaskSummaryImpl> augmentTaskSummariesByContainedSummariesWithoutPartitioning(
+  private List<TaskSummaryImpl> appendComplexAttributesToTaskSummariesWithoutPartitioning(
       List<TaskSummaryImpl> taskSummaries) {
     Set<String> taskIds =
         taskSummaries.stream().map(TaskSummaryImpl::getId).collect(Collectors.toSet());
@@ -1013,11 +1017,14 @@ public class TaskServiceImpl implements TaskService {
     Map<String, ClassificationSummary> classificationSummariesById =
         findClassificationsForTasksAndAttachments(taskSummaries, attachmentSummaries);
     Map<String, WorkbasketSummary> workbasketSummariesById = findWorkbasketsForTasks(taskSummaries);
+    List<ObjectReferenceImpl> objectReferences =
+        objectReferenceMapper.findObjectReferencesByTaskIds(taskIds);
 
     addClassificationSummariesToAttachments(attachmentSummaries, classificationSummariesById);
     addClassificationSummariesToTaskSummaries(taskSummaries, classificationSummariesById);
     addWorkbasketSummariesToTaskSummaries(taskSummaries, workbasketSummariesById);
     addAttachmentSummariesToTaskSummaries(taskSummaries, attachmentSummaries);
+    addObjectReferencesToTaskSummaries(taskSummaries, objectReferences);
 
     return taskSummaries;
   }
@@ -1323,6 +1330,7 @@ public class TaskServiceImpl implements TaskService {
       }
 
       attachmentMapper.deleteMultipleByTaskIds(Collections.singletonList(taskId));
+      objectReferenceMapper.deleteMultipleByTaskIds(Collections.singletonList(taskId));
       taskMapper.delete(taskId);
 
       if (taskanaEngine.getEngine().isHistoryEnabled()
@@ -1721,6 +1729,32 @@ public class TaskServiceImpl implements TaskService {
         throw new SystemException("Could not find a Classification for attachment " + attachment);
       }
       attachment.setClassificationSummary(classificationSummary);
+    }
+  }
+
+  private void addObjectReferencesToTaskSummaries(
+      List<TaskSummaryImpl> taskSummaries, List<ObjectReferenceImpl> objectReferences) {
+    if (taskSummaries == null || taskSummaries.isEmpty()) {
+      return;
+    }
+
+    Map<String, TaskSummaryImpl> taskSummariesById =
+        taskSummaries.stream()
+            .collect(
+                Collectors.toMap(
+                    TaskSummary::getId,
+                    Function.identity(),
+                    // The TaskQuery#list function
+                    // returns the same task multiple times when that task has more than one
+                    // object reference...Therefore, this MergeFunction is necessary.
+                    (a, b) -> b));
+
+    for (ObjectReferenceImpl objectReference : objectReferences) {
+      String taskId = objectReference.getTaskId();
+      TaskSummaryImpl taskSummary = taskSummariesById.get(taskId);
+      if (taskSummary != null) {
+        taskSummary.addObjectReference(objectReference);
+      }
     }
   }
 

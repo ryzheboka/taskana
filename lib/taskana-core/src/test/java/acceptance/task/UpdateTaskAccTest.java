@@ -31,7 +31,6 @@ import pro.taskana.common.test.security.WithAccessId;
 import pro.taskana.task.api.TaskCustomField;
 import pro.taskana.task.api.TaskState;
 import pro.taskana.task.api.exceptions.TaskNotFoundException;
-import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.api.models.TaskSummary;
 import pro.taskana.task.internal.models.ObjectReferenceImpl;
@@ -259,7 +258,7 @@ class UpdateTaskAccTest extends AbstractAccTest {
   @Test
   void should_UpdateNoTasks_When_UpdateTasksWithUnmatchedObjectReferenceWasCalled()
       throws Exception {
-    ObjectReference por = new ObjectReferenceImpl();
+    ObjectReferenceImpl por = new ObjectReferenceImpl();
     por.setCompany("00");
     por.setSystem("PASystem");
     por.setSystemInstance("00");
@@ -278,7 +277,7 @@ class UpdateTaskAccTest extends AbstractAccTest {
   @WithAccessId(user = "teamlead-1")
   @Test
   void should_UpdateTasks_When_MatchingPrimaryObjectReferenceWasChanged() throws Exception {
-    ObjectReference por = new ObjectReferenceImpl();
+    ObjectReferenceImpl por = new ObjectReferenceImpl();
     por.setCompany("00");
     por.setSystem("PASystem");
     por.setSystemInstance("00");

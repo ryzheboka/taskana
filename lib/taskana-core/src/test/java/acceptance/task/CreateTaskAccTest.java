@@ -86,8 +86,8 @@ class CreateTaskAccTest extends AbstractAccTest {
     newTask.setPrimaryObjRef(objectReference);
 
     ///
-    ObjectReference objectReference1 = new ObjectReferenceImpl();
-    ObjectReference objectReference2 = new ObjectReferenceImpl();
+    ObjectReferenceImpl objectReference1 = new ObjectReferenceImpl();
+    ObjectReferenceImpl objectReference2 = new ObjectReferenceImpl();
     // objectReference1.setTaskId(newTask.getId());
     // System.out.println(objectReference1.getTaskId());
     objectReference1.setId("ObjRef11");

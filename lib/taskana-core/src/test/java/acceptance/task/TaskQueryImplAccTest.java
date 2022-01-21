@@ -31,8 +31,10 @@ import pro.taskana.task.api.WildcardSearchField;
 import pro.taskana.task.api.models.Attachment;
 import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.TaskSummary;
+import pro.taskana.task.internal.builder.ObjectReferenceBuilder;
 import pro.taskana.task.internal.builder.TaskAttachmentBuilder;
 import pro.taskana.task.internal.builder.TaskBuilder;
+import pro.taskana.task.internal.models.ObjectReferenceImpl;
 import pro.taskana.workbasket.api.WorkbasketPermission;
 import pro.taskana.workbasket.api.WorkbasketService;
 import pro.taskana.workbasket.api.models.WorkbasketSummary;
@@ -95,8 +97,22 @@ class TaskQueryImplAccTest {
     @Test
     void should_ReturnAllTasks_When_NotApplyingAnyFilter() throws Exception {
       WorkbasketSummary wb = createWorkbasketWithPermission();
-      TaskSummary taskSummary1 = taskInWorkbasket(wb).buildAndStoreAsSummary(taskService);
-      TaskSummary taskSummary2 = taskInWorkbasket(wb).buildAndStoreAsSummary(taskService);
+      ObjectReferenceImpl objRef = new ObjectReferenceImpl();
+      objRef.setValue("val");
+      objRef.setType("typ");
+      objRef.setCompany("com");
+      objRef.setSystem("sys");
+      objRef.setId("234");
+      ObjectReferenceImpl objRef2 = new ObjectReferenceImpl();
+      objRef2.setValue("val2");
+      objRef2.setType("typ2");
+      objRef2.setCompany("com2");
+      objRef2.setSystem("sys2");
+      objRef2.setId("2342");
+      TaskSummary taskSummary1 =
+          taskInWorkbasket(wb).objectReferences(objRef).buildAndStoreAsSummary(taskService);
+      TaskSummary taskSummary2 =
+          taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
 
       List<TaskSummary> list = taskService.createTaskQuery().list();
 
@@ -2428,6 +2444,70 @@ class TaskQueryImplAccTest {
         assertThat(list).containsExactly(taskSummary2);
       }
     }
+
+    @Nested
+    @TestInstance(Lifecycle.PER_CLASS)
+    class ObjectReferenceValue {
+      WorkbasketSummary wb;
+      TaskSummary taskSummary1;
+      TaskSummary taskSummary2;
+      TaskSummary taskSummary3;
+
+      @WithAccessId(user = "user-1-1")
+      @BeforeAll
+      void setup() throws Exception {
+        wb = createWorkbasketWithPermission();
+        ObjectReference objRef1 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("FirstCompany")
+                .value("FirstValue")
+                .type("FirstType")
+                .build();
+        ObjectReference objRef2 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("FirstCompany")
+                .value("SecondValue")
+                .type("FirstType")
+                .build();
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef1, objRef2)
+                .buildAndStoreAsSummary(taskService);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForValueIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .objectReferenceValueIn("FirstValue")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
+      }
+    }
+
+    @Nested
+    @TestInstance(Lifecycle.PER_CLASS)
+    class ObjectReferenceType {}
+
+    @Nested
+    @TestInstance(Lifecycle.PER_CLASS)
+    class ObjectReferenceCompany {}
+
+    @Nested
+    @TestInstance(Lifecycle.PER_CLASS)
+    class ObjectReferenceSystem {}
+
+    @Nested
+    @TestInstance(Lifecycle.PER_CLASS)
+    class ObjectReferenceSystemInstance {}
 
     @Nested
     @TestInstance(Lifecycle.PER_CLASS)

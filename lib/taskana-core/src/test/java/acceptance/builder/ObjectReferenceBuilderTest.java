@@ -21,7 +21,7 @@ class ObjectReferenceBuilderTest {
             .value("Value1")
             .build();
 
-    ObjectReference expectedObjectReference = new ObjectReferenceImpl();
+    ObjectReferenceImpl expectedObjectReference = new ObjectReferenceImpl();
     expectedObjectReference.setCompany("Company1");
     expectedObjectReference.setSystem("System1");
     expectedObjectReference.setSystemInstance("Instance1");

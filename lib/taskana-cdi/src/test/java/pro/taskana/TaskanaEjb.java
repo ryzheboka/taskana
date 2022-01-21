@@ -11,7 +11,6 @@ import pro.taskana.task.api.TaskService;
 import pro.taskana.task.api.exceptions.AttachmentPersistenceException;
 import pro.taskana.task.api.exceptions.ObjectReferencePersistenceException;
 import pro.taskana.task.api.exceptions.TaskAlreadyExistException;
-import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.internal.models.ObjectReferenceImpl;
 import pro.taskana.workbasket.api.WorkbasketService;
@@ -43,7 +42,7 @@ public class TaskanaEjb {
           TaskAlreadyExistException, InvalidArgumentException, AttachmentPersistenceException,
           ObjectReferencePersistenceException {
     final Task task = taskService.newTask(null);
-    ObjectReference objRef = new ObjectReferenceImpl();
+    ObjectReferenceImpl objRef = new ObjectReferenceImpl();
     objRef.setCompany("aCompany");
     objRef.setSystem("aSystem");
     objRef.setSystemInstance("anInstance");

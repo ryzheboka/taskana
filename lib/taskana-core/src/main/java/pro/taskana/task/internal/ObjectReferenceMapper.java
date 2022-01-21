@@ -1,5 +1,6 @@
 package pro.taskana.task.internal;
 
+import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -43,6 +44,31 @@ public interface ObjectReferenceMapper {
   @Result(property = "type", column = "TYPE")
   @Result(property = "value", column = "VALUE")
   List<ObjectReferenceImpl> findObjectReferencesByTaskId(@Param("taskId") String taskId);
+
+  @Select(
+      "<script>SELECT ID, TASK_ID, COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE "
+          + "FROM OBJECT_REFERENCE "
+          + "<where>"
+          + "<choose>"
+          + "<when  test='taskIds == null'>"
+          + " 1 = 2 "
+          + "</when>"
+          + "<otherwise>"
+          + "TASK_ID IN (<foreach collection='taskIds' item='item' separator=',' >#{item}</foreach>) "
+          + "</otherwise>"
+          + "</choose>"
+          + "</where>"
+          + "<if test=\"_databaseId == 'db2'\">with UR </if> "
+          + "</script>")
+  @Result(property = "id", column = "ID")
+  @Result(property = "taskId", column = "TASK_ID")
+  @Result(property = "company", column = "COMPANY")
+  @Result(property = "system", column = "SYSTEM")
+  @Result(property = "systemInstance", column = "SYSTEM_INSTANCE")
+  @Result(property = "type", column = "TYPE")
+  @Result(property = "value", column = "VALUE")
+  List<ObjectReferenceImpl> findObjectReferencesByTaskIds(
+      @Param("taskIds") Collection<String> taskIds);
 
   @Select(
       "<script>SELECT ID, COMPANY, SYSTEM, SYSTEM_INSTANCE, TYPE, VALUE "
@@ -96,4 +122,8 @@ public interface ObjectReferenceMapper {
 
   @Delete("DELETE FROM OBJECT_REFERENCE WHERE ID = #{id}")
   void delete(String id);
+
+  @Delete(
+      "<script>DELETE FROM OBJECT_REFERENCE WHERE TASK_ID IN(<foreach item='item' collection='taskIds' separator=',' >#{item}</foreach>)</script>")
+  void deleteMultipleByTaskIds(@Param("taskIds") List<String> taskIds);
 }

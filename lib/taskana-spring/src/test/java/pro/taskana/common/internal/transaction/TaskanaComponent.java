@@ -11,7 +11,6 @@ import pro.taskana.task.api.TaskService;
 import pro.taskana.task.api.exceptions.AttachmentPersistenceException;
 import pro.taskana.task.api.exceptions.ObjectReferencePersistenceException;
 import pro.taskana.task.api.exceptions.TaskAlreadyExistException;
-import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.internal.models.ObjectReferenceImpl;
 import pro.taskana.workbasket.api.exceptions.WorkbasketNotFoundException;
@@ -33,7 +32,7 @@ public class TaskanaComponent {
           ObjectReferencePersistenceException {
     Task task = taskService.newTask("1");
     task.setName("Unit Test Task");
-    ObjectReference objRef = new ObjectReferenceImpl();
+    ObjectReferenceImpl objRef = new ObjectReferenceImpl();
     objRef.setCompany("aCompany");
     objRef.setSystem("aSystem");
     objRef.setSystemInstance("anInstance");

@@ -2,6 +2,7 @@ package pro.taskana.task.internal.models;
 
 import java.util.Objects;
 
+import pro.taskana.common.api.exceptions.InvalidArgumentException;
 import pro.taskana.task.api.models.ObjectReference;
 
 /** ObjectReference entity. */
@@ -24,8 +25,75 @@ public class ObjectReferenceImpl implements ObjectReference {
     value = copyFrom.value;
   }
 
-  /*public static void validate(
-      ObjectReferenceImpl objectReference, String objRefType, String objName)
+  @Override
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  @Override
+  public String getTaskId() {
+    return taskId;
+  }
+
+  public void setTaskId(String taskId) {
+    this.taskId = taskId;
+  }
+
+  @Override
+  public String getCompany() {
+    return company;
+  }
+
+  public void setCompany(String company) {
+    this.company = company;
+  }
+
+  @Override
+  public String getSystem() {
+    return system;
+  }
+
+  public void setSystem(String system) {
+    this.system = system;
+  }
+
+  @Override
+  public String getSystemInstance() {
+    return systemInstance;
+  }
+
+  public void setSystemInstance(String systemInstance) {
+    this.systemInstance = systemInstance;
+  }
+
+  @Override
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  @Override
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  @Override
+  public ObjectReferenceImpl copy() {
+    return new ObjectReferenceImpl(this);
+  }
+
+  public static void validate(ObjectReference objectReference, String objRefType, String objName)
       throws InvalidArgumentException {
     // check that all values in the ObjectReference are set correctly
     if (objectReference == null) {
@@ -41,67 +109,6 @@ public class ObjectReferenceImpl implements ObjectReference {
       throw new InvalidArgumentException(
           String.format("Value of %s of %s must not be empty", objRefType, objName));
     }
-  }*/
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getTaskId() {
-    return taskId;
-  }
-
-  public void setTaskId(String taskId) {
-    this.taskId = taskId;
-  }
-
-  public String getCompany() {
-    return company;
-  }
-
-  public void setCompany(String company) {
-    this.company = company;
-  }
-
-  public String getSystem() {
-    return system;
-  }
-
-  public void setSystem(String system) {
-    this.system = system;
-  }
-
-  public String getSystemInstance() {
-    return systemInstance;
-  }
-
-  public void setSystemInstance(String systemInstance) {
-    this.systemInstance = systemInstance;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getValue() {
-    return value;
-  }
-
-  public void setValue(String value) {
-    this.value = value;
-  }
-
-  @Override
-  public ObjectReferenceImpl copy() {
-    return new ObjectReferenceImpl(this);
   }
 
   @Override

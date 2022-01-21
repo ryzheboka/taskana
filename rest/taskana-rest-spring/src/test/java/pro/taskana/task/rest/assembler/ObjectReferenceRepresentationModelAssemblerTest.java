@@ -38,7 +38,7 @@ class ObjectReferenceRepresentationModelAssemblerTest {
 
   @Test
   void should_ReturnRepresentationModel_When_ConvertingEntityToRepresentationModel() {
-    ObjectReference entity = new ObjectReferenceImpl();
+    ObjectReferenceImpl entity = new ObjectReferenceImpl();
     entity.setId("id");
     entity.setValue("value");
     entity.setType("type");

@@ -169,6 +169,11 @@ public class TaskBuilder {
     return this;
   }
 
+  public TaskBuilder objectReferences(ObjectReference... objectReferences) {
+    testTask.setObjectReferences(Arrays.asList(objectReferences));
+    return this;
+  }
+
   public TaskBuilder customAttribute(TaskCustomField customField, String value) {
     testTask.setCustomAttribute(customField, value);
     return this;

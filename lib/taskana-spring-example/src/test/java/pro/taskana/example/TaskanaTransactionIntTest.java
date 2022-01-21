@@ -231,7 +231,7 @@ class TaskanaTransactionIntTest {
   }
 
   private static ObjectReference createDefaultObjRef() {
-    ObjectReference objRef = new ObjectReferenceImpl();
+    ObjectReferenceImpl objRef = new ObjectReferenceImpl();
     objRef.setCompany("company");
     objRef.setSystem("system");
     objRef.setSystemInstance("instance");

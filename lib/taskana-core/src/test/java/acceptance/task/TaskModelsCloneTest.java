@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import pro.taskana.task.api.models.Attachment;
 import pro.taskana.task.api.models.AttachmentSummary;
-import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.internal.models.AttachmentImpl;
 import pro.taskana.task.internal.models.AttachmentSummaryImpl;
 import pro.taskana.task.internal.models.ObjectReferenceImpl;
@@ -117,7 +116,7 @@ class TaskModelsCloneTest {
 
   @Test
   void should_CopyWithoutId_When_ObjectReferenceClone() {
-    ObjectReference dummyReference = new ObjectReferenceImpl();
+    ObjectReferenceImpl dummyReference = new ObjectReferenceImpl();
     dummyReference.setId("dummyId");
     dummyReference.setSystem("dummySystem");
     dummyReference.setCompany("dummyCompany");
@@ -125,7 +124,7 @@ class TaskModelsCloneTest {
     dummyReference.setType("dummyType");
     dummyReference.setValue("dummyValue");
 
-    ObjectReference dummyReferenceCloned = dummyReference.copy();
+    ObjectReferenceImpl dummyReferenceCloned = dummyReference.copy();
 
     assertThat(dummyReferenceCloned).isNotEqualTo(dummyReference);
     dummyReferenceCloned.setId(dummyReference.getId());

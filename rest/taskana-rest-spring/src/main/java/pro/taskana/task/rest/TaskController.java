@@ -401,7 +401,7 @@ public class TaskController {
       @RequestBody TaskRepresentationModel taskRepresentationModel)
       throws TaskNotFoundException, ClassificationNotFoundException, InvalidArgumentException,
           ConcurrencyException, NotAuthorizedException, AttachmentPersistenceException,
-          InvalidStateException {
+          InvalidStateException, ObjectReferencePersistenceException {
     if (!taskId.equals(taskRepresentationModel.getTaskId())) {
       throw new InvalidArgumentException(
           String.format(

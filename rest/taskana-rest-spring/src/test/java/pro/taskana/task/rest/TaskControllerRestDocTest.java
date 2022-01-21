@@ -16,7 +16,6 @@ import pro.taskana.common.test.rest.RestHelper;
 import pro.taskana.common.test.security.JaasExtension;
 import pro.taskana.common.test.security.WithAccessId;
 import pro.taskana.task.api.TaskService;
-import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.internal.models.ObjectReferenceImpl;
 import pro.taskana.task.rest.assembler.TaskRepresentationModelAssembler;
@@ -107,7 +106,7 @@ class TaskControllerRestDocTest extends BaseRestDocTest {
   @Test
   void createTaskDocTest() throws Exception {
     final Task task = taskService.newTask("WBI:100000000000000000000000000000000004");
-    ObjectReference objectReference = new ObjectReferenceImpl();
+    ObjectReferenceImpl objectReference = new ObjectReferenceImpl();
     objectReference.setCompany("MyCompany1");
     objectReference.setSystem("MySystem1");
     objectReference.setSystemInstance("MyInstance1");
