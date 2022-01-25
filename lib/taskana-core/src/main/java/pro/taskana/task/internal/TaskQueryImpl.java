@@ -56,6 +56,7 @@ public class TaskQueryImpl implements TaskQuery {
   private boolean selectAndClaim;
   private boolean useDistinctKeyword = false;
   private boolean joinWithAttachments = false;
+  private boolean joinWithSecondaryObjectReferences = false;
   private boolean joinWithClassifications = false;
   private boolean joinWithAttachmentClassifications = false;
   private boolean joinWithWorkbaskets = false;
@@ -254,6 +255,36 @@ public class TaskQueryImpl implements TaskQuery {
   // region attachmentReceived
   private TimeInterval[] attachmentReceivedWithin;
   private TimeInterval[] attachmentReceivedNotWithin;
+  // endregion
+  // region secondaryObjectReferenceCompany
+  private String[] sorCompanyIn;
+  private String[] sorCompanyNotIn;
+  private String[] sorCompanyLike;
+  private String[] sorCompanyNotLike;
+  // endregion
+  // region secondaryObjectReferenceValue
+  private String[] sorValueIn;
+  private String[] sorValueNotIn;
+  private String[] sorValueLike;
+  private String[] sorValueNotLike;
+  // endregion
+  // region secondaryObjectReferenceSystem
+  private String[] sorSystemIn;
+  private String[] sorSystemNotIn;
+  private String[] sorSystemLike;
+  private String[] sorSystemNotLike;
+  // endregion
+  // region secondaryObjectReferenceSystemInstance
+  private String[] sorSystemInstanceIn;
+  private String[] sorSystemInstanceNotIn;
+  private String[] sorSystemInstanceLike;
+  private String[] sorSystemInstanceNotLike;
+  // endregion
+  // region secondaryObjectReferenceType
+  private String[] sorTypeIn;
+  private String[] sorTypeNotIn;
+  private String[] sorTypeLike;
+  private String[] sorTypeNotLike;
   // endregion
   // region customAttributes
   private String[] custom1In;
@@ -1386,6 +1417,137 @@ public class TaskQueryImpl implements TaskQuery {
   public String[] getOwnerLongNameNotLike() {
     return ownerLongNameNotLike;
   }
+
+  // region secondaryObjectReferenceCompany
+  public TaskQuery sorCompanyIn(String... companyIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorCompanyIn = companyIn;
+    return this;
+  }
+
+  public TaskQuery sorCompanyNotIn(String... companyNotIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorCompanyNotIn = companyNotIn;
+    return this;
+  }
+
+  public TaskQuery sorCompanyLike(String... companyLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorCompanyLike = toUpperCopy(companyLike);
+    return this;
+  }
+
+  public TaskQuery sorCompanyNotLike(String... companyNotLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorCompanyNotLike = toUpperCopy(companyNotLike);
+    return this;
+  }
+
+  // endregion
+  // region secondaryObjectReferenceSystem
+  public TaskQuery sorSystemIn(String... systemIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorSystemIn = systemIn;
+    return this;
+  }
+
+  public TaskQuery sorSystemNotIn(String... systemNotIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorSystemNotIn = systemNotIn;
+    return this;
+  }
+
+  public TaskQuery sorSystemLike(String... systemLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorSystemLike = toUpperCopy(systemLike);
+    return this;
+  }
+
+  public TaskQuery sorSystemNotLike(String... systemNotLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorSystemNotLike = toUpperCopy(systemNotLike);
+    return this;
+  }
+
+  // endregion
+  // region secondaryObjectReferenceSystemInstance
+  public TaskQuery sorSystemInstanceIn(String... systemInstanceIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorSystemInstanceIn = systemInstanceIn;
+    return this;
+  }
+
+  public TaskQuery sorSystemInstanceNotIn(String... systemInstanceNotIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorSystemInstanceNotIn = systemInstanceNotIn;
+    return this;
+  }
+
+  public TaskQuery sorSystemInstanceLike(String... systemInstanceLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorSystemInstanceLike = toUpperCopy(systemInstanceLike);
+    return this;
+  }
+
+  public TaskQuery sorSystemInstanceNotLike(String... systemInstanceNotLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorSystemInstanceNotLike = toUpperCopy(systemInstanceNotLike);
+    return this;
+  }
+
+  // endregion
+  // region secondaryObjectReferenceType
+  public TaskQuery sorTypeIn(String... typeIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorTypeIn = typeIn;
+    return this;
+  }
+
+  public TaskQuery sorTypeNotIn(String... typeNotIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorTypeNotIn = typeNotIn;
+    return this;
+  }
+
+  public TaskQuery sorTypeLike(String... typeLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorTypeLike = toUpperCopy(typeLike);
+    return this;
+  }
+
+  public TaskQuery sorTypeNotLike(String... typeNotLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorTypeNotLike = toUpperCopy(typeNotLike);
+    return this;
+  }
+  // endregion
+  // region secondaryObjectReferenceValue
+  @Override
+  public TaskQuery sorValueIn(String... valueIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorValueIn = valueIn;
+    System.out.println("HERE!!!");
+    return this;
+  }
+
+  public TaskQuery sorValueNotIn(String... valueNotIn) {
+    joinWithSecondaryObjectReferences = true;
+    sorValueNotIn = valueNotIn;
+    return this;
+  }
+
+  public TaskQuery sorValueLike(String... valueLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorValueLike = toUpperCopy(valueLike);
+    return this;
+  }
+
+  public TaskQuery sorValueNotLike(String... valueNotLike) {
+    joinWithSecondaryObjectReferences = true;
+    sorValueNotLike = toUpperCopy(valueNotLike);
+    return this;
+  }
+
   // region customAttributes
 
   @Override
@@ -1779,6 +1941,7 @@ public class TaskQueryImpl implements TaskQuery {
     this.wildcardSearchValueLike = wildcardSearchValue.toUpperCase();
     return this;
   }
+  // endregion
 
   @Override
   public TaskQuery wildcardSearchFieldsIn(WildcardSearchField... wildcardSearchFields) {
@@ -1884,6 +2047,10 @@ public class TaskQueryImpl implements TaskQuery {
 
       if (columnName.isAttachmentColumn()) {
         joinWithAttachments = true;
+      }
+
+      if (columnName.isObjectReferenceColumn()) {
+        joinWithSecondaryObjectReferences = true;
       }
 
       if (columnName == TaskQueryColumnName.OWNER_LONG_NAME) {
@@ -1998,7 +2165,7 @@ public class TaskQueryImpl implements TaskQuery {
       joinWithAttachments = true;
       joinWithAttachmentClassifications = true;
     }
-    if (joinWithAttachments || joinWithClassifications) {
+    if (joinWithAttachments || joinWithClassifications || joinWithSecondaryObjectReferences) {
       useDistinctKeyword = true;
     }
   }
@@ -2110,6 +2277,8 @@ public class TaskQueryImpl implements TaskQuery {
         + joinWithAttachmentClassifications
         + ", joinWithWorkbaskets="
         + joinWithWorkbaskets
+        + ", joinWithSecondaryObjectReferences="
+        + joinWithSecondaryObjectReferences
         + ", addAttachmentColumnsToSelectClauseForOrdering="
         + addAttachmentColumnsToSelectClauseForOrdering
         + ", addClassificationNameToSelectClauseForOrdering="
@@ -2340,6 +2509,46 @@ public class TaskQueryImpl implements TaskQuery {
         + Arrays.toString(attachmentReceivedWithin)
         + ", attachmentReceivedNotWithin="
         + Arrays.toString(attachmentReceivedNotWithin)
+        + ", sorCompanyIn="
+        + Arrays.toString(sorCompanyIn)
+        + ", sorCompanyNotIn="
+        + Arrays.toString(sorCompanyNotIn)
+        + ", sorCompanyLike="
+        + Arrays.toString(sorCompanyLike)
+        + ", sorCompanyNotLike="
+        + Arrays.toString(sorCompanyNotLike)
+        + ", sorSystemIn="
+        + Arrays.toString(sorSystemIn)
+        + ", sorSystemNotIn="
+        + Arrays.toString(sorSystemNotIn)
+        + ", sorSystemLike="
+        + Arrays.toString(sorSystemLike)
+        + ", sorSystemNotLike="
+        + Arrays.toString(sorSystemNotLike)
+        + ",sorSystemInstanceIn="
+        + Arrays.toString(sorSystemInstanceIn)
+        + ", sorSystemInstanceNotIn="
+        + Arrays.toString(sorSystemInstanceNotIn)
+        + ", sorSystemInstanceLike="
+        + Arrays.toString(sorSystemInstanceLike)
+        + ", sorSystemInstanceNotLike="
+        + Arrays.toString(sorSystemInstanceNotLike)
+        + ", sorTypeIn="
+        + Arrays.toString(sorTypeIn)
+        + ", sorTypeNotIn="
+        + Arrays.toString(sorTypeNotIn)
+        + ", sorTypeLike="
+        + Arrays.toString(sorTypeLike)
+        + ", sorTypeNotLike="
+        + Arrays.toString(sorTypeNotLike)
+        + ", sorValueIn="
+        + Arrays.toString(sorValueIn)
+        + ", sorValueNotIn="
+        + Arrays.toString(sorValueNotIn)
+        + ", sorValueLike="
+        + Arrays.toString(sorValueLike)
+        + ", sorValueNotLike="
+        + Arrays.toString(sorValueNotLike)
         + ", custom1In="
         + Arrays.toString(custom1In)
         + ", custom1NotIn="

@@ -37,6 +37,9 @@ public class TaskQuerySqlProvider {
         + "<if test=\"joinWithAttachments\">"
         + "LEFT JOIN ATTACHMENT AS a ON t.ID = a.TASK_ID "
         + "</if>"
+        + "<if test=\"joinWithSecondaryObjectReferences\">"
+        + "LEFT JOIN OBJECT_REFERENCE AS o ON t.ID = o.TASK_ID "
+        + "</if>"
         + "<if test=\"joinWithClassifications\">"
         + "LEFT JOIN CLASSIFICATION AS c ON t.CLASSIFICATION_ID = c.ID "
         + "</if>"
@@ -82,6 +85,9 @@ public class TaskQuerySqlProvider {
         + "FROM TASK t "
         + "<if test=\"joinWithAttachments\">"
         + "LEFT JOIN ATTACHMENT a ON t.ID = a.TASK_ID "
+        + "</if>"
+        + "<if test=\"joinWithSecondaryObjectReferences\">"
+        + "LEFT JOIN OBJECT_REFERENCE a ON t.ID = o.TASK_ID "
         + "</if>"
         + "<if test=\"joinWithClassifications\">"
         + "LEFT JOIN CLASSIFICATION AS c ON t.CLASSIFICATION_ID = c.ID "
@@ -134,6 +140,9 @@ public class TaskQuerySqlProvider {
         + "FROM TASK t "
         + "<if test=\"joinWithAttachments\">"
         + "LEFT JOIN ATTACHMENT AS a ON t.ID = a.TASK_ID "
+        + "</if>"
+        + "<if test=\"joinWithObjectReferences\">"
+        + "LEFT JOIN OBJECT_REFERENCE AS o ON t.ID = o.TASK_ID "
         + "</if>"
         + "<if test=\"joinWithClassifications\">"
         + "LEFT JOIN CLASSIFICATION AS c ON t.CLASSIFICATION_ID = c.ID "
@@ -198,6 +207,9 @@ public class TaskQuerySqlProvider {
         + "</if>"
         + "<if test=\"joinWithAttachmentClassifications\">"
         + "LEFT JOIN CLASSIFICATION AS ac ON a.CLASSIFICATION_ID = ac.ID "
+        + "</if>"
+        + "<if test=\"joinWithSecondaryObjectReferences\">"
+        + "LEFT JOIN OBJECT_REFERENCE AS o ON t.ID = o.TASK_ID "
         + "</if>"
         + "<if test=\"joinWithUserInfo\">"
         + "LEFT JOIN USER_INFO AS u ON t.owner = u.USER_ID "
@@ -336,6 +348,11 @@ public class TaskQuerySqlProvider {
     commonWhereClauses("porSystemInstance", "t.POR_INSTANCE", sb);
     commonWhereClauses("porType", "t.POR_TYPE", sb);
     commonWhereClauses("porValue", "t.POR_VALUE", sb);
+    commonWhereClauses("sorCompany", "o.COMPANY", sb);
+    commonWhereClauses("sorSystem", "o.SYSTEM", sb);
+    commonWhereClauses("sorSystemInstance", "o.SYSTEM_INSTANCE", sb);
+    commonWhereClauses("sorType", "o.TYPE", sb);
+    commonWhereClauses("sorValue", "o.VALUE", sb);
 
     whereIn("attachmentClassificationIdIn", "a.CLASSIFICATION_ID", sb);
     whereNotIn("attachmentClassificationIdNotIn", "a.CLASSIFICATION_ID", sb);

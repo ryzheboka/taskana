@@ -1458,10 +1458,54 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   TaskQuery orderByAttachmentReceived(SortDirection sortDirection);
 
   // endregion
-  // region object reference
-  // TaskQuery objectReferenceValueIn(String... value);
+  // region secondaryObjectReferenceCompany
+  TaskQuery sorCompanyIn(String... companyIn);
+
+  TaskQuery sorCompanyNotIn(String... companyNotIn);
+
+  TaskQuery sorCompanyLike(String... companyLike);
+
+  TaskQuery sorCompanyNotLike(String... companyNotLike);
 
   // endregion
+  // region secondaryObjectReferenceSystem
+  TaskQuery sorSystemIn(String... systemIn);
+
+  TaskQuery sorSystemNotIn(String... systemNotIn);
+
+  TaskQuery sorSystemLike(String... systemLike);
+
+  TaskQuery sorSystemNotLike(String... systemNotLike);
+
+  // endregion
+  // region secondaryObjectReferenceSystemInstance
+  TaskQuery sorSystemInstanceIn(String... systemInstanceIn);
+
+  TaskQuery sorSystemInstanceNotIn(String... systemInstanceNotIn);
+
+  TaskQuery sorSystemInstanceLike(String... systemInstanceLike);
+
+  TaskQuery sorSystemInstanceNotLike(String... systemInstanceNotLike);
+
+  // endregion
+  // region secondaryObjectReferenceType
+  TaskQuery sorTypeIn(String... typeIn);
+
+  TaskQuery sorTypeNotIn(String... typeNotIn);
+
+  TaskQuery sorTypeLike(String... typeLike);
+
+  TaskQuery sorTypeNotLike(String... typeNotLike);
+  // endregion
+  // region secondaryObjectReferenceValue
+  TaskQuery sorValueIn(String... valueIn);
+
+  TaskQuery sorValueNotIn(String... valueNotIn);
+
+  TaskQuery sorValueLike(String... valueLike);
+
+  TaskQuery sorValueNotLike(String... valueNotLike);
+
   // region customAttributes
 
   /**

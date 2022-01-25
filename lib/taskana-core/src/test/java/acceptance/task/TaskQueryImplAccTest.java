@@ -2469,16 +2469,26 @@ class TaskQueryImplAccTest {
                 .value("SecondValue")
                 .type("FirstType")
                 .build();
+        ObjectReference objRef3 = objRef2.copy();
+        ObjectReference objRef4 = objRef1.copy();
+
         taskSummary1 =
             taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
         taskSummary2 =
             taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
         taskSummary3 =
             taskInWorkbasket(wb)
-                .objectReferences(objRef1, objRef2)
+                .objectReferences(objRef3, objRef4)
                 .buildAndStoreAsSummary(taskService);
+        System.out.println(
+            taskSummary1.getObjectReferences()
+                + "\n"
+                + taskSummary2.getObjectReferences()
+                + "\n"
+                + taskSummary3.getObjectReferences()
+                + "\n");
       }
-      /*
+
       @WithAccessId(user = "user-1-1")
       @Test
       void should_ApplyFilter_When_QueryingForValueIn() {
@@ -2486,13 +2496,32 @@ class TaskQueryImplAccTest {
             taskService
                 .createTaskQuery()
                 .workbasketIdIn(wb.getId())
-                .objectReferenceValueIn("FirstValue")
+                .sorValueIn("FirstValue")
                 .list();
 
         assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
       }
 
-       */
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForValueNotIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorValueNotIn("FirstValue")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary2);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForValueLike() {
+        List<TaskSummary> list =
+            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorValueLike("%Value").list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
+      }
     }
 
     @Nested
