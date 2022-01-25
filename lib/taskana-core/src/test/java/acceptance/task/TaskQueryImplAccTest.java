@@ -2478,7 +2478,7 @@ class TaskQueryImplAccTest {
                 .objectReferences(objRef1, objRef2)
                 .buildAndStoreAsSummary(taskService);
       }
-
+      /*
       @WithAccessId(user = "user-1-1")
       @Test
       void should_ApplyFilter_When_QueryingForValueIn() {
@@ -2491,6 +2491,8 @@ class TaskQueryImplAccTest {
 
         assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
       }
+
+       */
     }
 
     @Nested

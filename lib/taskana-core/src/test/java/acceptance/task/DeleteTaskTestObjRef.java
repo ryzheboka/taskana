@@ -58,7 +58,7 @@ public class DeleteTaskTestObjRef {
 
   @WithAccessId(user = "admin")
   @Test
-  void should_DeleteAttachments_When_DeletingTask() throws Exception {
+  void should_DeleteObjectReferences_When_DeletingTask() throws Exception {
     ObjectReference objRef1 =
         ObjectReferenceBuilder.newObjectReference()
             .company("FirstCompany")
@@ -90,7 +90,7 @@ public class DeleteTaskTestObjRef {
 
   @WithAccessId(user = "admin")
   @Test
-  void should_DeleteAttachments_When_MultipleTasksAreDeleted() throws Exception {
+  void should_DeleteObjectReferences_When_MultipleTasksAreDeleted() throws Exception {
     ObjectReference objRef1 =
         ObjectReferenceBuilder.newObjectReference()
             .company("FirstCompany")

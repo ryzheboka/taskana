@@ -5,6 +5,7 @@ import java.util.List;
 
 import pro.taskana.classification.api.models.ClassificationSummary;
 import pro.taskana.task.api.TaskCustomField;
+import pro.taskana.task.api.TaskService;
 import pro.taskana.task.api.TaskState;
 import pro.taskana.workbasket.api.models.WorkbasketSummary;
 
@@ -146,6 +147,26 @@ public interface TaskSummary {
    * @return the task's object references
    */
   List<ObjectReference> getObjectReferences();
+
+  /**
+   * Add an object reference to the list of object references.<br>
+   * NULL will be ignored and an object reference with the same ID will be replaced by the newer
+   * one.<br>
+   *
+   * @param objectReference the {@link ObjectReference objectReference} to be added to the task
+   */
+  void addObjectReference(ObjectReference objectReference);
+
+  /**
+   * Removes an object reference of the current task locally, when the ID is represented and does
+   * return the removed object reference or null if there was no match.<br>
+   * The changed Task need to be updated calling the {@link TaskService#updateTask(Task)}.
+   *
+   * @param objectReferenceID ID of the object reference which should be removed.
+   * @return object reference which will be removed after updating OR null if there was no matching
+   *     object reference
+   */
+  ObjectReference removeObjectReference(String objectReferenceID);
 
   /**
    * Gets the domain of the task.

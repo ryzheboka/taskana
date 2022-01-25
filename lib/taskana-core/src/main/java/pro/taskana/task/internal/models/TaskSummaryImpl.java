@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import pro.taskana.classification.api.models.ClassificationSummary;
 import pro.taskana.classification.internal.models.ClassificationSummaryImpl;
@@ -89,7 +90,8 @@ public class TaskSummaryImpl implements TaskSummary {
     isRead = copyFrom.isRead;
     isTransferred = copyFrom.isTransferred;
     attachmentSummaries = new ArrayList<>(copyFrom.attachmentSummaries);
-    objectReferences = new ArrayList<>(copyFrom.objectReferences);
+    objectReferences =
+        copyFrom.objectReferences.stream().map(ObjectReference::copy).collect(Collectors.toList());
     custom1 = copyFrom.custom1;
     custom2 = copyFrom.custom2;
     custom3 = copyFrom.custom3;
@@ -417,11 +419,31 @@ public class TaskSummaryImpl implements TaskSummary {
     this.attachmentSummaries.add(attachmentSummary);
   }
 
-  public void addObjectReference(ObjectReference objectReference) {
-    if (this.objectReferences == null) {
-      this.objectReferences = new ArrayList<>();
+  @Override
+  public void addObjectReference(ObjectReference objectReferenceToAdd) {
+    if (objectReferences == null) {
+      objectReferences = new ArrayList<>();
     }
-    this.objectReferences.add(objectReference);
+    if (objectReferenceToAdd != null) {
+      if (objectReferenceToAdd.getId() != null) {
+        objectReferences.removeIf(
+            objectReference -> objectReferenceToAdd.getId().equals(objectReference.getId()));
+      }
+      objectReferences.add(objectReferenceToAdd);
+    }
+  }
+
+  @Override
+  public ObjectReference removeObjectReference(String objectReferenceId) {
+    ObjectReference result = null;
+    for (ObjectReference objectReference : objectReferences) {
+      if (objectReference.getId().equals(objectReferenceId)
+          && objectReferences.remove(objectReference)) {
+        result = objectReference;
+        break;
+      }
+    }
+    return result;
   }
 
   // auxiliary Method to enable Mybatis to access classificationSummary

@@ -124,15 +124,6 @@ public interface Task extends TaskSummary {
   void addAttachment(Attachment attachment);
 
   /**
-   * Add an object reference.<br>
-   * NULL will be ignored and an object reference with the same ID will be replaced by the newer
-   * one.<br>
-   *
-   * @param objectReference the {@link ObjectReference objectReference} to be added to the task
-   */
-  void addObjectReference(ObjectReference objectReference);
-
-  /**
    * Return the attachments for this task. <br>
    * Do not use List.add()/addAll() for adding Elements, because it can cause redundant data. Use
    * addAttachment(). Clear() and remove() can be used, because it's a controllable change.
@@ -140,15 +131,6 @@ public interface Task extends TaskSummary {
    * @return the {@link List list} of {@link Attachment attachments} for this task
    */
   List<Attachment> getAttachments();
-
-  /**
-   * Return the object references for this task. <br>
-   * Do not use List.add()/addAll() for adding Elements, because it can cause redundant data. Use
-   * addObjectReference(). Clear() and remove() can be used, because it's a controllable change.
-   *
-   * @return the {@link List list} of {@link ObjectReference objectReference} for this task
-   */
-  List<ObjectReference> getObjectReferences();
 
   /**
    * Sets the external business process id.
@@ -202,17 +184,6 @@ public interface Task extends TaskSummary {
    *     attachment
    */
   Attachment removeAttachment(String attachmentID);
-
-  /**
-   * Removes an object reference of the current task locally, when the ID is represented and does
-   * return the removed object reference or null if there was no match.<br>
-   * The changed Task need to be updated calling the {@link TaskService#updateTask(Task)}.
-   *
-   * @param objectReferenceID ID of the object reference which should be removed.
-   * @return object reference which will be removed after updating OR null if there was no matching
-   *     object reference
-   */
-  ObjectReference removeObjectReference(String objectReferenceID);
 
   /**
    * Returns the category of the current classification.

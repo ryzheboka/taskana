@@ -1459,7 +1459,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
 
   // endregion
   // region object reference
-  TaskQuery objectReferenceValueIn(String... value);
+  // TaskQuery objectReferenceValueIn(String... value);
 
   // endregion
   // region customAttributes

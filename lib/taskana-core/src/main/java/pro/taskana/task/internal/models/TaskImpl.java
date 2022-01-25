@@ -13,7 +13,6 @@ import pro.taskana.task.api.CallbackState;
 import pro.taskana.task.api.TaskCustomField;
 import pro.taskana.task.api.models.Attachment;
 import pro.taskana.task.api.models.AttachmentSummary;
-import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.api.models.TaskSummary;
 import pro.taskana.workbasket.internal.models.WorkbasketSummaryImpl;
@@ -25,7 +24,6 @@ public class TaskImpl extends TaskSummaryImpl implements Task {
   private Map<String, String> callbackInfo = new HashMap<>();
   private CallbackState callbackState;
   private List<Attachment> attachments = new ArrayList<>();
-  private List<ObjectReference> objectReferences = new ArrayList<>();
 
   public TaskImpl() {}
 
@@ -35,8 +33,6 @@ public class TaskImpl extends TaskSummaryImpl implements Task {
     callbackInfo = new HashMap<>(copyFrom.callbackInfo);
     callbackState = copyFrom.callbackState;
     attachments = copyFrom.attachments.stream().map(Attachment::copy).collect(Collectors.toList());
-    objectReferences =
-        copyFrom.objectReferences.stream().map(ObjectReference::copy).collect(Collectors.toList());
   }
 
   public Map<String, String> getCustomAttributes() {
@@ -182,20 +178,6 @@ public class TaskImpl extends TaskSummaryImpl implements Task {
   }
 
   @Override
-  public void addObjectReference(ObjectReference objectReferenceToAdd) {
-    if (objectReferences == null) {
-      objectReferences = new ArrayList<>();
-    }
-    if (objectReferenceToAdd != null) {
-      if (objectReferenceToAdd.getId() != null) {
-        objectReferences.removeIf(
-            objectReference -> objectReferenceToAdd.getId().equals(objectReference.getId()));
-      }
-      objectReferences.add(objectReferenceToAdd);
-    }
-  }
-
-  @Override
   public List<Attachment> getAttachments() {
     if (attachments == null) {
       attachments = new ArrayList<>();
@@ -208,23 +190,6 @@ public class TaskImpl extends TaskSummaryImpl implements Task {
       this.attachments = attachments;
     } else if (this.attachments == null) {
       this.attachments = new ArrayList<>();
-    }
-  }
-
-  @Override
-  public List<ObjectReference> getObjectReferences() {
-    if (objectReferences == null) {
-      objectReferences = new ArrayList<>();
-    }
-    return objectReferences;
-  }
-
-  @Override
-  public void setObjectReferences(List<ObjectReference> objectReferences) {
-    if (objectReferences != null) {
-      this.objectReferences = objectReferences;
-    } else if (this.objectReferences == null) {
-      this.objectReferences = new ArrayList<>();
     }
   }
 
@@ -294,19 +259,6 @@ public class TaskImpl extends TaskSummaryImpl implements Task {
   }
 
   @Override
-  public ObjectReference removeObjectReference(String objectReferenceId) {
-    ObjectReference result = null;
-    for (ObjectReference objectReference : objectReferences) {
-      if (objectReference.getId().equals(objectReferenceId)
-          && objectReferences.remove(objectReference)) {
-        result = objectReference;
-        break;
-      }
-    }
-    return result;
-  }
-
-  @Override
   public String getClassificationCategory() {
     return this.classificationSummary == null ? null : this.classificationSummary.getCategory();
   }
@@ -327,13 +279,7 @@ public class TaskImpl extends TaskSummaryImpl implements Task {
   @Override
   public int hashCode() {
     return Objects.hash(
-        super.hashCode(),
-        id,
-        customAttributes,
-        callbackInfo,
-        callbackState,
-        attachments,
-        objectReferences);
+        super.hashCode(), id, customAttributes, callbackInfo, callbackState, attachments);
   }
 
   @Override
@@ -355,8 +301,7 @@ public class TaskImpl extends TaskSummaryImpl implements Task {
         && Objects.equals(customAttributes, other.customAttributes)
         && Objects.equals(callbackInfo, other.callbackInfo)
         && callbackState == other.callbackState
-        && Objects.equals(attachments, other.attachments)
-        && Objects.equals(objectReferences, other.objectReferences);
+        && Objects.equals(attachments, other.attachments);
   }
 
   @Override

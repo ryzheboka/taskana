@@ -61,7 +61,7 @@ public class ObjectReferenceHandler {
     newTaskImpl.setObjectReferences(newObjectReferences);
 
     for (ObjectReference objectReference : newObjectReferences) {
-      ObjectReferenceImpl.validate(objectReference, "Object Reference", "?");
+      ObjectReferenceImpl.validate(objectReference, "Object Reference", "Task");
       initObjectReference((ObjectReferenceImpl) objectReference, newTaskImpl);
     }
 

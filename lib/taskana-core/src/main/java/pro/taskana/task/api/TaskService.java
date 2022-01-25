@@ -146,6 +146,8 @@ public interface TaskService {
    * @throws InvalidArgumentException thrown if the primary ObjectReference is invalid
    * @throws AttachmentPersistenceException if an Attachment with ID will be added multiple times
    *     without using the task-methods
+   * @throws ObjectReferencePersistenceException if an ObjectReference with ID will be added
+   *     multiple times * without using the task-methods
    */
   Task createTask(Task taskToCreate)
       throws NotAuthorizedException, WorkbasketNotFoundException, ClassificationNotFoundException,
@@ -334,6 +336,8 @@ public interface TaskService {
    * @throws NotAuthorizedException if the current user is not authorized to update the task
    * @throws AttachmentPersistenceException if an Attachment with ID will be added multiple times
    *     without using the task-methods
+   * @throws ObjectReferencePersistenceException if an ObjectReference with ID will be added
+   *     multiple times * without using the task-methods
    * @throws InvalidStateException if an attempt is made to change the owner of the task and the
    *     task is not in state READY .
    */
