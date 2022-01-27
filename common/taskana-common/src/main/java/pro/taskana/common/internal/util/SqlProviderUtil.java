@@ -55,6 +55,29 @@ public class SqlProviderUtil {
     return sb;
   }
 
+  public static StringBuilder whereAllNotIn(String collection, String column, StringBuilder sb) {
+    sb.append("<if test='")
+        .append(collection)
+        .append(" != null'>AND (")
+        .append("<choose>")
+        .append("<when test='" + collection + ".length > 0'>")
+        .append("t.ID NOT IN (")
+        .append("SELECT t.ID from UnsereTabelle as t WHERE ")
+        .append(column)
+        .append("IN(<foreach item='item' collection='")
+        .append(collection)
+        .append("' separator=',' >#{item}</foreach>)")
+        .append("</when>")
+        .append("<otherwise>1=1</otherwise>")
+        .append("</choose>");
+    if (column.contains("t.CUSTOM_")) {
+      sb.append("<if test='" + collection + "ContainsNull'> AND " + column + " IS NOT NULL </if>");
+      sb.append("<if test='!" + collection + "ContainsNull'> OR " + column + " IS NULL </if>");
+    }
+    sb.append(")</if> ");
+    return sb;
+  }
+
   public static StringBuilder whereNotIn(String collection, String column) {
     return whereNotIn(collection, column, new StringBuilder());
   }

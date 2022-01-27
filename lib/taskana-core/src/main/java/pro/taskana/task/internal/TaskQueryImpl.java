@@ -64,6 +64,7 @@ public class TaskQueryImpl implements TaskQuery {
   private boolean addClassificationNameToSelectClauseForOrdering = false;
   private boolean addAttachmentClassificationNameToSelectClauseForOrdering = false;
   private boolean addWorkbasketNameToSelectClauseForOrdering = false;
+  private boolean addObjectReferencesColumnsToSelectClauseForOrdering = false;
   private boolean joinWithUserInfo;
 
   // region id
@@ -1443,6 +1444,14 @@ public class TaskQueryImpl implements TaskQuery {
     return this;
   }
 
+  @Override
+  public TaskQuery orderBySorCompany(SortDirection sortDirection) {
+    joinWithSecondaryObjectReferences = true;
+    addObjectReferencesColumnsToSelectClauseForOrdering = true;
+    return DB.isDb2(getDatabaseId())
+        ? addOrderCriteria("OCOMPANY", sortDirection)
+        : addOrderCriteria("o.company", sortDirection);
+  }
   // endregion
   // region secondaryObjectReferenceSystem
   public TaskQuery sorSystemIn(String... systemIn) {
@@ -1495,6 +1504,14 @@ public class TaskQueryImpl implements TaskQuery {
     return this;
   }
 
+  @Override
+  public TaskQuery orderBySorSystemInstance(SortDirection sortDirection) {
+    joinWithSecondaryObjectReferences = true;
+    addObjectReferencesColumnsToSelectClauseForOrdering = true;
+    return DB.isDb2(getDatabaseId())
+        ? addOrderCriteria("OSYSTEM_INSTANCE", sortDirection)
+        : addOrderCriteria("o.SYSTEM_INSTANCE", sortDirection);
+  }
   // endregion
   // region secondaryObjectReferenceType
   public TaskQuery sorTypeIn(String... typeIn) {
@@ -1520,13 +1537,21 @@ public class TaskQueryImpl implements TaskQuery {
     sorTypeNotLike = toUpperCopy(typeNotLike);
     return this;
   }
+
+  @Override
+  public TaskQuery orderBySorType(SortDirection sortDirection) {
+    joinWithSecondaryObjectReferences = true;
+    addObjectReferencesColumnsToSelectClauseForOrdering = true;
+    return DB.isDb2(getDatabaseId())
+        ? addOrderCriteria("OTYPE", sortDirection)
+        : addOrderCriteria("o.TYPE", sortDirection);
+  }
   // endregion
   // region secondaryObjectReferenceValue
   @Override
   public TaskQuery sorValueIn(String... valueIn) {
     joinWithSecondaryObjectReferences = true;
     sorValueIn = valueIn;
-    System.out.println("HERE!!!");
     return this;
   }
 
@@ -1546,6 +1571,15 @@ public class TaskQueryImpl implements TaskQuery {
     joinWithSecondaryObjectReferences = true;
     sorValueNotLike = toUpperCopy(valueNotLike);
     return this;
+  }
+
+  @Override
+  public TaskQuery orderBySorValue(SortDirection sortDirection) {
+    joinWithSecondaryObjectReferences = true;
+    addObjectReferencesColumnsToSelectClauseForOrdering = true;
+    return DB.isDb2(getDatabaseId())
+        ? addOrderCriteria("OVALUE", sortDirection)
+        : addOrderCriteria("o.VALUE", sortDirection);
   }
 
   // region customAttributes

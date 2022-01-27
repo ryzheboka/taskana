@@ -17,6 +17,15 @@ public class ObjectReferenceImpl implements ObjectReference {
 
   public ObjectReferenceImpl() {}
 
+  public ObjectReferenceImpl(
+      String company, String system, String systemInstance, String type, String value) {
+    this.company = company;
+    this.system = system;
+    this.systemInstance = systemInstance;
+    this.type = type;
+    this.value = value;
+  }
+
   private ObjectReferenceImpl(ObjectReferenceImpl copyFrom) {
     company = copyFrom.company;
     system = copyFrom.system;

@@ -100,8 +100,8 @@ class CreateTaskAccTest extends AbstractAccTest {
     objectReference2.setType("Type22");
     objectReference2.setValue("Val22");
 
-    newTask.addObjectReference(objectReference1);
-    newTask.addObjectReference(objectReference2);
+    newTask.addSecondaryObjectReference(objectReference1);
+    newTask.addSecondaryObjectReference(objectReference2);
 
     ///
     newTask.setOwner("user-1-1");

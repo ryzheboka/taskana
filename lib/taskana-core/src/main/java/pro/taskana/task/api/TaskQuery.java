@@ -1467,6 +1467,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
 
   TaskQuery sorCompanyNotLike(String... companyNotLike);
 
+  TaskQuery orderBySorCompany(SortDirection sortDirection);
+
   // endregion
   // region secondaryObjectReferenceSystem
   TaskQuery sorSystemIn(String... systemIn);
@@ -1487,6 +1489,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
 
   TaskQuery sorSystemInstanceNotLike(String... systemInstanceNotLike);
 
+  TaskQuery orderBySorSystemInstance(SortDirection sortDirection);
+
   // endregion
   // region secondaryObjectReferenceType
   TaskQuery sorTypeIn(String... typeIn);
@@ -1496,6 +1500,9 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   TaskQuery sorTypeLike(String... typeLike);
 
   TaskQuery sorTypeNotLike(String... typeNotLike);
+
+  TaskQuery orderBySorType(SortDirection sortDirection);
+
   // endregion
   // region secondaryObjectReferenceValue
   TaskQuery sorValueIn(String... valueIn);
@@ -1507,6 +1514,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   TaskQuery sorValueNotLike(String... valueNotLike);
 
   // region customAttributes
+
+  TaskQuery orderBySorValue(SortDirection sortDirection);
 
   /**
    * Add the values of custom attributes for exact matching to your query.

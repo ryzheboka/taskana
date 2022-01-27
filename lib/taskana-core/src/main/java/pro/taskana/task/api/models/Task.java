@@ -161,6 +161,17 @@ public interface Task extends TaskSummary {
   void setPrimaryObjRef(ObjectReference primaryObjRef);
 
   /**
+   * Initializes and sets the {@link ObjectReference primaryObjectReference} of the task.
+   *
+   * @param company of the {@link ObjectReference primaryObjectReference} to be set
+   * @param system of the {@link ObjectReference primaryObjectReference} to be set
+   * @param systemInstance of the {@link ObjectReference primaryObjectReference} to be set
+   * @param type of the {@link ObjectReference primaryObjectReference} to be set
+   * @param value of the {@link ObjectReference primaryObjectReference} to be set
+   */
+  void setPrimaryObjRef(
+      String company, String system, String systemInstance, String type, String value);
+  /**
    * Sets/Changing the custom note for this Task.
    *
    * @param note the custom note for this Task.

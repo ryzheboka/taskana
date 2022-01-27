@@ -79,8 +79,8 @@ public class CreateTaskTestObjRef {
     task.setClassificationSummary(defaultClassificationSummary);
     task.setWorkbasketSummary(defaultWorkbasketSummary);
     task.setPrimaryObjRef(defaultObjectReference);
-    task.addObjectReference(objRef1);
-    task.addObjectReference(objRef2);
+    task.addSecondaryObjectReference(objRef1);
+    task.addSecondaryObjectReference(objRef2);
 
     Task createdTask = taskService.createTask(task);
 
@@ -98,19 +98,19 @@ public class CreateTaskTestObjRef {
 
     Task readTask = taskService.getTask(createdTask.getId());
 
-    assertThat(readTask.getObjectReferences())
+    assertThat(readTask.getSecondaryObjectReferences())
         .extracting(ObjectReference::getSystem)
         .containsExactly("FirstSystem", null);
 
-    assertThat(readTask.getObjectReferences())
+    assertThat(readTask.getSecondaryObjectReferences())
         .extracting(ObjectReference::getType)
         .containsExactly("FirstType", "SecondType");
 
-    assertThat(readTask.getObjectReferences())
+    assertThat(readTask.getSecondaryObjectReferences())
         .extracting(ObjectReference::getValue)
         .containsExactly("FirstValue", "SecondValue");
 
-    assertThat(readTask.getObjectReferences())
+    assertThat(readTask.getSecondaryObjectReferences())
         .extracting(ObjectReference::getCompany)
         .containsExactly("FirstCompany", "SecondCompany");
   }
@@ -131,8 +131,8 @@ public class CreateTaskTestObjRef {
     task.setClassificationSummary(defaultClassificationSummary);
     task.setWorkbasketSummary(defaultWorkbasketSummary);
     task.setPrimaryObjRef(defaultObjectReference);
-    task.addObjectReference(objRef1);
-    task.addObjectReference(invalidObjRef);
+    task.addSecondaryObjectReference(objRef1);
+    task.addSecondaryObjectReference(invalidObjRef);
 
     assertThatThrownBy(() -> taskService.createTask(task))
         .isInstanceOf(InvalidArgumentException.class);
@@ -160,20 +160,20 @@ public class CreateTaskTestObjRef {
 
     Task readOldTask = taskService.getTask(oldTask.getId());
 
-    assertThat(readOldTask.getObjectReferences())
+    assertThat(readOldTask.getSecondaryObjectReferences())
         .extracting(ObjectReference::getTaskId)
         .containsExactly(oldTask.getId(), oldTask.getId());
 
     Task readNewTask = taskService.getTask(newTask.getId());
 
-    assertThat(readNewTask.getObjectReferences())
+    assertThat(readNewTask.getSecondaryObjectReferences())
         .extracting(ObjectReference::getTaskId)
         .containsExactly(newTask.getId(), newTask.getId());
 
-    assertThat(readNewTask.getObjectReferences())
+    assertThat(readNewTask.getSecondaryObjectReferences())
         .extracting(ObjectReference::getId)
         .doesNotContainAnyElementsOf(
-            readOldTask.getObjectReferences().stream()
+            readOldTask.getSecondaryObjectReferences().stream()
                 .map(ObjectReference::getTaskId)
                 .collect(Collectors.toList()));
   }

@@ -2467,10 +2467,10 @@ class TaskQueryImplAccTest {
             ObjectReferenceBuilder.newObjectReference()
                 .company("FirstCompany")
                 .value("SecondValue")
-                .type("FirstType")
+                .type("SecondType")
                 .build();
-        ObjectReference objRef3 = objRef2.copy();
-        ObjectReference objRef4 = objRef1.copy();
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
 
         taskSummary1 =
             taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
@@ -2478,15 +2478,8 @@ class TaskQueryImplAccTest {
             taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
         taskSummary3 =
             taskInWorkbasket(wb)
-                .objectReferences(objRef3, objRef4)
+                .objectReferences(objRef2copy, objRef1copy)
                 .buildAndStoreAsSummary(taskService);
-        System.out.println(
-            taskSummary1.getObjectReferences()
-                + "\n"
-                + taskSummary2.getObjectReferences()
-                + "\n"
-                + taskSummary3.getObjectReferences()
-                + "\n");
       }
 
       @WithAccessId(user = "user-1-1")
@@ -2504,15 +2497,29 @@ class TaskQueryImplAccTest {
 
       @WithAccessId(user = "user-1-1")
       @Test
+      void should_CountCorrectly_When_QueryingForValueIn() {
+        long numberOfTasks =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorValueIn("FirstValue")
+                .count();
+
+        assertThat(numberOfTasks).isEqualTo(2);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
       void should_ApplyFilter_When_QueryingForValueNotIn() {
         List<TaskSummary> list =
             taskService
                 .createTaskQuery()
                 .workbasketIdIn(wb.getId())
                 .sorValueNotIn("FirstValue")
+                .sorTypeIn("SecondType")
                 .list();
 
-        assertThat(list).containsExactlyInAnyOrder(taskSummary2);
+        assertThat(list).containsExactlyInAnyOrder(taskSummary3, taskSummary2);
       }
 
       @WithAccessId(user = "user-1-1")
@@ -2522,23 +2529,425 @@ class TaskQueryImplAccTest {
             taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorValueLike("%Value").list();
         assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
       }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForValueNotLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorValueNotLike("First%")
+                .list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary2, taskSummary3);
+      }
     }
 
     @Nested
     @TestInstance(Lifecycle.PER_CLASS)
-    class ObjectReferenceType {}
+    class ObjectReferenceType {
+      WorkbasketSummary wb;
+      TaskSummary taskSummary1;
+      TaskSummary taskSummary2;
+      TaskSummary taskSummary3;
+
+      @WithAccessId(user = "user-1-1")
+      @BeforeAll
+      void setup() throws Exception {
+        wb = createWorkbasketWithPermission();
+        ObjectReference objRef1 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("FirstCompany")
+                .value("FirstValue")
+                .type("FirstType")
+                .build();
+        ObjectReference objRef2 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("FirstCompany")
+                .value("FirstValue")
+                .type("SecondType")
+                .build();
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
+
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef2copy, objRef1copy)
+                .buildAndStoreAsSummary(taskService);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeIn() {
+        List<TaskSummary> list =
+            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorTypeIn("FirstType").list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeNotIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorTypeNotIn("FirstType")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary3, taskSummary2);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeLike() {
+        List<TaskSummary> list =
+            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorTypeLike("%Type").list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ReturnEmptyList_When_QueryingForNonexistentTypeLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorTypeLike("%NoSuchType")
+                .list();
+        assertThat(list).isEmpty();
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeNotLike() {
+        List<TaskSummary> list =
+            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorTypeNotLike("F%").list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary2, taskSummary3);
+      }
+    }
 
     @Nested
     @TestInstance(Lifecycle.PER_CLASS)
-    class ObjectReferenceCompany {}
+    class ObjectReferenceCompany {
+      WorkbasketSummary wb;
+      TaskSummary taskSummary1;
+      TaskSummary taskSummary2;
+      TaskSummary taskSummary3;
+
+      @WithAccessId(user = "user-1-1")
+      @BeforeAll
+      void setup() throws Exception {
+        wb = createWorkbasketWithPermission();
+        ObjectReference objRef1 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("FirstCompany")
+                .value("FirstValue")
+                .type("FirstType")
+                .build();
+        ObjectReference objRef2 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("SecondCompany")
+                .value("FirstValue")
+                .type("SecondType")
+                .build();
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
+
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef2copy, objRef1copy)
+                .buildAndStoreAsSummary(taskService);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorCompanyIn("FirstCompany")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeNotIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorCompanyNotIn("FirstCompany")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary3, taskSummary2);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorCompanyLike("%Company")
+                .list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ReturnEmptyList_When_QueryingForNonexistentTypeLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorCompanyLike("%NoSuchCompany")
+                .list();
+        assertThat(list).isEmpty();
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeNotLike() {
+        List<TaskSummary> list =
+            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorCompanyNotLike("F%").list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary2, taskSummary3);
+      }
+    }
 
     @Nested
     @TestInstance(Lifecycle.PER_CLASS)
-    class ObjectReferenceSystem {}
+    class ObjectReferenceSystem {
+      WorkbasketSummary wb;
+      TaskSummary taskSummary1;
+      TaskSummary taskSummary2;
+      TaskSummary taskSummary3;
+      TaskSummary taskSummary4;
+
+      @WithAccessId(user = "user-1-1")
+      @BeforeAll
+      void setup() throws Exception {
+        wb = createWorkbasketWithPermission();
+        ObjectReference objRef1 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("FirstCompany")
+                .value("FirstValue")
+                .type("FirstType")
+                .system("FirstSystem")
+                .build();
+        ObjectReference objRef2 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("SecondCompany")
+                .value("FirstValue")
+                .type("SecondType")
+                .system("SecondSystem")
+                .build();
+        ObjectReference objRefNoSystem =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("SecondCompany")
+                .value("FirstValue")
+                .type("SecondType")
+                .build();
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
+
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef2copy, objRef1copy)
+                .buildAndStoreAsSummary(taskService);
+        taskSummary4 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRefNoSystem)
+                .buildAndStoreAsSummary(taskService);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemIn("FirstSystem")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeNotIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemNotIn("FirstSystem")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary3, taskSummary2);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemLike("%System")
+                .list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ReturnEmptyList_When_QueryingForNonexistentTypeLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemLike("%NoSuchSystem")
+                .list();
+        assertThat(list).isEmpty();
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeNotLike() {
+        List<TaskSummary> list =
+            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorSystemNotLike("F%").list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary2, taskSummary3);
+      }
+    }
 
     @Nested
     @TestInstance(Lifecycle.PER_CLASS)
-    class ObjectReferenceSystemInstance {}
+    class ObjectReferenceSystemInstance {
+      WorkbasketSummary wb;
+      TaskSummary taskSummary1;
+      TaskSummary taskSummary2;
+      TaskSummary taskSummary3;
+      TaskSummary taskSummary4;
+
+      @WithAccessId(user = "user-1-1")
+      @BeforeAll
+      void setup() throws Exception {
+        wb = createWorkbasketWithPermission();
+        ObjectReference objRef1 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("FirstCompany")
+                .value("FirstValue")
+                .type("FirstType")
+                .systemInstance("FirstSystemInstance")
+                .build();
+        ObjectReference objRef2 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("SecondCompany")
+                .value("FirstValue")
+                .type("SecondType")
+                .systemInstance("SecondSystemInstance")
+                .build();
+        ObjectReference objRefNoSystem =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("SecondCompany")
+                .value("FirstValue")
+                .type("SecondType")
+                .build();
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
+
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef2copy, objRef1copy)
+                .buildAndStoreAsSummary(taskService);
+        taskSummary4 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRefNoSystem)
+                .buildAndStoreAsSummary(taskService);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemInstanceIn("FirstSystemInstance")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeNotIn() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemInstanceNotIn("FirstSystemInstance")
+                .list();
+
+        assertThat(list).containsExactlyInAnyOrder(taskSummary3, taskSummary2);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemInstanceLike("%SystemInstance")
+                .list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ReturnEmptyList_When_QueryingForNonexistentTypeLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemInstanceLike("%NoSuchSystemInstance")
+                .list();
+        assertThat(list).isEmpty();
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_ApplyFilter_When_QueryingForTypeNotLike() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .sorSystemInstanceNotLike("F%")
+                .list();
+        assertThat(list).containsExactlyInAnyOrder(taskSummary2, taskSummary3);
+      }
+    }
 
     @Nested
     @TestInstance(Lifecycle.PER_CLASS)

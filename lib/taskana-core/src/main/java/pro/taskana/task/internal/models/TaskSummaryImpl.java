@@ -47,7 +47,7 @@ public class TaskSummaryImpl implements TaskSummary {
   protected boolean isTransferred;
   // All objects have to be serializable
   protected List<AttachmentSummary> attachmentSummaries = new ArrayList<>();
-  protected List<ObjectReference> objectReferences = new ArrayList<>();
+  protected List<ObjectReference> secondaryObjectReferences = new ArrayList<>();
   protected String custom1;
   protected String custom2;
   protected String custom3;
@@ -90,8 +90,10 @@ public class TaskSummaryImpl implements TaskSummary {
     isRead = copyFrom.isRead;
     isTransferred = copyFrom.isTransferred;
     attachmentSummaries = new ArrayList<>(copyFrom.attachmentSummaries);
-    objectReferences =
-        copyFrom.objectReferences.stream().map(ObjectReference::copy).collect(Collectors.toList());
+    secondaryObjectReferences =
+        copyFrom.secondaryObjectReferences.stream()
+            .map(ObjectReference::copy)
+            .collect(Collectors.toList());
     custom1 = copyFrom.custom1;
     custom2 = copyFrom.custom2;
     custom3 = copyFrom.custom3;
@@ -273,12 +275,12 @@ public class TaskSummaryImpl implements TaskSummary {
   }
 
   @Override
-  public List<ObjectReference> getObjectReferences() {
-    return objectReferences;
+  public List<ObjectReference> getSecondaryObjectReferences() {
+    return secondaryObjectReferences;
   }
 
-  public void setObjectReferences(List<ObjectReference> objectReferences) {
-    this.objectReferences = objectReferences;
+  public void setSecondaryObjectReferences(List<ObjectReference> objectReferences) {
+    this.secondaryObjectReferences = objectReferences;
   }
 
   @Override
@@ -336,6 +338,11 @@ public class TaskSummaryImpl implements TaskSummary {
 
   public void setPrimaryObjRef(ObjectReference primaryObjRef) {
     this.primaryObjRef = primaryObjRef;
+  }
+
+  public void setPrimaryObjRef(
+      String company, String system, String systemInstance, String type, String value) {
+    this.primaryObjRef = new ObjectReferenceImpl(company, system, systemInstance, type, value);
   }
 
   @Override
@@ -420,25 +427,42 @@ public class TaskSummaryImpl implements TaskSummary {
   }
 
   @Override
-  public void addObjectReference(ObjectReference objectReferenceToAdd) {
-    if (objectReferences == null) {
-      objectReferences = new ArrayList<>();
+  public void addSecondaryObjectReference(ObjectReference objectReferenceToAdd) {
+    if (secondaryObjectReferences == null) {
+      secondaryObjectReferences = new ArrayList<>();
     }
     if (objectReferenceToAdd != null) {
       if (objectReferenceToAdd.getId() != null) {
-        objectReferences.removeIf(
+        secondaryObjectReferences.removeIf(
             objectReference -> objectReferenceToAdd.getId().equals(objectReference.getId()));
       }
-      objectReferences.add(objectReferenceToAdd);
+      secondaryObjectReferences.add(objectReferenceToAdd);
     }
   }
 
   @Override
-  public ObjectReference removeObjectReference(String objectReferenceId) {
+  public void addSecondaryObjectReference(
+      String company, String system, String systemInstance, String type, String value) {
+    ObjectReference objectReferenceToAdd =
+        new ObjectReferenceImpl(company, system, systemInstance, type, value);
+    if (secondaryObjectReferences == null) {
+      secondaryObjectReferences = new ArrayList<>();
+    }
+    if (objectReferenceToAdd != null) {
+      if (objectReferenceToAdd.getId() != null) {
+        secondaryObjectReferences.removeIf(
+            objectReference -> objectReferenceToAdd.getId().equals(objectReference.getId()));
+      }
+      secondaryObjectReferences.add(objectReferenceToAdd);
+    }
+  }
+
+  @Override
+  public ObjectReference removeSecondaryObjectReference(String objectReferenceId) {
     ObjectReference result = null;
-    for (ObjectReference objectReference : objectReferences) {
+    for (ObjectReference objectReference : secondaryObjectReferences) {
       if (objectReference.getId().equals(objectReferenceId)
-          && objectReferences.remove(objectReference)) {
+          && secondaryObjectReferences.remove(objectReference)) {
         result = objectReference;
         break;
       }
@@ -642,7 +666,7 @@ public class TaskSummaryImpl implements TaskSummary {
         isRead,
         isTransferred,
         attachmentSummaries,
-        objectReferences,
+        secondaryObjectReferences,
         custom1,
         custom2,
         custom3,
@@ -698,7 +722,7 @@ public class TaskSummaryImpl implements TaskSummary {
         && Objects.equals(ownerLongName, other.ownerLongName)
         && Objects.equals(primaryObjRef, other.primaryObjRef)
         && Objects.equals(attachmentSummaries, other.attachmentSummaries)
-        && Objects.equals(objectReferences, other.objectReferences)
+        && Objects.equals(secondaryObjectReferences, other.secondaryObjectReferences)
         && Objects.equals(custom1, other.custom1)
         && Objects.equals(custom2, other.custom2)
         && Objects.equals(custom3, other.custom3)
@@ -770,7 +794,7 @@ public class TaskSummaryImpl implements TaskSummary {
         + ", attachmentSummaries="
         + attachmentSummaries
         + ", objectReferences="
-        + objectReferences
+        + secondaryObjectReferences
         + ", custom1="
         + custom1
         + ", custom2="

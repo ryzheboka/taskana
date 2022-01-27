@@ -170,7 +170,7 @@ public class TaskBuilder {
   }
 
   public TaskBuilder objectReferences(ObjectReference... objectReferences) {
-    testTask.setObjectReferences(Arrays.asList(objectReferences));
+    testTask.setSecondaryObjectReferences(Arrays.asList(objectReferences));
     return this;
   }
 

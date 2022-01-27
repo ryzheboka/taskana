@@ -321,16 +321,16 @@ public class TaskServiceImpl implements TaskService {
         if (attachmentImpls == null) {
           attachmentImpls = new ArrayList<>();
         }
-        List<ObjectReferenceImpl> objectReferences =
+        List<ObjectReferenceImpl> secondaryObjectReferences =
             objectReferenceMapper.findObjectReferencesByTaskId(resultTask.getId());
-        if (objectReferences == null) {
-          objectReferences = new ArrayList<>();
+        if (secondaryObjectReferences == null) {
+          secondaryObjectReferences = new ArrayList<>();
         }
         Map<String, ClassificationSummary> classificationSummariesById =
             findClassificationForTaskImplAndAttachments(resultTask, attachmentImpls);
         addClassificationSummariesToAttachments(attachmentImpls, classificationSummariesById);
         resultTask.setAttachments(new ArrayList<>(attachmentImpls));
-        resultTask.setObjectReferences(new ArrayList<>(objectReferences));
+        resultTask.setSecondaryObjectReferences(new ArrayList<>(secondaryObjectReferences));
         String classificationId = resultTask.getClassificationSummary().getId();
         ClassificationSummary classification = classificationSummariesById.get(classificationId);
         if (classification == null) {
@@ -1505,7 +1505,7 @@ public class TaskServiceImpl implements TaskService {
     setDefaultTaskReceivedDateFromAttachments(task);
 
     attachmentHandler.insertNewAttachmentsOnTaskCreation(task);
-    objectReferenceHandler.insertNewObjectReferenceOnTaskCreation(task);
+    objectReferenceHandler.insertNewSecondaryObjectReferencesOnTaskCreation(task);
     // This has to be called after the AttachmentHandler because the AttachmentHandler fetches
     // the Classifications of the Attachments.
     // This is necessary to guarantee that the following calculation is correct.
@@ -1753,7 +1753,7 @@ public class TaskServiceImpl implements TaskService {
       String taskId = objectReference.getTaskId();
       TaskSummaryImpl taskSummary = taskSummariesById.get(taskId);
       if (taskSummary != null) {
-        taskSummary.addObjectReference(objectReference);
+        taskSummary.addSecondaryObjectReference(objectReference);
       }
     }
   }

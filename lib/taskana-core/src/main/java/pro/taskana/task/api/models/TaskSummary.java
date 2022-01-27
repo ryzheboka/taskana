@@ -146,7 +146,7 @@ public interface TaskSummary {
    *
    * @return the task's object references
    */
-  List<ObjectReference> getObjectReferences();
+  List<ObjectReference> getSecondaryObjectReferences();
 
   /**
    * Add an object reference to the list of object references.<br>
@@ -155,7 +155,21 @@ public interface TaskSummary {
    *
    * @param objectReference the {@link ObjectReference objectReference} to be added to the task
    */
-  void addObjectReference(ObjectReference objectReference);
+  void addSecondaryObjectReference(ObjectReference objectReference);
+
+  /**
+   * Add an object reference to the list of object references.<br>
+   * NULL will be ignored and an object reference with the same ID will be replaced by the newer
+   * one.<br>
+   *
+   * @param company of the {@link ObjectReference objectReference} to be added to the task
+   * @param system of the {@link ObjectReference objectReference} to be added to the task
+   * @param systemInstance of the {@link ObjectReference objectReference} to be added to the task
+   * @param type of the {@link ObjectReference objectReference} to be added to the task
+   * @param value of the {@link ObjectReference objectReference} to be added to the task
+   */
+  void addSecondaryObjectReference(
+      String company, String system, String systemInstance, String type, String value);
 
   /**
    * Removes an object reference of the current task locally, when the ID is represented and does
@@ -166,7 +180,7 @@ public interface TaskSummary {
    * @return object reference which will be removed after updating OR null if there was no matching
    *     object reference
    */
-  ObjectReference removeObjectReference(String objectReferenceID);
+  ObjectReference removeSecondaryObjectReference(String objectReferenceID);
 
   /**
    * Gets the domain of the task.
