@@ -1479,6 +1479,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
 
   TaskQuery sorSystemNotLike(String... systemNotLike);
 
+  TaskQuery orderBySorSystem(SortDirection sortDirection);
+
   // endregion
   // region secondaryObjectReferenceSystemInstance
   TaskQuery sorSystemInstanceIn(String... systemInstanceIn);

@@ -1478,6 +1478,14 @@ public class TaskQueryImpl implements TaskQuery {
     return this;
   }
 
+  @Override
+  public TaskQuery orderBySorSystem(SortDirection sortDirection) {
+    joinWithSecondaryObjectReferences = true;
+    addObjectReferencesColumnsToSelectClauseForOrdering = true;
+    return DB.isDb2(getDatabaseId())
+        ? addOrderCriteria("OSYSTEM", sortDirection)
+        : addOrderCriteria("o.SYSTEM", sortDirection);
+  }
   // endregion
   // region secondaryObjectReferenceSystemInstance
   public TaskQuery sorSystemInstanceIn(String... systemInstanceIn) {

@@ -333,6 +333,8 @@ public class TaskController {
    * @throws InvalidArgumentException if any input is semantically wrong.
    * @throws AttachmentPersistenceException if an Attachment with ID will be added multiple times
    *     without using the task-methods
+   * @throws ObjectReferencePersistenceException if an ObjectReference with ID will be added
+   *     multiple times without using the task-methods
    * @title Create a new Task
    */
   @PostMapping(path = RestEndpoints.URL_TASKS)
@@ -390,6 +392,8 @@ public class TaskController {
    * @throws NotAuthorizedException if the current user is not authorized.
    * @throws AttachmentPersistenceException if the modified Task contains two attachments with the
    *     same id.
+   * @throws ObjectReferencePersistenceException if the modified Task contains two object references
+   *     with the same id.
    * @throws InvalidStateException if an attempt is made to change the owner of the Task and the
    *     Task is not in state READY.
    * @title Update a Task
@@ -422,6 +426,11 @@ public class TaskController {
     POR_COMPANY(TaskQuery::orderByPrimaryObjectReferenceCompany),
     POR_SYSTEM(TaskQuery::orderByPrimaryObjectReferenceSystem),
     POR_SYSTEM_INSTANCE(TaskQuery::orderByPrimaryObjectReferenceSystemInstance),
+    SOR_TYPE(TaskQuery::orderBySorType),
+    SOR_VALUE(TaskQuery::orderBySorValue),
+    SOR_COMPANY(TaskQuery::orderBySorCompany),
+    SOR_SYSTEM(TaskQuery::orderBySorSystem),
+    SOR_SYSTEM_INSTANCE(TaskQuery::orderBySorSystemInstance),
     STATE(TaskQuery::orderByState),
     NAME(TaskQuery::orderByName),
     DUE(TaskQuery::orderByDue),

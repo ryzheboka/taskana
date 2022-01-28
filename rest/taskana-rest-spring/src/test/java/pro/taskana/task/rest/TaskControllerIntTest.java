@@ -580,6 +580,60 @@ class TaskControllerIntTest {
   }
 
   @Test
+  void should_NotGetEmptyObjectReferencesList_When_GettingTaskWithObjectReferences() {
+    String url =
+        restHelper.toUrl(RestEndpoints.URL_TASKS_ID, "TKI:000000000000000000000000000000000001");
+    HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("admin"));
+
+    ResponseEntity<TaskRepresentationModel> response =
+        TEMPLATE.exchange(url, HttpMethod.GET, auth, TASK_MODEL_TYPE);
+
+    TaskRepresentationModel repModel = response.getBody();
+    assertThat(repModel).isNotNull();
+    assertThat(repModel.getSecondaryObjectReferences()).isNotEmpty();
+  }
+
+  @Test
+  void should_ReturnFiltertedTasks_WhenGettingTasksBySecondaryObjectReferenceValue() {
+    String url = restHelper.toUrl(RestEndpoints.URL_TASKS) + "?sor-value=Value2";
+    HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
+
+    ResponseEntity<TaskSummaryPagedRepresentationModel> response =
+        TEMPLATE.exchange(url, HttpMethod.GET, auth, TASK_SUMMARY_PAGE_MODEL_TYPE);
+
+    assertThat(response.getBody()).isNotNull();
+    assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
+    assertThat(response.getBody().getContent()).hasSize(2);
+  }
+
+  @Test
+  void should_ReturnFiltertedTasks_WhenGettingTasksBySecondaryObjectReferenceTypeLike() {
+    String url = restHelper.toUrl(RestEndpoints.URL_TASKS) + "?sor-type-like=Type";
+    HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
+
+    ResponseEntity<TaskSummaryPagedRepresentationModel> response =
+        TEMPLATE.exchange(url, HttpMethod.GET, auth, TASK_SUMMARY_PAGE_MODEL_TYPE);
+
+    assertThat(response.getBody()).isNotNull();
+    assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
+    assertThat(response.getBody().getContent()).hasSize(2);
+  }
+
+  @Test
+  void should_ReturnFiltertedTasks_WhenGettingTasksBySecondaryObjectReferenceValueAndCompany() {
+    String url =
+        restHelper.toUrl(RestEndpoints.URL_TASKS) + "?sor-value=Value2&&sor-company=Company2";
+    HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
+
+    ResponseEntity<TaskSummaryPagedRepresentationModel> response =
+        TEMPLATE.exchange(url, HttpMethod.GET, auth, TASK_SUMMARY_PAGE_MODEL_TYPE);
+
+    assertThat(response.getBody()).isNotNull();
+    assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
+    assertThat(response.getBody().getContent()).hasSize(1);
+  }
+
+  @Test
   void should_ReturnReceivedDate_When_GettingTask() {
     String url =
         restHelper.toUrl(RestEndpoints.URL_TASKS_ID, "TKI:000000000000000000000000000000000024");

@@ -2550,6 +2550,7 @@ class TaskQueryImplAccTest {
       TaskSummary taskSummary1;
       TaskSummary taskSummary2;
       TaskSummary taskSummary3;
+      TaskSummary taskSummary4;
 
       @WithAccessId(user = "user-1-1")
       @BeforeAll
@@ -2567,6 +2568,12 @@ class TaskQueryImplAccTest {
                 .value("FirstValue")
                 .type("SecondType")
                 .build();
+        ObjectReference objRef3 =
+            ObjectReferenceBuilder.newObjectReference()
+                .company("FirstCompany")
+                .value("FirstValue")
+                .type("ThirdType")
+                .build();
         ObjectReference objRef2copy = objRef2.copy();
         ObjectReference objRef1copy = objRef1.copy();
 
@@ -2578,6 +2585,8 @@ class TaskQueryImplAccTest {
             taskInWorkbasket(wb)
                 .objectReferences(objRef2copy, objRef1copy)
                 .buildAndStoreAsSummary(taskService);
+        taskSummary4 =
+            taskInWorkbasket(wb).objectReferences(objRef3).buildAndStoreAsSummary(taskService);
       }
 
       @WithAccessId(user = "user-1-1")
@@ -2604,10 +2613,10 @@ class TaskQueryImplAccTest {
 
       @WithAccessId(user = "user-1-1")
       @Test
-      void should_ApplyFilter_When_QueryingForTypeLike() {
-        List<TaskSummary> list =
-            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorTypeLike("%Type").list();
-        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
+      void should_ReturnSingleTaskSummary_When_QueryingForTypeLikeUsingSingle() {
+        TaskSummary result =
+            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorTypeLike("Third%").single();
+        assertThat(result).isEqualTo(taskSummary4);
       }
 
       @WithAccessId(user = "user-1-1")
@@ -2670,15 +2679,15 @@ class TaskQueryImplAccTest {
 
       @WithAccessId(user = "user-1-1")
       @Test
-      void should_ApplyFilter_When_QueryingForTypeIn() {
+      void should_ApplyFilter_When_QueryingForTypeInWithOffset() {
         List<TaskSummary> list =
             taskService
                 .createTaskQuery()
                 .workbasketIdIn(wb.getId())
                 .sorCompanyIn("FirstCompany")
-                .list();
-
-        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
+                .list(0, 1);
+        assertThat(list).hasSize(1);
+        assertThat(list).containsAnyOf(taskSummary1, taskSummary3);
       }
 
       @WithAccessId(user = "user-1-1")
