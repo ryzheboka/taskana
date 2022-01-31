@@ -5,7 +5,7 @@ import {ClassificationSummary} from '../../shared/models/classification-summary'
 export class Task {
   constructor(
       public taskId: string,
-      public primaryObjRef: ObjectReference = new ObjectReferenceImpl(),
+      public primaryObjRef?: ObjectReference,
       public workbasketSummary?: Workbasket,
       public classificationSummary?: ClassificationSummary,
       public businessProcessId?: string,

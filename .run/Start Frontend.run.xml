@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Start Frontend" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/web/package.json" />
+    <package-json value="$USER_HOME$/Documents/taskana/web/package.json" />
     <command value="run" />
     <scripts>
       <script value="start" />

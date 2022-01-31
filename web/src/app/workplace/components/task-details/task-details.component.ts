@@ -15,6 +15,7 @@ import {
 } from 'app/shared/services/master-and-detail/master-and-detail.service';
 import {NotificationService} from '../../../shared/services/notifications/notification.service';
 import {take, takeUntil} from 'rxjs/operators';
+import {ObjectReference} from "../../models/object-reference";
 
 @Component({
   selector: 'taskana-task-details',
@@ -85,7 +86,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     this.requestInProgressService.setRequestInProgress(true);
     if (this.currentId === 'new-task') {
       this.requestInProgressService.setRequestInProgress(false);
-      this.task = new Task('', new ObjectReferenceImpl(), this.currentWorkbasket);
+      this.task = new Task('', new ObjectReference(), this.currentWorkbasket);
     } else {
       this.taskService.getTask(this.currentId).subscribe(
           (task) => {

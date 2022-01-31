@@ -112,7 +112,7 @@ class TaskQueryImplWithSortingAccTestObjRef {
         ObjectReference objRef3 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("FirstCompany")
-                .value("ThirdValue")
+                .value("SecondValue")
                 .type("FirstType")
                 .build();
         ObjectReference objRef1copy = objRef1.copy();
@@ -123,7 +123,7 @@ class TaskQueryImplWithSortingAccTestObjRef {
             taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
         taskSummary3 =
             taskInWorkbasket(wb).objectReferences(objRef3).buildAndStoreAsSummary(taskService);
-        taskSummary3 =
+        taskSummary4 =
             taskInWorkbasket(wb).objectReferences(objRef1copy).buildAndStoreAsSummary(taskService);
       }
 
@@ -143,10 +143,60 @@ class TaskQueryImplWithSortingAccTestObjRef {
           if (previousSummary != null) {
             assertThat(
                     taskSummary
-                            .getPrimaryObjRef()
-                            .getSystem()
-                            .compareToIgnoreCase(previousSummary.getPrimaryObjRef().getSystem())
+                            .getSecondaryObjectReferences()
+                            .get(0)
+                            .getValue()
+                            .compareToIgnoreCase(
+                                previousSummary.getSecondaryObjectReferences().get(0).getValue())
                         <= 0)
+                .isTrue();
+          }
+          previousSummary = taskSummary;
+        }
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_returnSortedList_When_SortingByValueDescAndTypeAsc() {
+        List<TaskSummary> results =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .orderBySorValue(SortDirection.DESCENDING)
+                .orderBySorType(SortDirection.ASCENDING)
+                .list();
+
+        assertThat(results).hasSize(4);
+        TaskSummary previousSummary = null;
+        for (TaskSummary taskSummary : results) {
+          if (previousSummary != null) {
+            assertThat(
+                    taskSummary
+                            .getSecondaryObjectReferences()
+                            .get(0)
+                            .getValue()
+                            .compareToIgnoreCase(
+                                previousSummary.getSecondaryObjectReferences().get(0).getValue())
+                        <= 0)
+                .isTrue();
+            assertThat(
+                    taskSummary
+                                .getSecondaryObjectReferences()
+                                .get(0)
+                                .getValue()
+                                .compareToIgnoreCase(
+                                    previousSummary
+                                        .getSecondaryObjectReferences()
+                                        .get(0)
+                                        .getValue())
+                            != 0
+                        || taskSummary
+                                .getSecondaryObjectReferences()
+                                .get(0)
+                                .getType()
+                                .compareToIgnoreCase(
+                                    previousSummary.getSecondaryObjectReferences().get(0).getType())
+                            >= 0)
                 .isTrue();
           }
           previousSummary = taskSummary;
@@ -169,61 +219,16 @@ class TaskQueryImplWithSortingAccTestObjRef {
           if (previousSummary != null) {
             assertThat(
                     taskSummary
-                            .getPrimaryObjRef()
-                            .getSystem()
-                            .compareToIgnoreCase(previousSummary.getPrimaryObjRef().getSystem())
+                            .getSecondaryObjectReferences()
+                            .get(0)
+                            .getValue()
+                            .compareToIgnoreCase(
+                                previousSummary.getSecondaryObjectReferences().get(0).getValue())
                         >= 0)
                 .isTrue();
           }
           previousSummary = taskSummary;
         }
-      }
-
-      @WithAccessId(user = "user-1-1")
-      @Test
-      void should_CountCorrectly_When_QueryingForValueIn() {
-        long numberOfTasks =
-            taskService
-                .createTaskQuery()
-                .workbasketIdIn(wb.getId())
-                .sorValueIn("FirstValue")
-                .count();
-
-        assertThat(numberOfTasks).isEqualTo(2);
-      }
-
-      @WithAccessId(user = "user-1-1")
-      @Test
-      void should_ApplyFilter_When_QueryingForValueNotIn() {
-        List<TaskSummary> list =
-            taskService
-                .createTaskQuery()
-                .workbasketIdIn(wb.getId())
-                .sorValueNotIn("FirstValue")
-                .sorTypeIn("SecondType")
-                .list();
-
-        assertThat(list).containsExactlyInAnyOrder(taskSummary3, taskSummary2);
-      }
-
-      @WithAccessId(user = "user-1-1")
-      @Test
-      void should_ApplyFilter_When_QueryingForValueLike() {
-        List<TaskSummary> list =
-            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorValueLike("%Value").list();
-        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
-      }
-
-      @WithAccessId(user = "user-1-1")
-      @Test
-      void should_ApplyFilter_When_QueryingForValueNotLike() {
-        List<TaskSummary> list =
-            taskService
-                .createTaskQuery()
-                .workbasketIdIn(wb.getId())
-                .sorValueNotLike("First%")
-                .list();
-        assertThat(list).containsExactlyInAnyOrder(taskSummary2, taskSummary3);
       }
     }
 
@@ -234,6 +239,7 @@ class TaskQueryImplWithSortingAccTestObjRef {
       TaskSummary taskSummary1;
       TaskSummary taskSummary2;
       TaskSummary taskSummary3;
+      TaskSummary taskSummary4;
 
       @WithAccessId(user = "user-1-1")
       @BeforeAll
@@ -259,59 +265,65 @@ class TaskQueryImplWithSortingAccTestObjRef {
         taskSummary2 =
             taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
         taskSummary3 =
-            taskInWorkbasket(wb)
-                .objectReferences(objRef2copy, objRef1copy)
-                .buildAndStoreAsSummary(taskService);
+            taskInWorkbasket(wb).objectReferences(objRef1copy).buildAndStoreAsSummary(taskService);
+        taskSummary4 =
+            taskInWorkbasket(wb).objectReferences(objRef2copy).buildAndStoreAsSummary(taskService);
       }
 
       @WithAccessId(user = "user-1-1")
       @Test
-      void should_ApplyFilter_When_QueryingForTypeIn() {
-        List<TaskSummary> list =
-            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorTypeIn("FirstType").list();
-
-        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary3);
-      }
-
-      @WithAccessId(user = "user-1-1")
-      @Test
-      void should_ApplyFilter_When_QueryingForTypeNotIn() {
-        List<TaskSummary> list =
+      void should_returnSortedList_When_SortingByTypeDesc() {
+        List<TaskSummary> results =
             taskService
                 .createTaskQuery()
                 .workbasketIdIn(wb.getId())
-                .sorTypeNotIn("FirstType")
+                .orderBySorType(SortDirection.DESCENDING)
                 .list();
 
-        assertThat(list).containsExactlyInAnyOrder(taskSummary3, taskSummary2);
+        assertThat(results).hasSize(4);
+        TaskSummary previousSummary = null;
+        for (TaskSummary taskSummary : results) {
+          if (previousSummary != null) {
+            assertThat(
+                    taskSummary
+                            .getSecondaryObjectReferences()
+                            .get(0)
+                            .getType()
+                            .compareToIgnoreCase(
+                                previousSummary.getSecondaryObjectReferences().get(0).getType())
+                        <= 0)
+                .isTrue();
+          }
+          previousSummary = taskSummary;
+        }
       }
 
       @WithAccessId(user = "user-1-1")
       @Test
-      void should_ApplyFilter_When_QueryingForTypeLike() {
-        List<TaskSummary> list =
-            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorTypeLike("%Type").list();
-        assertThat(list).containsExactlyInAnyOrder(taskSummary1, taskSummary2, taskSummary3);
-      }
-
-      @WithAccessId(user = "user-1-1")
-      @Test
-      void should_ReturnEmptyList_When_QueryingForNonexistentTypeLike() {
-        List<TaskSummary> list =
+      void should_returnSortedList_When_SortingByTypeAsc() {
+        List<TaskSummary> results =
             taskService
                 .createTaskQuery()
                 .workbasketIdIn(wb.getId())
-                .sorTypeLike("%NoSuchType")
+                .orderBySorType(SortDirection.ASCENDING)
                 .list();
-        assertThat(list).isEmpty();
-      }
 
-      @WithAccessId(user = "user-1-1")
-      @Test
-      void should_ApplyFilter_When_QueryingForTypeNotLike() {
-        List<TaskSummary> list =
-            taskService.createTaskQuery().workbasketIdIn(wb.getId()).sorTypeNotLike("F%").list();
-        assertThat(list).containsExactlyInAnyOrder(taskSummary2, taskSummary3);
+        assertThat(results).hasSize(4);
+        TaskSummary previousSummary = null;
+        for (TaskSummary taskSummary : results) {
+          if (previousSummary != null) {
+            assertThat(
+                    taskSummary
+                            .getSecondaryObjectReferences()
+                            .get(0)
+                            .getType()
+                            .compareToIgnoreCase(
+                                previousSummary.getSecondaryObjectReferences().get(0).getType())
+                        >= 0)
+                .isTrue();
+          }
+          previousSummary = taskSummary;
+        }
       }
     }
 

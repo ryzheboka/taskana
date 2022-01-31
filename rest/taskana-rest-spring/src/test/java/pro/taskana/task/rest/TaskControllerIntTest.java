@@ -594,7 +594,7 @@ class TaskControllerIntTest {
   }
 
   @Test
-  void should_ReturnFiltertedTasks_WhenGettingTasksBySecondaryObjectReferenceValue() {
+  void should_ReturnFilteredTasks_WhenGettingTasksBySecondaryObjectReferenceValue() {
     String url = restHelper.toUrl(RestEndpoints.URL_TASKS) + "?sor-value=Value2";
     HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
 
@@ -607,7 +607,7 @@ class TaskControllerIntTest {
   }
 
   @Test
-  void should_ReturnFiltertedTasks_WhenGettingTasksBySecondaryObjectReferenceTypeLike() {
+  void should_ReturnFilteredTasks_WhenGettingTasksBySecondaryObjectReferenceTypeLike() {
     String url = restHelper.toUrl(RestEndpoints.URL_TASKS) + "?sor-type-like=Type";
     HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
 
@@ -620,7 +620,7 @@ class TaskControllerIntTest {
   }
 
   @Test
-  void should_ReturnFiltertedTasks_WhenGettingTasksBySecondaryObjectReferenceValueAndCompany() {
+  void should_ReturnFilteredTasks_WhenGettingTasksBySecondaryObjectReferenceValueAndCompany() {
     String url =
         restHelper.toUrl(RestEndpoints.URL_TASKS) + "?sor-value=Value2&&sor-company=Company2";
     HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
@@ -631,6 +631,22 @@ class TaskControllerIntTest {
     assertThat(response.getBody()).isNotNull();
     assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
     assertThat(response.getBody().getContent()).hasSize(1);
+  }
+
+  @Test
+  void should_CreateTaskWithObjectReferences_WhenSpecifyingObjectReferences() {
+    TaskRepresentationModel taskRepresentationModel = getTaskResourceSample();
+    List<ObjectReferenceRepresentationModel> secondaryObjectReferences =
+        List.of(getSampleSecondaryObjectReference("0"), getSampleSecondaryObjectReference("1"));
+    taskRepresentationModel.setSecondaryObjectReferences(secondaryObjectReferences);
+    String url = restHelper.toUrl(RestEndpoints.URL_TASKS);
+    HttpEntity<TaskRepresentationModel> auth =
+        new HttpEntity<>(taskRepresentationModel, RestHelper.generateHeadersForUser("teamlead-1"));
+
+    ResponseEntity<TaskRepresentationModel> responseCreate =
+        TEMPLATE.exchange(url, HttpMethod.POST, auth, TASK_MODEL_TYPE);
+    assertThat(responseCreate.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    assertThat(responseCreate.getBody()).isNotNull();
   }
 
   @Test
@@ -1082,5 +1098,15 @@ class TaskControllerIntTest {
     taskRepresentationModel.setWorkbasketSummary(workbasketSummary);
     taskRepresentationModel.setPrimaryObjRef(objectReference);
     return taskRepresentationModel;
+  }
+
+  private ObjectReferenceRepresentationModel getSampleSecondaryObjectReference(String suffix) {
+    ObjectReferenceRepresentationModel objectReference = new ObjectReferenceRepresentationModel();
+    objectReference.setCompany("SecondaryCompany" + suffix);
+    objectReference.setSystem("SecondarySystem" + suffix);
+    objectReference.setSystemInstance("SecondaryInstance" + suffix);
+    objectReference.setType("SecondaryType" + suffix);
+    objectReference.setValue("0000000" + suffix);
+    return objectReference;
   }
 }
