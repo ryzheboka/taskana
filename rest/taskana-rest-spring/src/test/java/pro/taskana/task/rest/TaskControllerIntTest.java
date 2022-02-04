@@ -240,6 +240,51 @@ class TaskControllerIntTest {
   }
 
   @Test
+  void should_ReturnAllTasks_For_ProvidedSecondaryObjectReferenceByTypeAndValue() throws Exception {
+    String url =
+        restHelper.toUrl(RestEndpoints.URL_TASKS)
+            + "?sor="
+            + URLEncoder.encode("{\"type\":\"Type2\",\"value\":\"Value2\"}", "UTF-8");
+    HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
+    ResponseEntity<TaskSummaryPagedRepresentationModel> response =
+        TEMPLATE.exchange(url, HttpMethod.GET, auth, TASK_SUMMARY_PAGE_MODEL_TYPE);
+    assertThat(response.getBody()).isNotNull();
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
+    assertThat(response.getBody().getContent()).hasSize(2);
+  }
+
+  @Test
+  void should_ReturnAllTasks_For_ProvidedSecondaryObjectReferenceByCompany() throws Exception {
+    String url =
+        restHelper.toUrl(RestEndpoints.URL_TASKS)
+            + "?sor="
+            + URLEncoder.encode("{\"company\":\"Company3\"}", "UTF-8");
+    HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
+    ResponseEntity<TaskSummaryPagedRepresentationModel> response =
+        TEMPLATE.exchange(url, HttpMethod.GET, auth, TASK_SUMMARY_PAGE_MODEL_TYPE);
+    assertThat(response.getBody()).isNotNull();
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
+    assertThat(response.getBody().getContent()).hasSize(1);
+  }
+
+  @Test
+  void should_ReturnNoTasks_For_ProvidedNonexistentSecondaryObjectReference() throws Exception {
+    String url =
+        restHelper.toUrl(RestEndpoints.URL_TASKS)
+            + "?sor="
+            + URLEncoder.encode("{\"type\":\"Type2\",\"value\":\"Quatsch\"}", "UTF-8");
+    HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
+    ResponseEntity<TaskSummaryPagedRepresentationModel> response =
+        TEMPLATE.exchange(url, HttpMethod.GET, auth, TASK_SUMMARY_PAGE_MODEL_TYPE);
+    assertThat(response.getBody()).isNotNull();
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
+    assertThat(response.getBody().getContent()).isEmpty();
+  }
+
+  @Test
   void should_ReturnAllTasksByWildcardSearch_For_ProvidedSearchValue() {
     String url =
         restHelper.toUrl(RestEndpoints.URL_TASKS)
@@ -603,7 +648,7 @@ class TaskControllerIntTest {
 
     assertThat(response.getBody()).isNotNull();
     assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
-    assertThat(response.getBody().getContent()).hasSize(2);
+    assertThat(response.getBody().getContent()).hasSize(3);
   }
 
   @Test
@@ -616,13 +661,13 @@ class TaskControllerIntTest {
 
     assertThat(response.getBody()).isNotNull();
     assertThat((response.getBody()).getLink(IanaLinkRelations.SELF)).isNotNull();
-    assertThat(response.getBody().getContent()).hasSize(2);
+    assertThat(response.getBody().getContent()).hasSize(3);
   }
 
   @Test
   void should_ReturnFilteredTasks_WhenGettingTasksBySecondaryObjectReferenceValueAndCompany() {
     String url =
-        restHelper.toUrl(RestEndpoints.URL_TASKS) + "?sor-value=Value2&&sor-company=Company2";
+        restHelper.toUrl(RestEndpoints.URL_TASKS) + "?sor-value=Value2&&sor-company=Company1";
     HttpEntity<Object> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
 
     ResponseEntity<TaskSummaryPagedRepresentationModel> response =
@@ -634,11 +679,16 @@ class TaskControllerIntTest {
   }
 
   @Test
-  void should_CreateTaskWithObjectReferences_WhenSpecifyingObjectReferences() {
+  void should_CreateAndDeleteTaskWithObjectReferences_WhenSpecifyingObjectReferences() {
     TaskRepresentationModel taskRepresentationModel = getTaskResourceSample();
-    List<ObjectReferenceRepresentationModel> secondaryObjectReferences =
-        List.of(getSampleSecondaryObjectReference("0"), getSampleSecondaryObjectReference("1"));
+    ObjectReferenceRepresentationModel obj0 = getSampleSecondaryObjectReference("0");
+    obj0.setTaskId(taskRepresentationModel.getTaskId());
+    ObjectReferenceRepresentationModel obj1 = getSampleSecondaryObjectReference("1");
+    obj1.setTaskId(taskRepresentationModel.getTaskId());
+    // System.out.println(obj1.getTaskId() + " " + obj0.getTaskId());
+    List<ObjectReferenceRepresentationModel> secondaryObjectReferences = List.of(obj0, obj1);
     taskRepresentationModel.setSecondaryObjectReferences(secondaryObjectReferences);
+
     String url = restHelper.toUrl(RestEndpoints.URL_TASKS);
     HttpEntity<TaskRepresentationModel> auth =
         new HttpEntity<>(taskRepresentationModel, RestHelper.generateHeadersForUser("teamlead-1"));
@@ -647,6 +697,15 @@ class TaskControllerIntTest {
         TEMPLATE.exchange(url, HttpMethod.POST, auth, TASK_MODEL_TYPE);
     assertThat(responseCreate.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     assertThat(responseCreate.getBody()).isNotNull();
+    String taskIdOfCreatedTask = responseCreate.getBody().getTaskId();
+
+    String url2 = restHelper.toUrl(RestEndpoints.URL_TASKS_ID, taskIdOfCreatedTask);
+    HttpEntity<Object> auth2 = new HttpEntity<>(RestHelper.generateHeadersForUser("admin"));
+
+    ResponseEntity<TaskRepresentationModel> responseDeleted =
+        TEMPLATE.exchange(
+            url2, HttpMethod.DELETE, auth2, ParameterizedTypeReference.forType(Void.class));
+    assertThat(responseDeleted.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
 
   @Test

@@ -32,9 +32,6 @@ public class TaskQuerySqlProvider {
         + "<if test=\"addClassificationNameToSelectClauseForOrdering\">, c.NAME </if>"
         + "<if test=\"addAttachmentClassificationNameToSelectClauseForOrdering\">, ac.NAME </if>"
         + "<if test=\"addWorkbasketNameToSelectClauseForOrdering\">, w.NAME </if>"
-        + "<if test=\"addObjectReferencesColumnsToSelectClauseForOrdering\">"
-        + ", o.COMPANY, o.SYSTEM, o.SYSTEM_INSTANCE, o.TYPE, o.VALUE"
-        + "</if>"
         + "<if test=\"joinWithUserInfo\">, u.LONG_NAME </if>"
         + "FROM TASK t "
         + "<if test=\"joinWithAttachments\">"
@@ -84,9 +81,6 @@ public class TaskQuerySqlProvider {
         + "<if test=\"addClassificationNameToSelectClauseForOrdering\">, c.NAME </if>"
         + "<if test=\"addAttachmentClassificationNameToSelectClauseForOrdering\">, ac.NAME </if>"
         + "<if test=\"addWorkbasketNameToSelectClauseForOrdering\">, w.NAME </if>"
-        + "<if test=\"addObjectReferencesColumnsToSelectClauseForOrdering\">"
-        + ", o.COMPANY, o.SYSTEM, o.SYSTEM_INSTANCE, o.TYPE, o.VALUE"
-        + "</if>"
         + "<if test=\"joinWithUserInfo\">, u.LONG_NAME </if>"
         + "FROM TASK t "
         + "<if test=\"joinWithAttachments\">"
@@ -291,9 +285,6 @@ public class TaskQuerySqlProvider {
         + "<if test=\"addAttachmentColumnsToSelectClauseForOrdering\">"
         + ", ACLASSIFICATION_ID, ACLASSIFICATION_KEY, CHANNEL, REF_VALUE, ARECEIVED"
         + "</if>"
-        + "<if test=\"addObjectReferencesColumnsToSelectClauseForOrdering\">"
-        + ", OCOMPANY, OSYSTEM, OSYSTEM_INSTANCE, OTYPE, OVALUE"
-        + "</if>"
         + "<if test=\"addWorkbasketNameToSelectClauseForOrdering\">, WNAME</if>"
         + "<if test=\"joinWithUserInfo\">, ULONG_NAME </if>";
   }
@@ -334,6 +325,30 @@ public class TaskQuerySqlProvider {
         + "</if>";
   }
 
+  private static String commonTaskSecondaryObjectReferencesWhereStatement() {
+    return "<if test='secondaryObjectReferences != null'>"
+        + "AND (<foreach item='item' collection='secondaryObjectReferences' separator=' OR '> "
+        + "<if test='item.company != null'>o.COMPANY = #{item.company} </if>"
+        + "<if test='item.system != null'> "
+        + "<if test='item.company != null'>AND</if> "
+        + "o.SYSTEM = #{item.system} </if>"
+        + "<if test='item.systemInstance != null'> "
+        + "<if test='item.company != null or item.system != null'>AND</if> "
+        + "o.SYSTEM_INSTANCE = #{item.systemInstance} </if>"
+        + "<if test='item.type != null'> "
+        + "<if test='item.company != null or item.system != null or item.systemInstance != null'>"
+        + "AND</if> "
+        + "o.TYPE = #{item.type} </if>"
+        + "<if test='item.value != null'> "
+        + "<if test='item.company != null or item.system != null "
+        + "or item.systemInstance != null or item.type != null'>"
+        + "AND</if> "
+        + "o.VALUE = #{item.value} "
+        + "</if>"
+        + "</foreach>)"
+        + "</if>";
+  }
+
   private static void commonWhereClauses(String filter, String channel, StringBuilder sb) {
     whereIn(filter + "In", channel, sb);
     whereNotIn(filter + "NotIn", channel, sb);
@@ -360,11 +375,17 @@ public class TaskQuerySqlProvider {
     commonWhereClauses("porSystemInstance", "t.POR_INSTANCE", sb);
     commonWhereClauses("porType", "t.POR_TYPE", sb);
     commonWhereClauses("porValue", "t.POR_VALUE", sb);
-    commonWhereClauses("sorCompany", "o.COMPANY", sb);
-    commonWhereClauses("sorSystem", "o.SYSTEM", sb);
-    commonWhereClauses("sorSystemInstance", "o.SYSTEM_INSTANCE", sb);
-    commonWhereClauses("sorType", "o.TYPE", sb);
-    commonWhereClauses("sorValue", "o.VALUE", sb);
+
+    whereIn("sorCompanyIn", "o.COMPANY", sb);
+    whereLike("sorCompanyLike", "o.COMPANY", sb);
+    whereIn("sorSystemIn", "o.SYSTEM", sb);
+    whereLike("sorSystemLike", "o.SYSTEM", sb);
+    whereIn("sorSystemInstanceIn", "o.SYSTEM_INSTANCE", sb);
+    whereLike("sorSystemInstanceLike", "o.SYSTEM_INSTANCE", sb);
+    whereIn("sorTypeIn", "o.TYPE", sb);
+    whereLike("sorTypeLike", "o.TYPE", sb);
+    whereIn("sorValueIn", "o.VALUE", sb);
+    whereLike("sorValueLike", "o.VALUE", sb);
 
     whereIn("attachmentClassificationIdIn", "a.CLASSIFICATION_ID", sb);
     whereNotIn("attachmentClassificationIdNotIn", "a.CLASSIFICATION_ID", sb);
@@ -428,6 +449,7 @@ public class TaskQuerySqlProvider {
             + "</foreach>)"
             + "</if> ");
     sb.append(commonTaskObjectReferenceWhereStatement());
+    sb.append(commonTaskSecondaryObjectReferencesWhereStatement());
     return sb;
   }
 }

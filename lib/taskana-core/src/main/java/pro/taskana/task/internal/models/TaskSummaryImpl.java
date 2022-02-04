@@ -432,6 +432,7 @@ public class TaskSummaryImpl implements TaskSummary {
       secondaryObjectReferences = new ArrayList<>();
     }
     if (objectReferenceToAdd != null) {
+      ((ObjectReferenceImpl) objectReferenceToAdd).setTaskId(this.id);
       if (objectReferenceToAdd.getId() != null) {
         secondaryObjectReferences.removeIf(
             objectReference -> objectReferenceToAdd.getId().equals(objectReference.getId()));
@@ -443,18 +444,17 @@ public class TaskSummaryImpl implements TaskSummary {
   @Override
   public void addSecondaryObjectReference(
       String company, String system, String systemInstance, String type, String value) {
-    ObjectReference objectReferenceToAdd =
+    ObjectReferenceImpl objectReferenceToAdd =
         new ObjectReferenceImpl(company, system, systemInstance, type, value);
     if (secondaryObjectReferences == null) {
       secondaryObjectReferences = new ArrayList<>();
     }
-    if (objectReferenceToAdd != null) {
-      if (objectReferenceToAdd.getId() != null) {
-        secondaryObjectReferences.removeIf(
-            objectReference -> objectReferenceToAdd.getId().equals(objectReference.getId()));
-      }
-      secondaryObjectReferences.add(objectReferenceToAdd);
+    objectReferenceToAdd.setTaskId(this.id);
+    if (objectReferenceToAdd.getId() != null) {
+      secondaryObjectReferences.removeIf(
+          objectReference -> objectReferenceToAdd.getId().equals(objectReference.getId()));
     }
+    secondaryObjectReferences.add(objectReferenceToAdd);
   }
 
   @Override

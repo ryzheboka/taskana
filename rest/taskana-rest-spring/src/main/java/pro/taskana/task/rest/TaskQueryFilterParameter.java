@@ -860,6 +860,16 @@ public class TaskQueryFilterParameter implements QueryParameter<TaskQuery, Void>
   @JsonProperty("por-value-not-like")
   private final String[] porValueNotLike;
   // endregion
+  // region secondaryObjectReference
+  /**
+   * Filter by the primary object reference of the task. This is an exact match. "sor" is a
+   * parameter of complex type. Its following attributes from sor[].id to sor[].value can be
+   * specified according to the description of complex parameters in the overview, e.g.
+   * sor={"value":"exampleValue"}
+   */
+  @JsonProperty("sor")
+  private final ObjectReference[] secondaryObjectReferenceIn;
+  // endregion
   // region secondaryObjectReferenceCompany
   /**
    * Filter by the company of the secondary object reference of the task. This is an exact match.
@@ -1602,6 +1612,7 @@ public class TaskQueryFilterParameter implements QueryParameter<TaskQuery, Void>
     "por-value-not",
     "por-value-like",
     "por-value-not-like",
+    "sor",
     "sor-company",
     "sor-company-like",
     "sor-system",
@@ -1810,6 +1821,7 @@ public class TaskQueryFilterParameter implements QueryParameter<TaskQuery, Void>
       String[] porValueNotIn,
       String[] porValueLike,
       String[] porValueNotLike,
+      ObjectReference[] secondaryObjectReferenceIn,
       String[] sorCompanyIn,
       String[] sorCompanyLike,
       String[] sorSystemIn,
@@ -2017,6 +2029,7 @@ public class TaskQueryFilterParameter implements QueryParameter<TaskQuery, Void>
     this.porValueNotIn = porValueNotIn;
     this.porValueLike = porValueLike;
     this.porValueNotLike = porValueNotLike;
+    this.secondaryObjectReferenceIn = secondaryObjectReferenceIn;
     this.sorCompanyIn = sorCompanyIn;
     this.sorCompanyLike = sorCompanyLike;
     this.sorSystemIn = sorSystemIn;
@@ -2365,6 +2378,8 @@ public class TaskQueryFilterParameter implements QueryParameter<TaskQuery, Void>
     Optional.ofNullable(porValueNotLike)
         .map(this::wrapElementsInLikeStatement)
         .ifPresent(query::primaryObjectReferenceValueNotLike);
+
+    Optional.ofNullable(secondaryObjectReferenceIn).ifPresent(query::secondaryObjectReferenceIn);
 
     Optional.ofNullable(sorCompanyIn).ifPresent(query::sorCompanyIn);
     Optional.ofNullable(sorCompanyLike)

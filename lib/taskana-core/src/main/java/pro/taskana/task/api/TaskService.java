@@ -322,6 +322,10 @@ public interface TaskService {
    * @return an empty new ObjectReference
    */
   ObjectReference newObjectReference();
+
+  ObjectReference newObjectReference(
+      String company, String system, String systemInstance, String type, String value);
+
   /**
    * Update a task.
    *

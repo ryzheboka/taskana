@@ -85,13 +85,11 @@ public class TaskController {
       TaskQueryFilterParameter filterParameter,
       TaskQuerySortParameter sortParameter,
       QueryPagingParameter<TaskSummary, TaskQuery> pagingParameter) {
-
     QueryParamsValidator.validateParams(
         request,
         TaskQueryFilterParameter.class,
         QuerySortParameter.class,
         QueryPagingParameter.class);
-
     TaskQuery query = taskService.createTaskQuery();
 
     filterParameter.apply(query);
@@ -426,11 +424,6 @@ public class TaskController {
     POR_COMPANY(TaskQuery::orderByPrimaryObjectReferenceCompany),
     POR_SYSTEM(TaskQuery::orderByPrimaryObjectReferenceSystem),
     POR_SYSTEM_INSTANCE(TaskQuery::orderByPrimaryObjectReferenceSystemInstance),
-    SOR_TYPE(TaskQuery::orderBySorType),
-    SOR_VALUE(TaskQuery::orderBySorValue),
-    SOR_COMPANY(TaskQuery::orderBySorCompany),
-    SOR_SYSTEM(TaskQuery::orderBySorSystem),
-    SOR_SYSTEM_INSTANCE(TaskQuery::orderBySorSystemInstance),
     STATE(TaskQuery::orderByState),
     NAME(TaskQuery::orderByName),
     DUE(TaskQuery::orderByDue),

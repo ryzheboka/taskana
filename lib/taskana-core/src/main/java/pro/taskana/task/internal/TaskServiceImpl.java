@@ -441,6 +441,12 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
+  public ObjectReference newObjectReference(
+      String company, String system, String systemInstance, String type, String value) {
+    return new ObjectReferenceImpl(company, system, systemInstance, type, value);
+  }
+
+  @Override
   public Task updateTask(Task task)
       throws InvalidArgumentException, TaskNotFoundException, ConcurrencyException,
           NotAuthorizedException, AttachmentPersistenceException,

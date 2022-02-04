@@ -20,7 +20,6 @@ import pro.taskana.task.api.exceptions.InvalidStateException;
 import pro.taskana.task.api.exceptions.ObjectReferencePersistenceException;
 import pro.taskana.task.api.exceptions.TaskAlreadyExistException;
 import pro.taskana.task.api.exceptions.TaskNotFoundException;
-import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.internal.models.ObjectReferenceImpl;
 import pro.taskana.workbasket.api.WorkbasketType;
@@ -58,7 +57,7 @@ public class ExampleBootstrap {
     Task task = taskanaEngine.getTaskService().newTask(wb.getId());
     task.setName("Spring example task");
     task.setClassificationKey(classification.getKey());
-    ObjectReference objRef = new ObjectReferenceImpl();
+    ObjectReferenceImpl objRef = new ObjectReferenceImpl();
     objRef.setCompany("aCompany");
     objRef.setSystem("aSystem");
     objRef.setSystemInstance("anInstance");

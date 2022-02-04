@@ -185,7 +185,7 @@ public abstract class AbstractAccTest {
 
   protected ObjectReference createObjectRef(
       String company, String system, String systemInstance, String type, String value) {
-    ObjectReference objectRef = new ObjectReferenceImpl();
+    ObjectReferenceImpl objectRef = new ObjectReferenceImpl();
     objectRef.setCompany(company);
     objectRef.setSystem(system);
     objectRef.setSystemInstance(systemInstance);

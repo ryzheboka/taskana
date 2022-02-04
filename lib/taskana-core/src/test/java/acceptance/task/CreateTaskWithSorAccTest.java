@@ -22,8 +22,6 @@ import pro.taskana.task.api.TaskService;
 import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.internal.ObjectReferenceMapper;
-import pro.taskana.task.internal.builder.ObjectReferenceBuilder;
-import pro.taskana.task.internal.builder.TaskBuilder;
 import pro.taskana.task.internal.models.TaskImpl;
 import pro.taskana.workbasket.api.WorkbasketPermission;
 import pro.taskana.workbasket.api.WorkbasketService;
@@ -31,7 +29,7 @@ import pro.taskana.workbasket.api.models.WorkbasketSummary;
 import pro.taskana.workbasket.internal.builder.WorkbasketAccessItemBuilder;
 
 @TaskanaIntegrationTest
-public class CreateTaskTestObjRef {
+public class CreateTaskWithSorAccTest {
   @TaskanaInject TaskService taskService;
   @TaskanaInject WorkbasketService workbasketService;
   @TaskanaInject ClassificationService classificationService;
@@ -62,22 +60,14 @@ public class CreateTaskTestObjRef {
   @Test
   void should_createObjectReferences_When_CreatingTask() throws Exception {
     ObjectReference objRef1 =
-        ObjectReferenceBuilder.newObjectReference()
-            .company("FirstCompany")
-            .value("FirstValue")
-            .type("FirstType")
-            .system("FirstSystem")
-            .build();
+        taskService.newObjectReference(
+            "FirstCompany", "FirstSystem", null, "FirstType", "FirstValue");
     ObjectReference objRef2 =
-        ObjectReferenceBuilder.newObjectReference()
-            .company("SecondCompany")
-            .value("SecondValue")
-            .type("SecondType")
-            .build();
+        taskService.newObjectReference("SecondCompany", null, null, "SecondType", "SecondValue");
 
-    TaskImpl task = (TaskImpl) taskService.newTask();
-    task.setClassificationSummary(defaultClassificationSummary);
-    task.setWorkbasketSummary(defaultWorkbasketSummary);
+    TaskImpl task = (TaskImpl) taskService.newTask(defaultWorkbasketSummary.getId());
+    task.setClassificationKey(defaultClassificationSummary.getKey());
+    ;
     task.setPrimaryObjRef(defaultObjectReference);
     task.addSecondaryObjectReference(objRef1);
     task.addSecondaryObjectReference(objRef2);
@@ -119,17 +109,13 @@ public class CreateTaskTestObjRef {
   @Test
   void should_ThrowException_When_InvalidObjectReference() throws Exception {
     ObjectReference objRef1 =
-        ObjectReferenceBuilder.newObjectReference()
-            .company("FirstCompany")
-            .value("FirstValue")
-            .type("FirstType")
-            .build();
+        taskService.newObjectReference(
+            "FirstCompany", "FirstSystem", null, "FirstType", "FirstValue");
     ObjectReference invalidObjRef =
-        ObjectReferenceBuilder.newObjectReference().value("SecondValue").type("SecondType").build();
+        taskService.newObjectReference(null, null, null, "Second Type", "Second Value");
 
-    TaskImpl task = (TaskImpl) taskService.newTask();
-    task.setClassificationSummary(defaultClassificationSummary);
-    task.setWorkbasketSummary(defaultWorkbasketSummary);
+    TaskImpl task = (TaskImpl) taskService.newTask(defaultWorkbasketSummary.getId());
+    task.setClassificationKey(defaultClassificationSummary.getKey());
     task.setPrimaryObjRef(defaultObjectReference);
     task.addSecondaryObjectReference(objRef1);
     task.addSecondaryObjectReference(invalidObjRef);
@@ -142,19 +128,17 @@ public class CreateTaskTestObjRef {
   @Test
   void should_copyObjectReferences_When_DuplicatingTask() throws Exception {
     ObjectReference objRef1 =
-        ObjectReferenceBuilder.newObjectReference()
-            .company("FirstCompany")
-            .value("FirstValue")
-            .type("FirstType")
-            .build();
+        taskService.newObjectReference(
+            "FirstCompany", "FirstSystem", null, "FirstType", "FirstValue");
     ObjectReference objRef2 =
-        ObjectReferenceBuilder.newObjectReference()
-            .company("SecondCompany")
-            .value("SecondValue")
-            .type("SecondType")
-            .build();
-    Task oldTask =
-        createDefaultTask().objectReferences(objRef1, objRef2).buildAndStore(taskService);
+        taskService.newObjectReference("SecondCompany", null, null, "SecondType", "SecondValue");
+
+    Task oldTask = taskService.newTask(defaultWorkbasketSummary.getId());
+    oldTask.setClassificationKey(defaultClassificationSummary.getKey());
+    oldTask.setPrimaryObjRef(defaultObjectReference);
+    oldTask.addSecondaryObjectReference(objRef1);
+    oldTask.addSecondaryObjectReference(objRef2);
+    taskService.createTask(oldTask);
     Task newTask = oldTask.copy();
     newTask = taskService.createTask(newTask);
 
@@ -176,12 +160,5 @@ public class CreateTaskTestObjRef {
             readOldTask.getSecondaryObjectReferences().stream()
                 .map(ObjectReference::getTaskId)
                 .collect(Collectors.toList()));
-  }
-
-  private TaskBuilder createDefaultTask() {
-    return (TaskBuilder.newTask()
-        .classificationSummary(defaultClassificationSummary)
-        .workbasketSummary(defaultWorkbasketSummary)
-        .primaryObjRef(defaultObjectReference));
   }
 }

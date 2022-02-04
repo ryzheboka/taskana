@@ -29,7 +29,7 @@ class ObjectReferenceBuilderTest {
     expectedObjectReference.setValue("Value1");
 
     assertThat(objectReference)
-        .hasNoNullFieldsOrPropertiesExcept("id")
+        .hasNoNullFieldsOrPropertiesExcept("id", "taskId")
         .isEqualTo(expectedObjectReference);
   }
 }

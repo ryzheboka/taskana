@@ -1458,66 +1458,50 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   TaskQuery orderByAttachmentReceived(SortDirection sortDirection);
 
   // endregion
+  // region primaryObjectReference
+
+  /**
+   * Add the {@link ObjectReference} to exact match to your query. Each individual value has to
+   * match. Fields with the value 'null' will be ignored. The id of each ObjectReference will be
+   * ignored
+   *
+   * <p>If you specify multiple arguments they are combined with the OR keyword.
+   *
+   * @param objectReferences the combined values which are searched together.
+   * @return the query
+   */
+  TaskQuery secondaryObjectReferenceIn(ObjectReference... objectReferences);
+  // endregion
   // region secondaryObjectReferenceCompany
   TaskQuery sorCompanyIn(String... companyIn);
 
-  TaskQuery sorCompanyNotIn(String... companyNotIn);
-
   TaskQuery sorCompanyLike(String... companyLike);
-
-  TaskQuery sorCompanyNotLike(String... companyNotLike);
-
-  TaskQuery orderBySorCompany(SortDirection sortDirection);
 
   // endregion
   // region secondaryObjectReferenceSystem
   TaskQuery sorSystemIn(String... systemIn);
 
-  TaskQuery sorSystemNotIn(String... systemNotIn);
-
   TaskQuery sorSystemLike(String... systemLike);
-
-  TaskQuery sorSystemNotLike(String... systemNotLike);
-
-  TaskQuery orderBySorSystem(SortDirection sortDirection);
 
   // endregion
   // region secondaryObjectReferenceSystemInstance
   TaskQuery sorSystemInstanceIn(String... systemInstanceIn);
 
-  TaskQuery sorSystemInstanceNotIn(String... systemInstanceNotIn);
-
   TaskQuery sorSystemInstanceLike(String... systemInstanceLike);
-
-  TaskQuery sorSystemInstanceNotLike(String... systemInstanceNotLike);
-
-  TaskQuery orderBySorSystemInstance(SortDirection sortDirection);
 
   // endregion
   // region secondaryObjectReferenceType
   TaskQuery sorTypeIn(String... typeIn);
 
-  TaskQuery sorTypeNotIn(String... typeNotIn);
-
   TaskQuery sorTypeLike(String... typeLike);
-
-  TaskQuery sorTypeNotLike(String... typeNotLike);
-
-  TaskQuery orderBySorType(SortDirection sortDirection);
 
   // endregion
   // region secondaryObjectReferenceValue
   TaskQuery sorValueIn(String... valueIn);
 
-  TaskQuery sorValueNotIn(String... valueNotIn);
-
   TaskQuery sorValueLike(String... valueLike);
 
-  TaskQuery sorValueNotLike(String... valueNotLike);
-
   // region customAttributes
-
-  TaskQuery orderBySorValue(SortDirection sortDirection);
 
   /**
    * Add the values of custom attributes for exact matching to your query.

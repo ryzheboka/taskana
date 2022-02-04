@@ -17,6 +17,7 @@ public class ObjectReferenceRepresentationModelAssembler
   public ObjectReferenceRepresentationModel toModel(@NonNull ObjectReference entity) {
     ObjectReferenceRepresentationModel repModel = new ObjectReferenceRepresentationModel();
     repModel.setId(entity.getId());
+    repModel.setTaskId(entity.getTaskId());
     repModel.setCompany(entity.getCompany());
     repModel.setSystem(entity.getSystem());
     repModel.setSystemInstance(entity.getSystemInstance());
@@ -28,6 +29,7 @@ public class ObjectReferenceRepresentationModelAssembler
   public ObjectReference toEntity(ObjectReferenceRepresentationModel repModel) {
     ObjectReferenceImpl objectReference = new ObjectReferenceImpl();
     objectReference.setId(repModel.getId());
+    objectReference.setTaskId(repModel.getTaskId());
     objectReference.setCompany(repModel.getCompany());
     objectReference.setSystem(repModel.getSystem());
     objectReference.setSystemInstance(repModel.getSystemInstance());

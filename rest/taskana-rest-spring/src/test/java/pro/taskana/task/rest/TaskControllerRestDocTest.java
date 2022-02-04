@@ -114,6 +114,7 @@ class TaskControllerRestDocTest extends BaseRestDocTest {
     objectReference.setValue("00000001");
     task.setPrimaryObjRef(objectReference);
     task.setClassificationKey("L11010");
+    task.addSecondaryObjectReference("company", "system", "systemInstance", "type", "value");
     TaskRepresentationModel repModel = assembler.toModel(task);
     mockMvc
         .perform(post(RestEndpoints.URL_TASKS).content(objectMapper.writeValueAsString(repModel)))
