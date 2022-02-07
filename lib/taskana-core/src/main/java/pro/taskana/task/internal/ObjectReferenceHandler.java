@@ -37,7 +37,6 @@ public class ObjectReferenceHandler {
         initObjectReference(objectReferenceImpl, task);
         ObjectReferenceImpl.validate(objectReferenceImpl, "ObjectReference", "Task");
         try {
-          // System.out.println(objectReference.toString());
           objectReferenceMapper.insert(objectReferenceImpl);
           if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(

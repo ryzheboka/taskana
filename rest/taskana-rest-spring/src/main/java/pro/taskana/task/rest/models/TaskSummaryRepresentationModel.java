@@ -108,7 +108,6 @@ public class TaskSummaryRepresentationModel
   protected String custom16;
   /** Secondary object references of the task. */
   protected List<ObjectReferenceRepresentationModel> secondaryObjectReferences = new ArrayList<>();
-  // private List<ObjectReferenceRepresentationModel> secondaryObjectReferences;
   /** The attachment summaries of this task. */
   private List<AttachmentSummaryRepresentationModel> attachmentSummaries = new ArrayList<>();
 

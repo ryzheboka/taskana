@@ -29,7 +29,7 @@ import pro.taskana.workbasket.api.models.WorkbasketSummary;
 import pro.taskana.workbasket.internal.builder.WorkbasketAccessItemBuilder;
 
 @TaskanaIntegrationTest
-public class DeleteTaskTestObjRef {
+class DeleteTaskWithSorAccTest {
   @TaskanaInject TaskService taskService;
   @TaskanaInject WorkbasketService workbasketService;
   @TaskanaInject ClassificationService classificationService;
@@ -81,8 +81,7 @@ public class DeleteTaskTestObjRef {
 
     try {
       engineProxy.openConnection();
-      assertThat(objectReferenceMapper.findObjectReferencesByTaskId(createdTask.getId()))
-          .hasSize(0);
+      assertThat(objectReferenceMapper.findObjectReferencesByTaskId(createdTask.getId())).isEmpty();
     } finally {
       engineProxy.returnConnection();
     }
@@ -118,7 +117,7 @@ public class DeleteTaskTestObjRef {
       assertThat(
               objectReferenceMapper.findObjectReferencesByTaskIds(
                   List.of(firstCreatedTask.getId(), secondCreatedTask.getId())))
-          .hasSize(0);
+          .isEmpty();
     } finally {
       engineProxy.returnConnection();
     }

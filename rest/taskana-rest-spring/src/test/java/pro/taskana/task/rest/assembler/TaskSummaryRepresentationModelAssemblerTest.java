@@ -335,7 +335,7 @@ class TaskSummaryRepresentationModelAssemblerTest {
   private static void testEqualityAttachments(
       List<AttachmentSummary> attachmentSummaries,
       List<AttachmentSummaryRepresentationModel> resources) {
-    assertThat(attachmentSummaries.size()).isEqualTo(resources.size());
+    assertThat(attachmentSummaries).hasSameSizeAs(resources);
 
     for (int i = 0; i < resources.size(); ++i) {
       AttachmentSummaryRepresentationModel resource = resources.get(i);

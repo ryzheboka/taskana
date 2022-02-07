@@ -29,7 +29,7 @@ import pro.taskana.workbasket.api.models.WorkbasketSummary;
 import pro.taskana.workbasket.internal.builder.WorkbasketAccessItemBuilder;
 
 @TaskanaIntegrationTest
-public class CreateTaskWithSorAccTest {
+class CreateTaskWithSorAccTest {
   @TaskanaInject TaskService taskService;
   @TaskanaInject WorkbasketService workbasketService;
   @TaskanaInject ClassificationService classificationService;

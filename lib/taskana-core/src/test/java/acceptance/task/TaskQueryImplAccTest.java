@@ -2744,15 +2744,14 @@ class TaskQueryImplAccTest {
 
       @WithAccessId(user = "user-1-1")
       @Test
-      void should_ApplyFilter_When_QueryingForTypeInWithOffset() {
+      void should_ApplyFilter_When_QueryingForTypeInWithLimit() {
         List<TaskSummary> list =
             taskService
                 .createTaskQuery()
                 .workbasketIdIn(wb.getId())
                 .sorCompanyIn("FirstCompany")
                 .list(0, 1);
-        assertThat(list).hasSize(1);
-        assertThat(list).containsAnyOf(taskSummary1, taskSummary3);
+        assertThat(list).hasSize(1).containsAnyOf(taskSummary1, taskSummary3);
       }
 
       @WithAccessId(user = "user-1-1")
