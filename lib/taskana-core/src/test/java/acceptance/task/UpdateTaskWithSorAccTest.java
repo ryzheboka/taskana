@@ -64,15 +64,15 @@ public class UpdateTaskWithSorAccTest {
 
     assertThat(result.getSecondaryObjectReferences())
         .extracting(ObjectReference::getType)
-        .containsExactly("Type0", "Type1");
+        .containsExactlyInAnyOrder("Type0", "Type1");
 
     assertThat(result.getSecondaryObjectReferences())
         .extracting(ObjectReference::getValue)
-        .containsExactly("Value0", "Value1");
+        .containsExactlyInAnyOrder("Value0", "Value1");
 
     assertThat(result.getSecondaryObjectReferences())
         .extracting(ObjectReference::getCompany)
-        .containsExactly("Company0", "Company1");
+        .containsExactlyInAnyOrder("Company0", "Company1");
   }
 
   @WithAccessId(user = "user-1-1")
@@ -92,7 +92,7 @@ public class UpdateTaskWithSorAccTest {
 
     assertThat(result.getSecondaryObjectReferences())
         .extracting(ObjectReference::getType)
-        .containsExactly("NewType", "Type1");
+        .containsExactlyInAnyOrder("NewType", "Type1");
   }
 
   @WithAccessId(user = "user-1-1")
