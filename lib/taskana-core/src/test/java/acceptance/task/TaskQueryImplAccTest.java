@@ -97,22 +97,8 @@ class TaskQueryImplAccTest {
     @Test
     void should_ReturnAllTasks_When_NotApplyingAnyFilter() throws Exception {
       WorkbasketSummary wb = createWorkbasketWithPermission();
-      ObjectReferenceImpl objRef = new ObjectReferenceImpl();
-      objRef.setValue("val");
-      objRef.setType("typ");
-      objRef.setCompany("com");
-      objRef.setSystem("sys");
-      objRef.setId("234");
-      ObjectReferenceImpl objRef2 = new ObjectReferenceImpl();
-      objRef2.setValue("val2");
-      objRef2.setType("typ2");
-      objRef2.setCompany("com2");
-      objRef2.setSystem("sys2");
-      objRef2.setId("2342");
-      TaskSummary taskSummary1 =
-          taskInWorkbasket(wb).objectReferences(objRef).buildAndStoreAsSummary(taskService);
-      TaskSummary taskSummary2 =
-          taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+      TaskSummary taskSummary1 = taskInWorkbasket(wb).buildAndStoreAsSummary(taskService);
+      TaskSummary taskSummary2 = taskInWorkbasket(wb).buildAndStoreAsSummary(taskService);
 
       List<TaskSummary> list = taskService.createTaskQuery().list();
 
@@ -2467,55 +2453,60 @@ class TaskQueryImplAccTest {
                 .value("FirstValue")
                 .type("FirstType")
                 .build();
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef2 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("FirstCompany")
                 .value("SecondValue")
                 .type("SecondType")
                 .build();
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef2copy, objRef1copy)
+                .buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef3 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("SecondCompany")
                 .value("SecondValue")
                 .type("SecondType")
                 .build();
+        taskSummary4 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef1, objRef3)
+                .buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef4 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("SecondCompany")
                 .value("ThirdValue")
                 .type("ThirdType")
                 .build();
+        taskSummary5 =
+            taskInWorkbasket(wb).objectReferences(objRef4).buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef5 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("FirstCompany")
                 .value("ThirdValue")
                 .type("FirstType")
                 .build();
+        taskSummary6 =
+            taskInWorkbasket(wb).objectReferences(objRef5).buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef6 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("FirstCompany")
                 .value("FirstValue")
                 .type("ThirdType")
                 .build();
-        ObjectReference objRef2copy = objRef2.copy();
-        ObjectReference objRef1copy = objRef1.copy();
-
-        taskSummary1 =
-            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
-        taskSummary2 =
-            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
-        taskSummary3 =
-            taskInWorkbasket(wb)
-                .objectReferences(objRef2copy, objRef1copy)
-                .buildAndStoreAsSummary(taskService);
-        taskSummary4 =
-            taskInWorkbasket(wb)
-                .objectReferences(objRef1, objRef3)
-                .buildAndStoreAsSummary(taskService);
-        taskSummary5 =
-            taskInWorkbasket(wb).objectReferences(objRef4).buildAndStoreAsSummary(taskService);
-        taskSummary6 =
-            taskInWorkbasket(wb).objectReferences(objRef5).buildAndStoreAsSummary(taskService);
         taskSummary7 =
             taskInWorkbasket(wb).objectReferences(objRef6).buildAndStoreAsSummary(taskService);
       }
@@ -2587,12 +2578,7 @@ class TaskQueryImplAccTest {
                 .value("SecondValue")
                 .type("SecondType")
                 .build();
-        ObjectReference objRef3 =
-            ObjectReferenceBuilder.newObjectReference()
-                .company("SecondCompany")
-                .value("SecondValue")
-                .type("SecondType")
-                .build();
+
         ObjectReference objRef2copy = objRef2.copy();
         ObjectReference objRef1copy = objRef1.copy();
 
@@ -2660,29 +2646,31 @@ class TaskQueryImplAccTest {
                 .value("FirstValue")
                 .type("FirstType")
                 .build();
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef2 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("FirstCompany")
                 .value("FirstValue")
                 .type("SecondType")
                 .build();
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef2copy, objRef1copy)
+                .buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef3 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("FirstCompany")
                 .value("FirstValue")
                 .type("ThirdType")
                 .build();
-        ObjectReference objRef2copy = objRef2.copy();
-        ObjectReference objRef1copy = objRef1.copy();
-
-        taskSummary1 =
-            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
-        taskSummary2 =
-            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
-        taskSummary3 =
-            taskInWorkbasket(wb)
-                .objectReferences(objRef2copy, objRef1copy)
-                .buildAndStoreAsSummary(taskService);
         taskSummary4 =
             taskInWorkbasket(wb).objectReferences(objRef3).buildAndStoreAsSummary(taskService);
       }
@@ -2812,6 +2800,9 @@ class TaskQueryImplAccTest {
                 .type("FirstType")
                 .system("FirstSystem")
                 .build();
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef2 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("SecondCompany")
@@ -2819,23 +2810,22 @@ class TaskQueryImplAccTest {
                 .type("SecondType")
                 .system("SecondSystem")
                 .build();
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef2copy, objRef1copy)
+                .buildAndStoreAsSummary(taskService);
+
         ObjectReference objRefNoSystem =
             ObjectReferenceBuilder.newObjectReference()
                 .company("SecondCompany")
                 .value("FirstValue")
                 .type("SecondType")
                 .build();
-        ObjectReference objRef2copy = objRef2.copy();
-        ObjectReference objRef1copy = objRef1.copy();
-
-        taskSummary1 =
-            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
-        taskSummary2 =
-            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
-        taskSummary3 =
-            taskInWorkbasket(wb)
-                .objectReferences(objRef2copy, objRef1copy)
-                .buildAndStoreAsSummary(taskService);
         taskSummary4 =
             taskInWorkbasket(wb)
                 .objectReferences(objRefNoSystem)
@@ -2900,6 +2890,9 @@ class TaskQueryImplAccTest {
                 .type("FirstType")
                 .systemInstance("FirstSystemInstance")
                 .build();
+        taskSummary1 =
+            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
+
         ObjectReference objRef2 =
             ObjectReferenceBuilder.newObjectReference()
                 .company("SecondCompany")
@@ -2907,23 +2900,22 @@ class TaskQueryImplAccTest {
                 .type("SecondType")
                 .systemInstance("SecondSystemInstance")
                 .build();
+        taskSummary2 =
+            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
+
+        ObjectReference objRef2copy = objRef2.copy();
+        ObjectReference objRef1copy = objRef1.copy();
+        taskSummary3 =
+            taskInWorkbasket(wb)
+                .objectReferences(objRef2copy, objRef1copy)
+                .buildAndStoreAsSummary(taskService);
+
         ObjectReference objRefNoSystem =
             ObjectReferenceBuilder.newObjectReference()
                 .company("SecondCompany")
                 .value("FirstValue")
                 .type("SecondType")
                 .build();
-        ObjectReference objRef2copy = objRef2.copy();
-        ObjectReference objRef1copy = objRef1.copy();
-
-        taskSummary1 =
-            taskInWorkbasket(wb).objectReferences(objRef1).buildAndStoreAsSummary(taskService);
-        taskSummary2 =
-            taskInWorkbasket(wb).objectReferences(objRef2).buildAndStoreAsSummary(taskService);
-        taskSummary3 =
-            taskInWorkbasket(wb)
-                .objectReferences(objRef2copy, objRef1copy)
-                .buildAndStoreAsSummary(taskService);
         taskSummary4 =
             taskInWorkbasket(wb)
                 .objectReferences(objRefNoSystem)

@@ -1022,14 +1022,14 @@ public class TaskServiceImpl implements TaskService {
         attachmentMapper.findAttachmentSummariesByTaskIds(taskIds);
     Map<String, ClassificationSummary> classificationSummariesById =
         findClassificationsForTasksAndAttachments(taskSummaries, attachmentSummaries);
+    addClassificationSummariesToAttachments(attachmentSummaries, classificationSummariesById);
+    addClassificationSummariesToTaskSummaries(taskSummaries, classificationSummariesById);
+    addAttachmentSummariesToTaskSummaries(taskSummaries, attachmentSummaries);
+
     Map<String, WorkbasketSummary> workbasketSummariesById = findWorkbasketsForTasks(taskSummaries);
     List<ObjectReferenceImpl> objectReferences =
         objectReferenceMapper.findObjectReferencesByTaskIds(taskIds);
-
-    addClassificationSummariesToAttachments(attachmentSummaries, classificationSummariesById);
-    addClassificationSummariesToTaskSummaries(taskSummaries, classificationSummariesById);
     addWorkbasketSummariesToTaskSummaries(taskSummaries, workbasketSummariesById);
-    addAttachmentSummariesToTaskSummaries(taskSummaries, attachmentSummaries);
     addObjectReferencesToTaskSummaries(taskSummaries, objectReferences);
 
     return taskSummaries;

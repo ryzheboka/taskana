@@ -1447,6 +1447,7 @@ public class TaskQueryImpl implements TaskQuery {
     sorSystemLike = toUpperCopy(systemLike);
     return this;
   }
+
   // endregion
   // region secondaryObjectReferenceSystemInstance
   public TaskQuery sorSystemInstanceIn(String... systemInstanceIn) {
@@ -1490,6 +1491,7 @@ public class TaskQueryImpl implements TaskQuery {
     return this;
   }
 
+  // endregion
   // region customAttributes
 
   @Override

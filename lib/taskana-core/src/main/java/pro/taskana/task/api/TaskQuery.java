@@ -1471,6 +1471,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * @return the query
    */
   TaskQuery secondaryObjectReferenceIn(ObjectReference... objectReferences);
+
   // endregion
   // region secondaryObjectReferenceCompany
   TaskQuery sorCompanyIn(String... companyIn);

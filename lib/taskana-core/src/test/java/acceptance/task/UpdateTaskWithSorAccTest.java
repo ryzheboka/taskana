@@ -53,7 +53,7 @@ public class UpdateTaskWithSorAccTest {
 
   @WithAccessId(user = "user-1-1")
   @Test
-  void should_NotChangeSOR_When_UpdateWithoutChanges() throws Exception {
+  void should_NotChangeSor_When_UpdateWithoutChanges() throws Exception {
     Task task =
         createDefaultTask()
             .objectReferences(

@@ -171,6 +171,7 @@ public interface Task extends TaskSummary {
    */
   void setPrimaryObjRef(
       String company, String system, String systemInstance, String type, String value);
+
   /**
    * Sets/Changing the custom note for this Task.
    *

@@ -53,7 +53,7 @@ public class GetTaskWithSorAccTest {
 
   @WithAccessId(user = "user-1-1")
   @Test
-  void should_ReturnTaskWithSOR_When_RequestingTaskByTaskId() throws Exception {
+  void should_ReturnTaskWithSor_When_RequestingTaskByTaskId() throws Exception {
     Task task =
         createDefaultTask()
             .objectReferences(

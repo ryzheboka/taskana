@@ -59,16 +59,16 @@ public class CreateTaskWithSorAccTest {
   @WithAccessId(user = "user-1-1")
   @Test
   void should_createObjectReferences_When_CreatingTask() throws Exception {
+    TaskImpl task = (TaskImpl) taskService.newTask(defaultWorkbasketSummary.getId());
+    task.setClassificationKey(defaultClassificationSummary.getKey());
+    task.setPrimaryObjRef(defaultObjectReference);
+
     ObjectReference objRef1 =
         taskService.newObjectReference(
             "FirstCompany", "FirstSystem", null, "FirstType", "FirstValue");
     ObjectReference objRef2 =
         taskService.newObjectReference("SecondCompany", null, null, "SecondType", "SecondValue");
 
-    TaskImpl task = (TaskImpl) taskService.newTask(defaultWorkbasketSummary.getId());
-    task.setClassificationKey(defaultClassificationSummary.getKey());
-    ;
-    task.setPrimaryObjRef(defaultObjectReference);
     task.addSecondaryObjectReference(objRef1);
     task.addSecondaryObjectReference(objRef2);
 

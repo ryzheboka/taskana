@@ -87,7 +87,7 @@ public class TaskQuerySqlProvider {
         + "LEFT JOIN ATTACHMENT a ON t.ID = a.TASK_ID "
         + "</if>"
         + "<if test=\"joinWithSecondaryObjectReferences\">"
-        + "LEFT JOIN OBJECT_REFERENCE a ON t.ID = o.TASK_ID "
+        + "LEFT JOIN OBJECT_REFERENCE o ON t.ID = o.TASK_ID "
         + "</if>"
         + "<if test=\"joinWithClassifications\">"
         + "LEFT JOIN CLASSIFICATION AS c ON t.CLASSIFICATION_ID = c.ID "
