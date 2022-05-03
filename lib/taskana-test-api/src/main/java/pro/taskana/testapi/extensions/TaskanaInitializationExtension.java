@@ -73,12 +73,12 @@ public class TaskanaInitializationExtension implements TestInstancePostProcessor
         taskanaEngine =
             taskanaEngineConfiguration.buildTaskanaEngine(ConnectionManagementMode.AUTOCOMMIT);
       }
-
       store.put(STORE_TASKANA_ENTITY_MAP, generateTaskanaEntityMap(taskanaEngine));
     }
   }
 
   private static TaskanaEngineConfiguration createDefaultTaskanaEngineConfiguration(Store store) {
+    // !!!! Problem, mit diesem Schema Namen wird das %...% im Script ersetzt
     String schemaName = store.get(TestContainerExtension.STORE_SCHEMA_NAME, String.class);
     if (schemaName == null) {
       throw new JUnitException("Expected schemaName to be defined in store, but it's not.");

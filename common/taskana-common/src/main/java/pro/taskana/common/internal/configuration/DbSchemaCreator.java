@@ -36,7 +36,7 @@ public class DbSchemaCreator {
   private static final String DB_SCHEMA_DETECTION_POSTGRES =
       SQL + "/postgres/schema-detection-postgres.sql";
 
-  private final String schemaName;
+  private String schemaName;
   private final StringWriter outWriter = new StringWriter();
   private final PrintWriter logWriter = new PrintWriter(outWriter);
   private final StringWriter errorWriter = new StringWriter();
@@ -185,7 +185,6 @@ public class DbSchemaCreator {
   }
 
   private StringReader getSqlSchemaNameParsed(BufferedReader reader) {
-
     StringBuilder content = new StringBuilder();
     try {
       String line = "";
