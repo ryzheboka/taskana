@@ -126,6 +126,7 @@
     <module>history</module>
     <module>ci/taskana-sonar-test-coverage</module>
     <module>routing</module>
+    <module>custom-checkstyle</module>
   </modules>
 
   <dependencyManagement>
