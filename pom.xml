@@ -378,6 +378,11 @@
             <artifactId>checkstyle</artifactId>
             <version>${version.checkstyle}</version>
           </dependency>
+          <dependency>
+            <groupId>pro.taskana</groupId>
+            <artifactId>custom-checkstyle</artifactId>
+            <version>${project.version}</version>
+          </dependency>
         </dependencies>
         <configuration>
           <configLocation>qa/checkstyle/checkstyle.xml</configLocation>
