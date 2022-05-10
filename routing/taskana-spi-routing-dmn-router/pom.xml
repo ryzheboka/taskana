@@ -23,6 +23,11 @@
     </dependency>
     <dependency>
       <groupId>pro.taskana</groupId>
+      <artifactId>custom-checkstyle</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>pro.taskana</groupId>
       <artifactId>taskana-core</artifactId>
       <version>${project.version}</version>
     </dependency>

@@ -20,6 +20,18 @@
   <version>10.2</version>
 </dependency>
   </dependencies>
+    <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <version>${version.aspectj-maven-plugin}</version>
+        <configuration>
+          <aspectLibraries combine.self="override"/>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 <repositories>
     <!-- this repository is needed to fetch com.ibm.db2.jcc -->
   <repository>

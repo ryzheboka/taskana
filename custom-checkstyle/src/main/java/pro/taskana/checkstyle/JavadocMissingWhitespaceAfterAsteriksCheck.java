@@ -1,12 +1,13 @@
 package pro.taskana.checkstyle;
 
 import com.puppycrawl.tools.checkstyle.StatelessCheck;
-import com.puppycrawl.tools.checkstyle.api.*;
+import com.puppycrawl.tools.checkstyle.api.DetailNode;
+import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 @StatelessCheck
-public class MissingWhitespaceAfterAsteriks extends AbstractJavadocCheck {
+public class JavadocMissingWhitespaceAfterAsteriksCheck extends AbstractJavadocCheck {
 
   /** A key is pointing to the warning message text in "messages.properties" file. */
   public static final String MSG_KEY = "javadoc.missing.whitespace";
