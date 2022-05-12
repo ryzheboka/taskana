@@ -6,6 +6,7 @@ import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
+/** The JavadocMissingWhitespaceAfterAsteriksCheck . */
 @StatelessCheck
 public class JavadocMissingWhitespaceAfterAsteriksCheck extends AbstractJavadocCheck {
 
@@ -49,8 +50,8 @@ public class JavadocMissingWhitespaceAfterAsteriksCheck extends AbstractJavadocC
    * Checks if the character position is the last one of the string.
    *
    * @param position the position of the character
-   * @param text String literal.
-   * @return true if the character position is the last one of the string.
+   * @param text string literal
+   * @return true if the character position is the last one of the string
    */
   private static boolean isLast(int position, String text) {
     return position == text.length() - 1;
@@ -60,8 +61,8 @@ public class JavadocMissingWhitespaceAfterAsteriksCheck extends AbstractJavadocC
    * Finds the position of the last leading asterisk in the string. If {@code text} contains no
    * leading asterisk, -1 will be returned.
    *
-   * @param text String literal.
-   * @return the index of the last leading asterisk.
+   * @param text string literal
+   * @return the index of the last leading asterisk
    */
   private static int getLastLeadingAsteriskPosition(String text) {
     int index = -1;
