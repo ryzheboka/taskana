@@ -10,7 +10,7 @@ import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 public class JavadocMissingWhitespaceAfterAsteriksCheck extends AbstractJavadocCheck {
 
   /** A key is pointing to the warning message text in "messages.properties" file. */
-  public static final String MSG_KEY = "javadoc.missing.whitespace";
+  public static final String MSG_KEY = "Test";
 
   @Override
   public int[] getDefaultJavadocTokens() {
