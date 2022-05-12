@@ -24,10 +24,6 @@ import pro.taskana.task.api.models.Task;
 @ExtendWith(JaasExtension.class)
 class GetTaskAccTest extends AbstractAccTest {
 
-  GetTaskAccTest() {
-    super();
-  }
-
   @WithAccessId(user = "user-1-1")
   @Test
   void should_ReturnTask_When_RequestingTaskByTaskId() throws Exception {
