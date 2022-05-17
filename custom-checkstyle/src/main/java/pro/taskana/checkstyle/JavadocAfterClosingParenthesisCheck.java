@@ -5,12 +5,12 @@ import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
-import java.util.List;
+import java.util.Set;
 
 @StatelessCheck
 public class JavadocAfterClosingParenthesisCheck extends AbstractJavadocCheck {
 
-  public static final List<Character> ACCEPTABLE_CHARS = List.of(' ', ',', '.', ';', '\n');
+  public static final Set<Character> ACCEPTABLE_CHARS = Set.of(' ', ',', '.', ';', '\n');
 
   @Override
   public int[] getDefaultJavadocTokens() {
@@ -26,8 +26,7 @@ public class JavadocAfterClosingParenthesisCheck extends AbstractJavadocCheck {
 
   @Override
   public void visitJavadocToken(DetailNode detailNode) {
-    final DetailNode textNode;
-    textNode = JavadocUtil.getNextSibling(detailNode);
+    DetailNode textNode = JavadocUtil.getNextSibling(detailNode);
     if (textNode != null && textNode.getType() != JavadocTokenTypes.EOF) {
       if (!ACCEPTABLE_CHARS.contains(textNode.getText().charAt(0))) {
         log(textNode.getLineNumber(), textNode.getColumnNumber(), "Custom Error");
