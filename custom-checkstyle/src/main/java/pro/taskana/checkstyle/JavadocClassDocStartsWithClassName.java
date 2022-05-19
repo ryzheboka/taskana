@@ -77,8 +77,8 @@ public class JavadocClassDocStartsWithClassName extends AbstractJavadocCheck {
     // set detailNode to TEXT Node, e. g. |--TEXT ->  The JavadocMissingWhitespaceAfterAsteriksCheck
     // .
     detailNode = JavadocUtil.getFirstChild(detailNode);
-    if (detailNode != null) {
-      DetailAST classTree = getBlockCommentAst();
+    DetailAST classTree = getBlockCommentAst();
+    if (classTree != null && detailNode != null) {
       DetailAST parent = classTree.getParent();
       DetailAST className = null;
       if (parent != null && parent.getType() == TokenTypes.CLASS_DEF) {

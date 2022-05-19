@@ -52,6 +52,10 @@ public class JavadocMissingWhitespaceAfterAsteriksCheck extends AbstractJavadocC
    * @param position the position of the character
    * @param text string literal
    * @return true if the character position is the last one of the string
+   * @see <a href="https://cwiki.apache.org/confluence/display/MAVENOLD/Versioning">"Versioning"
+   *     Maven Wiki</a>
+   * @author <a href="mailto:kenney@apache.org">Kenney Westerhof</a>
+   * @author <a href="mailto:hboutemy@apache.org">Hervé Boutemy</a>
    */
   private static boolean isLast(int position, String text) {
     return position == text.length() - 1;
