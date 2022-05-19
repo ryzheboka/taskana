@@ -34,11 +34,11 @@ final class SqlReplacer {
    *
    * <p>Yes, this can be done as an actual sql function, but that'd lead to a little more complexity
    * (and thus we'd have to maintain the code for db compatibility ...) Since we're already
-   * replacing the boolean attributes of sql files this addition is not a huge computational cost.
+   * replacing the boolean attributes of sql files this addition is not a huge computational cost
    *
-   * @param now anchor for relative date conversion.
-   * @param sql sql statement which may contain the above declared custom function.
-   * @return sql statement with the given function resolved, if the 'sql' parameter contained any.
+   * @param now anchor for relative date conversion
+   * @param sql sql statement which may contain the above declared custom function
+   * @return sql statement with the given function resolved, if the 'sql' parameter contained any
    */
   static String replaceDatePlaceholder(ZonedDateTime now, String sql) {
     Matcher m = RELATIVE_DATE_PATTERN.matcher(sql);
