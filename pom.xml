@@ -171,7 +171,7 @@
             <configuration>
               <complianceLevel>${java.version}</complianceLevel>
               <source>11</source>
-              <target>8</target>
+              <target>11</target>
               <showWeaveInfo>false</showWeaveInfo>
               <verbose>true</verbose>
               <aspectLibraries>

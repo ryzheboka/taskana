@@ -87,15 +87,11 @@ public class JavadocClassDocStartsWithClassName extends AbstractJavadocCheck {
       if (parent != null && parent.getType() == TokenTypes.ANNOTATION) {
         className = parent.getParent().getNextSibling().getNextSibling();
       }
-      if (className != null) {
-        if (!detailNode.getText().startsWith(" The " + className.getText())) {
-          log(
-              detailNode.getLineNumber(),
-              detailNode.getColumnNumber(),
-              "JavaDoc for a class should start with its name "
-                  + className.getText()
-                  + detailNode.getText());
-        }
+      if (className != null && !detailNode.getText().startsWith(" The " + className.getText())) {
+        log(
+            detailNode.getLineNumber(),
+            detailNode.getColumnNumber(),
+            "The Javadoc comment above a class definition must start with \"The \" + class name.");
       }
     }
   }
