@@ -18,7 +18,6 @@ import pro.taskana.workbasket.api.models.WorkbasketAccessItem;
 import pro.taskana.workbasket.api.models.WorkbasketSummary;
 
 /** This service manages Workbaskets. */
-@SuppressWarnings("all")
 public interface WorkbasketService {
 
   // region Workbasket

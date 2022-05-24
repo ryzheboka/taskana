@@ -87,7 +87,8 @@ class ArchitectureTest {
           "pro.taskana.spi.task.api",
           "pro.taskana.spi.task.internal",
           "pro.taskana.spi.priority.api",
-          "pro.taskana.spi.priority.internal");
+          "pro.taskana.spi.priority.internal",
+          "pro.taskana.checkstyle");
   private static JavaClasses importedClasses;
 
   @BeforeAll

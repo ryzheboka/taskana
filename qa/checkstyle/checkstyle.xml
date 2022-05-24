@@ -332,10 +332,6 @@
     </module>
     <module name="JavadocStyle"/>
     <module name="JavadocMissingWhitespaceAfterAsterisk"/>
-    <module name="pro.taskana.checkstyle.JavadocMissingWhitespaceAfterAsteriksCheck"/>
-    <module name="pro.taskana.checkstyle.JavadocAfterClosingParenthesisCheck"/>
-    <module name="pro.taskana.checkstyle.JavadocTagEndsWithNoPoint"/>
-    <module name="pro.taskana.checkstyle.JavadocClassDocStartsWithClassName"/>
     <module name="JavadocMethod">
       <property name="validateThrows" value="true"/>
       <property name="allowedAnnotations" value="Override, Test"/>
