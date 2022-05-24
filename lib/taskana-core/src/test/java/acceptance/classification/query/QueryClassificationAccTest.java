@@ -41,7 +41,6 @@ import pro.taskana.common.api.TimeInterval;
 import pro.taskana.common.test.security.JaasExtension;
 import pro.taskana.common.test.security.WithAccessId;
 
-/** Acceptance test for all "get classification" scenarios. */
 @ExtendWith(JaasExtension.class)
 class QueryClassificationAccTest extends AbstractAccTest {
 

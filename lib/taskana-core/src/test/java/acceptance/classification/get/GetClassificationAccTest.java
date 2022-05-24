@@ -21,7 +21,6 @@ import pro.taskana.classification.api.exceptions.ClassificationNotFoundException
 import pro.taskana.classification.api.models.Classification;
 import pro.taskana.classification.api.models.ClassificationSummary;
 
-/** Acceptance test for all "get classification" scenarios. */
 class GetClassificationAccTest extends AbstractAccTest {
 
   private ClassificationService classificationService;

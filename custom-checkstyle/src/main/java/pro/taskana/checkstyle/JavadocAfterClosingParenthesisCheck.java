@@ -10,7 +10,7 @@ import java.util.Set;
 @StatelessCheck
 public class JavadocAfterClosingParenthesisCheck extends AbstractJavadocCheck {
 
-  public static final Set<Character> ACCEPTABLE_CHARS = Set.of(' ', ',', '.', ';', '\n');
+  public static final Set<Character> ACCEPTABLE_CHARS = Set.of(' ', ',', '.', ';', '\n', '<', '-');
 
   @Override
   public int[] getDefaultJavadocTokens() {

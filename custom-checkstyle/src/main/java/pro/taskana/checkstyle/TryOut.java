@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public class TryOut {
   public static void main(String[] args) throws CheckstyleException, IOException {
-    // File test =  new File(
-    // "C:\\Users\\emo\\Documents\\taskana\\common\\taskana-common\\
-    // src\\main\\java\\pro\\taskana\\common\\internal\\util\\ComparableVersion.java");
+    // File test =  new File("C:\\Users\\emo\\Documents\\taskana\\lib\\taskana-core\\src\\main\\
+    // java\\pro\\taskana\\task\\internal\\jobs\\helper\\SqlConnectionRunner.java");
+
     // System.out.println(AstTreeStringPrinter.printJavaAndJavadocTree(test));
   }
 }

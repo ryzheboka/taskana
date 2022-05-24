@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import pro.taskana.common.internal.configuration.DB;
 
-/** This class replaces boolean values with int values if the database is db2. */
+/** The SqlReplacer replaces boolean values with int values if the database is db2. */
 final class SqlReplacer {
 
   static final String RELATIVE_DATE_REGEX = "RELATIVE_DATE\\((-?\\d+)\\)";
