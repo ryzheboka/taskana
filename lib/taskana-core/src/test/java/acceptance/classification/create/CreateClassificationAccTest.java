@@ -34,7 +34,6 @@ import pro.taskana.common.api.exceptions.MismatchedRoleException;
 import pro.taskana.common.internal.util.Pair;
 import pro.taskana.common.test.security.WithAccessId;
 
-/** Acceptance test for all "create classification" scenarios. */
 @TaskanaIntegrationTest
 class CreateClassificationAccTest {
   @TaskanaInject ClassificationService classificationService;

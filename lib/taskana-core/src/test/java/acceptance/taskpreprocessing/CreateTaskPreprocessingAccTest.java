@@ -21,7 +21,6 @@ import pro.taskana.workbasket.api.WorkbasketService;
 import pro.taskana.workbasket.api.models.WorkbasketSummary;
 import pro.taskana.workbasket.internal.builder.WorkbasketAccessItemBuilder;
 
-/** Acceptance test for "task preprocessing" scenario. */
 @TaskanaIntegrationTest
 @WithServiceProvider(
     serviceProviderInterface = CreateTaskPreprocessor.class,

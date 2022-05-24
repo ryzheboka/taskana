@@ -62,7 +62,7 @@ public interface ClassificationQuery
    * Add your {@linkplain ClassificationSummary#getDomain() domains} to your query which are used as
    * filter.
    *
-   * @param domain or domains for filtering.
+   * @param domain or domains for filtering
    * @return the query
    */
   ClassificationQuery domainIn(String... domain);
@@ -80,7 +80,7 @@ public interface ClassificationQuery
    * Add your {@linkplain Classification#getCreated() created}-Dates to your query.
    *
    * @param createdIn the {@linkplain TimeInterval} within which the searched-for classifications
-   *     were created.
+   *     were created
    * @return the query
    */
   ClassificationQuery createdWithin(TimeInterval... createdIn);
@@ -183,7 +183,7 @@ public interface ClassificationQuery
    * may use a wildcard like % to specify the pattern. If you specify multiple arguments they are
    * combined with the OR keyword.
    *
-   * @param customField identifies which custom attribute is affected.
+   * @param customField identifies which custom attribute is affected
    * @param searchArguments the customField values of the searched-for tasks
    * @return the query
    * @throws InvalidArgumentException if searchArguments is empty or null
@@ -195,8 +195,8 @@ public interface ClassificationQuery
   /**
    * Sort the query result by {@linkplain ClassificationSummary#getKey() key}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByKey(SortDirection sortDirection);
@@ -204,8 +204,8 @@ public interface ClassificationQuery
   /**
    * Sort the query result by the {@linkplain ClassificationSummary#getParentId() id of the parent}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByParentId(SortDirection sortDirection);
@@ -214,8 +214,8 @@ public interface ClassificationQuery
    * Sort the query result by the {@linkplain ClassificationSummary#getParentKey() key of the
    * parent}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByParentKey(SortDirection sortDirection);
@@ -223,8 +223,8 @@ public interface ClassificationQuery
   /**
    * Sort the query result by {@linkplain ClassificationSummary#getCategory() category}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByCategory(SortDirection sortDirection);
@@ -232,8 +232,8 @@ public interface ClassificationQuery
   /**
    * Sort the query result by {@linkplain ClassificationSummary#getDomain() domain}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByDomain(SortDirection sortDirection);
@@ -241,8 +241,8 @@ public interface ClassificationQuery
   /**
    * Sort the query result by {@linkplain ClassificationSummary#getName() name}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByName(SortDirection sortDirection);
@@ -250,8 +250,8 @@ public interface ClassificationQuery
   /**
    * Sort the query result by {@linkplain ClassificationSummary#getServiceLevel() serviceLevel}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByServiceLevel(SortDirection sortDirection);
@@ -259,8 +259,8 @@ public interface ClassificationQuery
   /**
    * Sort the query result by {@linkplain ClassificationSummary#getPriority() priority}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByPriority(SortDirection sortDirection);
@@ -269,8 +269,8 @@ public interface ClassificationQuery
    * Sort the query result by the {@linkplain ClassificationSummary#getApplicationEntryPoint() name
    * of the application entry point}.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByApplicationEntryPoint(SortDirection sortDirection);
@@ -279,9 +279,9 @@ public interface ClassificationQuery
    * This method sorts the query result according to the value of the specified {@linkplain
    * ClassificationCustomField custom field}.
    *
-   * @param customField identifies which custom attribute is affected.
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param customField identifies which custom attribute is affected
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   ClassificationQuery orderByCustomAttribute(

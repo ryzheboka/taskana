@@ -58,7 +58,7 @@ import pro.taskana.common.internal.util.CheckedFunction;
 import pro.taskana.common.internal.util.MapCreator;
 
 /**
- * Test architecture of classes in taskana. For more info and examples see
+ * The ArchitectureTest tests the architecture of classes in TASKANA. For more info and examples see
  * https://www.archunit.org/userguide/html/000_Index.html.
  */
 class ArchitectureTest {

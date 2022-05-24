@@ -23,7 +23,6 @@ import pro.taskana.workbasket.api.WorkbasketService;
 import pro.taskana.workbasket.api.models.WorkbasketSummary;
 import pro.taskana.workbasket.internal.builder.WorkbasketAccessItemBuilder;
 
-/** Acceptance test for "update task" scenarios that involve secondary {@link ObjectReference}s. */
 @TaskanaIntegrationTest
 class UpdateTaskWithSorAccTest {
 

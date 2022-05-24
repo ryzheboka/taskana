@@ -29,6 +29,7 @@ import pro.taskana.workbasket.api.exceptions.WorkbasketNotFoundException;
 import pro.taskana.workbasket.api.models.Workbasket;
 
 /** The Task Service manages all operations on tasks. */
+@SuppressWarnings("all")
 public interface TaskService {
 
   /**

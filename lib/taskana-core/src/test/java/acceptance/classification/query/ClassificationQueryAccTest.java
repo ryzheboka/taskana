@@ -14,7 +14,6 @@ import pro.taskana.classification.api.ClassificationService;
 import pro.taskana.classification.api.models.ClassificationSummary;
 import pro.taskana.common.test.security.WithAccessId;
 
-/** Acceptance test for classification queries and authorization. */
 @TaskanaIntegrationTest
 class ClassificationQueryAccTest {
   @TaskanaInject ClassificationService classificationService;

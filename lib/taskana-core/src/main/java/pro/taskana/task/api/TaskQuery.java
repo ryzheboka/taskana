@@ -8,7 +8,7 @@ import pro.taskana.task.api.models.ObjectReference;
 import pro.taskana.task.api.models.Task;
 import pro.taskana.task.api.models.TaskSummary;
 
-/** TaskQuery for generating dynamic sql. */
+/** The TaskQuery for generating dynamic sql. */
 public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
 
   // region id
@@ -16,7 +16,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * Filter for summaries which contain one of the given taskIds.
    *
-   * @param taskIds The ids of the searched-for tasks.
+   * @param taskIds the ids of the searched-for tasks
    * @return the taskQuery
    */
   TaskQuery idIn(String... taskIds);
@@ -24,7 +24,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * Exclude summaries which contain one of the given taskIds.
    *
-   * @param taskIds The ids of the searched-for tasks.
+   * @param taskIds the ids of the searched-for tasks
    * @return the taskQuery
    */
   TaskQuery idNotIn(String... taskIds);
@@ -32,8 +32,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the primary task id.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByTaskId(SortDirection sortDirection);
@@ -87,8 +87,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the received timestamp.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByReceived(SortDirection sortDirection);
@@ -123,8 +123,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the created timestamp.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByCreated(SortDirection sortDirection);
@@ -159,8 +159,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the claimed timestamp.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByClaimed(SortDirection sortDirection);
@@ -195,8 +195,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the modified timestamp.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByModified(SortDirection sortDirection);
@@ -231,8 +231,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the planned timestamp.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByPlanned(SortDirection sortDirection);
@@ -267,8 +267,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the due timestamp.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByDue(SortDirection sortDirection);
@@ -303,8 +303,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the completed timestamp.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByCompleted(SortDirection sortDirection);
@@ -351,8 +351,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to name.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByName(SortDirection sortDirection);
@@ -399,8 +399,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to creators name.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByCreator(SortDirection sortDirection);
@@ -431,8 +431,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the note.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByNote(SortDirection sortDirection);
@@ -482,8 +482,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the priority.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByPriority(SortDirection sortDirection);
@@ -510,8 +510,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the state.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByState(SortDirection sortDirection);
@@ -577,8 +577,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the classification key.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByClassificationKey(SortDirection sortDirection);
@@ -664,8 +664,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the classification name.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByClassificationName(SortDirection sortDirection);
@@ -692,8 +692,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the workbasket-Id of the tasks.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByWorkbasketId(SortDirection sortDirection);
@@ -798,8 +798,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the business process id.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByBusinessProcessId(SortDirection sortDirection);
@@ -846,8 +846,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the parent business process id.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByParentBusinessProcessId(SortDirection sortDirection);
@@ -896,8 +896,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the owner.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByOwner(SortDirection sortDirection);
@@ -912,7 +912,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    *
    * <p>If you specify multiple arguments they are combined with the OR keyword.
    *
-   * @param objectReferences the combined values which are searched together.
+   * @param objectReferences the combined values which are searched together
    * @return the query
    */
   TaskQuery primaryObjectReferenceIn(ObjectReference... objectReferences);
@@ -958,8 +958,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the company of the primary object reference.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByPrimaryObjectReferenceCompany(SortDirection sortDirection);
@@ -1006,8 +1006,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the system of the primary object reference.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByPrimaryObjectReferenceSystem(SortDirection sortDirection);
@@ -1056,8 +1056,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * This method sorts the query result according to the system instance of the primary object
    * reference.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByPrimaryObjectReferenceSystemInstance(SortDirection sortDirection);
@@ -1104,8 +1104,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the type of the primary object reference.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByPrimaryObjectReferenceType(SortDirection sortDirection);
@@ -1152,8 +1152,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the value of the primary object reference.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByPrimaryObjectReferenceValue(SortDirection sortDirection);
@@ -1164,7 +1164,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * Add the isRead flag to the query.
    *
-   * @param isRead as Boolean. If null, it won't be integrated into the statement. You have to set
+   * @param isRead as Boolean. if null, it won't be integrated into the statement. You have to set
    *     false.
    * @return the query
    */
@@ -1176,7 +1176,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * Add the isTransferred flag to the query.
    *
-   * @param isTransferred as Boolean. If null, it won't be integrated into the statement. You have
+   * @param isTransferred as Boolean. if null, it won't be integrated into the statement. You have
    *     to set false.
    * @return the query
    */
@@ -1207,8 +1207,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * This method sorts the query result according to the attachment classification id. (Should only
    * be used if there is one attachment per task in other case the result would be wrong.)
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByAttachmentClassificationId(SortDirection sortDirection);
@@ -1260,8 +1260,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * This method sorts the query result according to the attachment classification key. (Should only
    * be used if there is one attachment per task in other case the result would be wrong.)
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByAttachmentClassificationKey(SortDirection sortDirection);
@@ -1313,8 +1313,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * This method sorts the query result according to the attachment classification name. (Should
    * only be used if there is one attachment per task in other case the result would be wrong.)
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByAttachmentClassificationName(SortDirection sortDirection);
@@ -1342,8 +1342,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * This method sorts the query result according to the owner's long name. (Should only be used if
    * each Task has an owner. Otherwise, the result is wrong.)
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByOwnerLongName(SortDirection sortDirection);
@@ -1372,8 +1372,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * This method sorts the query result according to the attachment channel. (Should only be used if
    * there is one attachment per task in other case the result would be wrong.)
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order;
    * @return the query
    */
   TaskQuery orderByAttachmentChannel(SortDirection sortDirection);
@@ -1421,8 +1421,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * This method sorts the query result according to the attachment reference value. (Should only be
    * used if there is one attachment per task in other case the result would be wrong.)
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByAttachmentReference(SortDirection sortDirection);
@@ -1452,8 +1452,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * This method sorts the query result according to the attachment received. (Should only be used
    * if there is one attachment per task in other case the result would be wrong.)
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByAttachmentReceived(SortDirection sortDirection);
@@ -1468,7 +1468,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    *
    * <p>If you specify multiple arguments they are combined with the OR keyword.
    *
-   * @param objectReferences the combined values which are searched together.
+   * @param objectReferences the combined values which are searched together
    * @return the query
    */
   TaskQuery secondaryObjectReferenceIn(ObjectReference... objectReferences);
@@ -1612,7 +1612,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * Add the values of custom attributes for exact matching to your query.
    *
-   * @param customField identifies which custom attribute is affected.
+   * @param customField identifies which custom attribute is affected
    * @param searchArguments the customField values of the searched for tasks
    * @return the query
    * @throws InvalidArgumentException if searchArguments are not given
@@ -1623,7 +1623,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * Exclude these values of custom attributes from your query.
    *
-   * @param customField identifies which custom attribute is affected.
+   * @param customField identifies which custom attribute is affected
    * @param searchArguments the customField values of the searched for tasks
    * @return the query
    * @throws InvalidArgumentException if searchArguments are not given
@@ -1636,7 +1636,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * in SQL with the LIKE operator. You may use a wildcard like % to specify the pattern. If you
    * specify multiple arguments they are combined with the OR keyword.
    *
-   * @param customField identifies which custom attribute is affected.
+   * @param customField identifies which custom attribute is affected
    * @param searchArguments the customField values of the searched for tasks
    * @return the query
    * @throws InvalidArgumentException if searchArguments is not given
@@ -1649,7 +1649,7 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
    * compared in SQL with the LIKE operator. You may use a wildcard like % to specify the pattern.
    * If you specify multiple arguments they are combined with the OR keyword.
    *
-   * @param customField identifies which custom attribute is affected.
+   * @param customField identifies which custom attribute is affected
    * @param searchArguments the customField values of the searched for tasks
    * @return the query
    * @throws InvalidArgumentException if searchArguments is not given
@@ -1660,9 +1660,9 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the value of a custom field.
    *
-   * @param customField identifies which custom attribute is affected.
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param customField identifies which custom attribute is affected
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByCustomAttribute(TaskCustomField customField, SortDirection sortDirection);
@@ -1720,8 +1720,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the domain.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByDomain(SortDirection sortDirection);
@@ -1729,8 +1729,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the workbasket key.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByWorkbasketKey(SortDirection sortDirection);
@@ -1738,8 +1738,8 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   /**
    * This method sorts the query result according to the workbasket name of the tasks.
    *
-   * @param sortDirection Determines whether the result is sorted in ascending or descending order.
-   *     If sortDirection is null, the result is sorted in ascending order
+   * @param sortDirection determines whether the result is sorted in ascending or descending order;
+   *     if sortDirection is null, the result is sorted in ascending order
    * @return the query
    */
   TaskQuery orderByWorkbasketName(SortDirection sortDirection);

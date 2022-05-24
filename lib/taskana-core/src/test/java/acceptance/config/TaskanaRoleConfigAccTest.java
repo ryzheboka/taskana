@@ -15,7 +15,6 @@ import pro.taskana.TaskanaEngineConfiguration;
 import pro.taskana.common.api.TaskanaRole;
 import pro.taskana.common.test.config.DataSourceGenerator;
 
-/** Test taskana's role configuration. */
 class TaskanaRoleConfigAccTest {
 
   @TempDir Path tempDir;
