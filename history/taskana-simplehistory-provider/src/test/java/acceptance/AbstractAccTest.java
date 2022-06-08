@@ -243,7 +243,7 @@ public abstract class AbstractAccTest {
   private static DataSource createDefaultDataSource() {
 
     String jdbcDriver = "org.h2.Driver";
-    String jdbcUrl = "jdbc:h2:mem:taskana;IGNORECASE=TRUE;LOCK_MODE=0";
+    String jdbcUrl = "jdbc:h2:mem:taskana;NON_KEYWORDS=KEY,VALUE;IGNORECASE=TRUE;LOCK_MODE=0";
     String dbUserName = "sa";
     String dbPassword = "sa";
     PooledDataSource ds =

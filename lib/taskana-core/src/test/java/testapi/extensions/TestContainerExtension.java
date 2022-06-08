@@ -104,6 +104,7 @@ public class TestContainerExtension implements AfterAllCallback, InvocationInter
             "org.h2.Driver",
             "jdbc:h2:mem:"
                 + UUID.randomUUID()
+                + ";NON_KEYWORDS=KEY,VALUE"
                 + ";LOCK_MODE=0;"
                 + "INIT=CREATE SCHEMA IF NOT EXISTS TASKANA\\;"
                 + "SET COLLATION DEFAULT_de_DE ",
