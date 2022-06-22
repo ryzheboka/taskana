@@ -1,13 +1,13 @@
 package pro.taskana.example.boot.security;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.jaasapi.JaasApiIntegrationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -16,7 +16,7 @@ import pro.taskana.common.rest.SpringSecurityToJaasFilter;
 
 /** Default basic configuration for taskana web example. */
 @EnableWebSecurity
-public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+public class BootWebSecurityConfigurer {
 
   private final LdapAuthoritiesPopulator ldapAuthoritiesPopulator;
   private final GrantedAuthoritiesMapper grantedAuthoritiesMapper;
@@ -48,40 +48,31 @@ public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     this.devMode = devMode;
   }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.ldapAuthentication()
-        .userDnPatterns(ldapUserDnPatterns)
-        .groupSearchBase(ldapGroupSearchBase)
-        .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator)
-        .authoritiesMapper(grantedAuthoritiesMapper)
-        .contextSource()
-        .url(ldapServerUrl + "/" + ldapBaseDn)
-        .and()
-        .passwordCompare()
-        .passwordAttribute("userPassword");
-  }
-
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    HttpSecurity httpSecurity =
-        http.authorizeRequests()
-            .antMatchers("/css/**", "/img/**")
-            .permitAll()
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/docs/**")
-            .permitAll()
-            .and()
-            .addFilter(jaasApiIntegrationFilter())
-            .addFilterAfter(new SpringSecurityToJaasFilter(), JaasApiIntegrationFilter.class);
-
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.authorizeRequests(
+        (authz) -> {
+          try {
+            authz
+                .antMatchers("/css/**", "/img/**")
+                .permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/docs/**")
+                .permitAll()
+                .and()
+                .addFilter(jaasApiIntegrationFilter())
+                .addFilterAfter(new SpringSecurityToJaasFilter(), JaasApiIntegrationFilter.class);
+          } catch (Exception e) {
+            throw new RuntimeException(e);
+          }
+        });
     if (enableCsrf) {
       CookieCsrfTokenRepository csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
       csrfTokenRepository.setCookiePath("/");
-      httpSecurity.csrf().csrfTokenRepository(csrfTokenRepository);
+      http.csrf().csrfTokenRepository(csrfTokenRepository);
     } else {
-      httpSecurity.csrf().disable().httpBasic();
+      http.csrf().disable().httpBasic();
     }
 
     if (devMode) {
@@ -95,6 +86,7 @@ public class BootWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     } else {
       addLoginPageConfiguration(http);
     }
+    return http.build();
   }
 
   protected void addLoginPageConfiguration(HttpSecurity http) throws Exception {

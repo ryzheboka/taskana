@@ -33,6 +33,7 @@ import pro.taskana.classification.rest.assembler.ClassificationSummaryRepresenta
 import pro.taskana.classification.rest.models.ClassificationRepresentationModel;
 import pro.taskana.classification.rest.models.ClassificationSummaryPagedRepresentationModel;
 import pro.taskana.common.api.BaseQuery.SortDirection;
+import pro.taskana.common.api.TaskanaEngine;
 import pro.taskana.common.api.exceptions.ConcurrencyException;
 import pro.taskana.common.api.exceptions.DomainNotFoundException;
 import pro.taskana.common.api.exceptions.InvalidArgumentException;
@@ -41,6 +42,7 @@ import pro.taskana.common.rest.QueryPagingParameter;
 import pro.taskana.common.rest.QuerySortBy;
 import pro.taskana.common.rest.QuerySortParameter;
 import pro.taskana.common.rest.RestEndpoints;
+import pro.taskana.common.rest.ldap.LdapClient;
 import pro.taskana.common.rest.util.QueryParamsValidator;
 
 /** Controller for all {@link Classification} related endpoints. */
@@ -51,6 +53,9 @@ public class ClassificationController {
   private final ClassificationService classificationService;
   private final ClassificationRepresentationModelAssembler modelAssembler;
   private final ClassificationSummaryRepresentationModelAssembler summaryModelAssembler;
+
+  @Autowired TaskanaEngine taskanaEngine;
+  @Autowired LdapClient ldapClient;
 
   @Autowired
   ClassificationController(

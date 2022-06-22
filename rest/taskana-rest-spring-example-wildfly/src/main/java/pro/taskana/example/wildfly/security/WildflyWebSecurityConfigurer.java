@@ -2,7 +2,7 @@ package pro.taskana.example.wildfly.security;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.jaasapi.JaasApiIntegrationFilter;
 
 /**
@@ -10,14 +10,21 @@ import org.springframework.security.web.jaasapi.JaasApiIntegrationFilter;
  * JAAS Security.
  */
 @EnableWebSecurity
-public class WildflyWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.addFilter(jaasApiIntegrationFilter())
-        .addFilterAfter(new ElytronToJaasFilter(), JaasApiIntegrationFilter.class)
-        .csrf()
-        .disable();
+public class WildflyWebSecurityConfigurer {
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    HttpSecurity security =
+        http.authorizeHttpRequests(
+            (authz) -> {
+              try {
+                http.addFilter(jaasApiIntegrationFilter())
+                    .addFilterAfter(new ElytronToJaasFilter(), JaasApiIntegrationFilter.class)
+                    .csrf()
+                    .disable();
+              } catch (Exception e) {
+                throw new RuntimeException(e);
+              }
+            });
+    return security.build();
   }
 
   protected JaasApiIntegrationFilter jaasApiIntegrationFilter() {
