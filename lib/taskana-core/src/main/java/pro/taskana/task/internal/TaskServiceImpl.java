@@ -98,9 +98,19 @@ public class TaskServiceImpl implements TaskService {
   private static final Logger LOGGER = LoggerFactory.getLogger(TaskServiceImpl.class);
 
   private final InternalTaskanaEngine taskanaEngine;
+
+  public InternalTaskanaEngine getTaskanaEngine() {
+    return taskanaEngine;
+  }
+
   private final WorkbasketService workbasketService;
   private final ClassificationService classificationService;
   private final TaskMapper taskMapper;
+
+  public TaskMapper getTaskMapper() {
+    return taskMapper;
+  }
+
   private final TaskTransferrer taskTransferrer;
   private final TaskCommentServiceImpl taskCommentService;
   private final ServiceLevelHandler serviceLevelHandler;

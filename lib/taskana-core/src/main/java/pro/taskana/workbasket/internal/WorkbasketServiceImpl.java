@@ -65,6 +65,11 @@ public class WorkbasketServiceImpl implements WorkbasketService {
   private final WorkbasketMapper workbasketMapper;
   private final DistributionTargetMapper distributionTargetMapper;
   private final WorkbasketAccessMapper workbasketAccessMapper;
+
+  public WorkbasketAccessMapper getWorkbasketAccessMapper() {
+    return workbasketAccessMapper;
+  }
+
   private final HistoryEventManager historyEventManager;
 
   public WorkbasketServiceImpl(

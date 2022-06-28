@@ -20,6 +20,10 @@ public class UserServiceImpl implements UserService {
   private final InternalTaskanaEngine taskanaEngine;
   private final UserMapper userMapper;
 
+  public UserMapper getUserMapper() {
+    return userMapper;
+  }
+
   public UserServiceImpl(InternalTaskanaEngine taskanaEngine, UserMapper userMapper) {
     this.taskanaEngine = taskanaEngine;
     this.userMapper = userMapper;
