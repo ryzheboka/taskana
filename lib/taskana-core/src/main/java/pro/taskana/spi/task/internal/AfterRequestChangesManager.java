@@ -32,9 +32,9 @@ public class AfterRequestChangesManager {
   }
 
   public Task afterRequestChanges(Task task) {
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Sending Task to AfterRequestChangesProvider service providers: {}", task);
-    }
+
+    LOGGER.debug("Sending Task to AfterRequestChangesProvider service providers: {}", task);
+
     for (AfterRequestChangesProvider serviceProvider : afterRequestChangesProviders) {
       try {
         task = serviceProvider.afterRequestChanges(task);

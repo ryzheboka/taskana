@@ -27,9 +27,9 @@ public class CreateTaskPreprocessorManager {
   }
 
   public Task processTaskBeforeCreation(Task taskToProcess) {
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Sending task to CreateTaskPreprocessor providers: {}", taskToProcess);
-    }
+
+    LOGGER.debug("Sending task to CreateTaskPreprocessor providers: {}", taskToProcess);
+
     createTaskPreprocessors.forEach(
         wrap(
             createTaskPreprocessor ->

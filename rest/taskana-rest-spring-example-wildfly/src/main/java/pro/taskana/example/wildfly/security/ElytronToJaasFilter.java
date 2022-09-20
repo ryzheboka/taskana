@@ -37,17 +37,16 @@ public class ElytronToJaasFilter extends GenericFilterBean {
       if (subject.getPrincipals(GroupPrincipal.class).isEmpty()) {
         roles.forEach(role -> subject.getPrincipals().add(new GroupPrincipal(role)));
       }
-      if (logger.isDebugEnabled()) {
-        logger.debug("Current JAAS subject after applying Elytron SecurityIdentity: " + subject);
-      }
+
+      logger.debug("Current JAAS subject after applying Elytron SecurityIdentity: " + subject);
     }
   }
 
   private Subject obtainSubject() {
     Subject subject = Subject.getSubject(AccessController.getContext());
-    if (logger.isDebugEnabled()) {
-      logger.debug("Current JAAS subject: " + subject);
-    }
+
+    logger.debug("Current JAAS subject: " + subject);
+
     return subject;
   }
 
@@ -57,9 +56,8 @@ public class ElytronToJaasFilter extends GenericFilterBean {
     if (current != null) {
       identity = current.getCurrentSecurityIdentity();
     }
-    if (logger.isDebugEnabled()) {
-      logger.debug("Current Elytron SecurityIdentity: " + identity);
-    }
+
+    logger.debug("Current Elytron SecurityIdentity: " + identity);
 
     return identity;
   }

@@ -32,9 +32,9 @@ public class BeforeRequestChangesManager {
   }
 
   public Task beforeRequestChanges(Task task) {
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Sending Task to BeforeRequestChangesProvider service providers: {}", task);
-    }
+
+    LOGGER.debug("Sending Task to BeforeRequestChangesProvider service providers: {}", task);
+
     for (BeforeRequestChangesProvider serviceProvider : beforeRequestChangesProviders) {
       try {
         task = serviceProvider.beforeRequestChanges(task);

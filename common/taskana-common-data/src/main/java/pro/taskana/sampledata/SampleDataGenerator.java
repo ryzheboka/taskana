@@ -90,13 +90,12 @@ public class SampleDataGenerator {
 
   private void runScripts(Consumer<ScriptRunner> consumer) {
     try (Connection connection = dataSource.getConnection()) {
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "Generating sample data for database of type '{}' with url '{}' and schema '{}'.",
-            connection.getMetaData().getDatabaseProductName(),
-            connection.getMetaData().getURL(),
-            schema);
-      }
+
+      LOGGER.debug(
+          "Generating sample data for database of type '{}' with url '{}' and schema '{}'.",
+          connection.getMetaData().getDatabaseProductName(),
+          connection.getMetaData().getURL(),
+          schema);
 
       StringWriter outWriter = new StringWriter();
       StringWriter errorWriter = new StringWriter();

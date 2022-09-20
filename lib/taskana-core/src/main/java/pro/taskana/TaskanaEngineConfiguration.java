@@ -186,35 +186,33 @@ public class TaskanaEngineConfiguration {
   }
 
   public void initTaskanaProperties(String propertiesFile, String separator) {
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "Reading taskana configuration from {} with separator {}", propertiesFile, separator);
-    }
+
+    LOGGER.debug(
+        "Reading taskana configuration from {} with separator {}", propertiesFile, separator);
+
     Properties props = loadProperties(propertiesFile);
     configureAnnotatedFields(this, separator, props);
     roleMap = configureRoles(separator, props, shouldUseLowerCaseForAccessIds());
     classificationCategoriesByTypeMap =
         configureClassificationCategoriesForType(props, classificationTypes);
 
-    if (LOGGER.isDebugEnabled()) {
-      roleMap.forEach((k, v) -> LOGGER.debug("Found Taskana RoleConfig {} : {} ", k, v));
-      LOGGER.debug(
-          "Configured number of task and workbasket updates per transaction: {}", jobBatchSize);
-      LOGGER.debug("Number of retries of failed task updates: {}", maxNumberOfJobRetries);
-      LOGGER.debug("CleanupJob configuration: first run at {}", cleanupJobFirstRun);
-      LOGGER.debug("CleanupJob configuration: runs every {}", cleanupJobRunEvery);
-      LOGGER.debug(
-          "CleanupJob configuration: minimum age of tasks to be cleanup up is {}",
-          cleanupJobMinimumAge);
-      LOGGER.debug(
-          "TaskCleanupJob configuration: all completed task with the "
-              + "same parent business property id {}",
-          taskCleanupJobAllCompletedSameParentBusiness);
-      LOGGER.debug("Configured classification categories : {}", classificationCategoriesByTypeMap);
-      LOGGER.debug("Configured domains: {}", domains);
-      LOGGER.debug("Configured classificationTypes: {}", classificationTypes);
-      LOGGER.debug("Configured custom Holidays : {}", customHolidays);
-    }
+    roleMap.forEach((k, v) -> LOGGER.debug("Found Taskana RoleConfig {} : {} ", k, v));
+    LOGGER.debug(
+        "Configured number of task and workbasket updates per transaction: {}", jobBatchSize);
+    LOGGER.debug("Number of retries of failed task updates: {}", maxNumberOfJobRetries);
+    LOGGER.debug("CleanupJob configuration: first run at {}", cleanupJobFirstRun);
+    LOGGER.debug("CleanupJob configuration: runs every {}", cleanupJobRunEvery);
+    LOGGER.debug(
+        "CleanupJob configuration: minimum age of tasks to be cleanup up is {}",
+        cleanupJobMinimumAge);
+    LOGGER.debug(
+        "TaskCleanupJob configuration: all completed task with the "
+            + "same parent business property id {}",
+        taskCleanupJobAllCompletedSameParentBusiness);
+    LOGGER.debug("Configured classification categories : {}", classificationCategoriesByTypeMap);
+    LOGGER.debug("Configured domains: {}", domains);
+    LOGGER.debug("Configured classificationTypes: {}", classificationTypes);
+    LOGGER.debug("Configured custom Holidays : {}", customHolidays);
   }
 
   public static DataSource createDefaultDataSource() {
@@ -514,8 +512,6 @@ public class TaskanaEngineConfiguration {
       LOGGER.error("Caught exception when attempting to initialize the schema name", ex);
     }
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Using schema name {}", this.getSchemaName());
-    }
+    LOGGER.debug("Using schema name {}", this.getSchemaName());
   }
 }

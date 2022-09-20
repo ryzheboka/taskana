@@ -22,9 +22,9 @@ public class MapTypeHandler extends BaseTypeHandler<Map<String, Object>> {
       PreparedStatement ps, int i, Map<String, Object> parameter, JdbcType jdbcType)
       throws SQLException {
     if (parameter != null && parameter.size() > 0) {
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Input-Map before serializing: {}", parameter);
-      }
+
+      LOGGER.debug("Input-Map before serializing: {}", parameter);
+
       // Convert Map to JSON string
       JSONObject jsonObj = new JSONObject(parameter);
       ps.setString(i, jsonObj.toString());

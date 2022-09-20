@@ -234,10 +234,9 @@ public class LdapClient {
     // Therefore we have to remove the base name from the dn before performing the lookup
     String nameWithoutBaseDn = getNameWithoutBaseDn(dn).toLowerCase();
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "Removed baseDN {} from given DN. New DN to be used: {}", getBaseDn(), nameWithoutBaseDn);
-    }
+    LOGGER.debug(
+        "Removed baseDN {} from given DN. New DN to be used: {}", getBaseDn(), nameWithoutBaseDn);
+
     return ldapTemplate.lookup(
         nameWithoutBaseDn, getLookUpUserAndGroupAttributesToReturn(), new DnContextMapper());
   }

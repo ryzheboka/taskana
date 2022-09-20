@@ -31,9 +31,8 @@ public class ReviewRequiredManager {
   }
 
   public boolean reviewRequired(Task task) {
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Sending Task to ReviewRequiredProvider service providers: {}", task);
-    }
+
+    LOGGER.debug("Sending Task to ReviewRequiredProvider service providers: {}", task);
 
     return reviewRequiredProviders.stream()
         .anyMatch(serviceProvider -> serviceProvider.reviewRequired(task));

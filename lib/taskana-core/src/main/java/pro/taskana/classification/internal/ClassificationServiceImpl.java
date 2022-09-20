@@ -219,9 +219,7 @@ public class ClassificationServiceImpl implements ClassificationService {
                 details));
       }
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Method createClassification created classification {}.", classificationImpl);
-      }
+      LOGGER.debug("Method createClassification created classification {}.", classificationImpl);
 
       if (!classification.getDomain().isEmpty()) {
         addClassificationToMasterDomain(classificationImpl);
@@ -276,10 +274,10 @@ public class ClassificationServiceImpl implements ClassificationService {
                 taskanaEngine.getEngine().getCurrentUserContext().getUserid(),
                 details));
       }
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "Method updateClassification() updated the classification {}.", classificationImpl);
-      }
+
+      LOGGER.debug(
+          "Method updateClassification() updated the classification {}.", classificationImpl);
+
       return classification;
     } finally {
       taskanaEngine.returnConnection();
@@ -376,19 +374,19 @@ public class ClassificationServiceImpl implements ClassificationService {
         this.getClassification(masterClassification.getKey(), masterClassification.getDomain());
         throw new ClassificationAlreadyExistException(masterClassification);
       } catch (ClassificationNotFoundException e) {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug(
-              "Method createClassification: Classification does not "
-                  + "exist in master domain. Classification {}.",
-              masterClassification);
-        }
+
+        LOGGER.debug(
+            "Method createClassification: Classification does not "
+                + "exist in master domain. Classification {}.",
+            masterClassification);
+
         classificationMapper.insert(masterClassification);
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug(
-              "Method createClassification: Classification created in "
-                  + "master-domain, too. Classification {}.",
-              masterClassification);
-        }
+
+        LOGGER.debug(
+            "Method createClassification: Classification created in "
+                + "master-domain, too. Classification {}.",
+            masterClassification);
+
       } catch (ClassificationAlreadyExistException ex) {
         LOGGER.warn(
             "Method createClassification: Classification does already exist "

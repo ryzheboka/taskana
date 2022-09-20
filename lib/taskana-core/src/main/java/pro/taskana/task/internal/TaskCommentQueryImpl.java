@@ -296,9 +296,9 @@ public class TaskCommentQueryImpl implements TaskCommentQuery {
 
     if (taskIdIn != null) {
       if (taskanaEngine.getEngine().isUserInRole(TaskanaRole.ADMIN, TaskanaRole.TASK_ADMIN)) {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("Skipping permissions check since user is in role ADMIN or TASK_ADMIN.");
-        }
+
+        LOGGER.debug("Skipping permissions check since user is in role ADMIN or TASK_ADMIN.");
+
         return;
       }
 

@@ -27,9 +27,7 @@ public class LogoutController {
 
   public RedirectView logout(HttpServletRequest request) {
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Logging out...");
-    }
+    LOGGER.debug("Logging out...");
 
     if (request.getSession(false) != null) {
       request.getSession(false).invalidate(); // remove session.

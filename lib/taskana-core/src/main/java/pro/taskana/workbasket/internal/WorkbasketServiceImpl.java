@@ -168,9 +168,9 @@ public class WorkbasketServiceImpl implements WorkbasketService {
                 taskanaEngine.getEngine().getCurrentUserContext().getUserid(),
                 details));
       }
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Method createWorkbasket() created Workbasket '{}'", workbasket);
-      }
+
+      LOGGER.debug("Method createWorkbasket() created Workbasket '{}'", workbasket);
+
       return workbasket;
     } finally {
       taskanaEngine.returnConnection();
@@ -226,10 +226,8 @@ public class WorkbasketServiceImpl implements WorkbasketService {
                 details));
       }
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "Method updateWorkbasket() updated workbasket '{}'", workbasketImplToUpdate.getId());
-      }
+      LOGGER.debug(
+          "Method updateWorkbasket() updated workbasket '{}'", workbasketImplToUpdate.getId());
 
       return workbasketImplToUpdate;
     } finally {
@@ -290,15 +288,15 @@ public class WorkbasketServiceImpl implements WorkbasketService {
                   taskanaEngine.getEngine().getCurrentUserContext().getUserid(),
                   details));
         }
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug(
-              "Method createWorkbasketAccessItem() created workbaskteAccessItem {}", accessItem);
-        }
+
+        LOGGER.debug(
+            "Method createWorkbasketAccessItem() created workbaskteAccessItem {}", accessItem);
+
       } catch (PersistenceException e) {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug(
-              "when trying to insert WorkbasketAccessItem {} caught exception", accessItem, e);
-        }
+
+        LOGGER.debug(
+            "when trying to insert WorkbasketAccessItem {} caught exception", accessItem, e);
+
         Stream<String> accessItemExistsIdentifier =
             Stream.of(
                 "SQLCODE=-803", // DB2
@@ -352,10 +350,9 @@ public class WorkbasketServiceImpl implements WorkbasketService {
                 details));
       }
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "Method updateWorkbasketAccessItem() updated workbasketAccessItem {}", accessItem);
-      }
+      LOGGER.debug(
+          "Method updateWorkbasketAccessItem() updated workbasketAccessItem {}", accessItem);
+
       return accessItem;
     } finally {
       taskanaEngine.returnConnection();
@@ -390,11 +387,10 @@ public class WorkbasketServiceImpl implements WorkbasketService {
                 details));
       }
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "Method deleteWorkbasketAccessItem() deleted workbasketAccessItem wit Id {}",
-            accessItemId);
-      }
+      LOGGER.debug(
+          "Method deleteWorkbasketAccessItem() deleted workbasketAccessItem wit Id {}",
+          accessItemId);
+
     } finally {
       taskanaEngine.returnConnection();
     }
@@ -626,13 +622,12 @@ public class WorkbasketServiceImpl implements WorkbasketService {
           // check for existence of target workbasket
           getWorkbasket(targetId);
           distributionTargetMapper.insert(sourceWorkbasketId, targetId);
-          if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(
-                "Method setDistributionTargets() created distribution target "
-                    + "for source '{}' and target {}",
-                sourceWorkbasketId,
-                targetId);
-          }
+
+          LOGGER.debug(
+              "Method setDistributionTargets() created distribution target "
+                  + "for source '{}' and target {}",
+              sourceWorkbasketId,
+              targetId);
         }
 
         if (historyEventManager.isEnabled() && !targetWorkbasketIds.isEmpty()) {
@@ -652,12 +647,11 @@ public class WorkbasketServiceImpl implements WorkbasketService {
 
     } finally {
       taskanaEngine.returnConnection();
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "setDistributionTargets set {} distribution targets to source workbasket {} ",
-            targetWorkbasketIds == null ? 0 : targetWorkbasketIds.size(),
-            sourceWorkbasketId);
-      }
+
+      LOGGER.debug(
+          "setDistributionTargets set {} distribution targets to source workbasket {} ",
+          targetWorkbasketIds == null ? 0 : targetWorkbasketIds.size(),
+          sourceWorkbasketId);
     }
   }
 
@@ -677,11 +671,11 @@ public class WorkbasketServiceImpl implements WorkbasketService {
           distributionTargetMapper.getNumberOfDistributionTargets(
               sourceWorkbasketId, targetWorkbasketId);
       if (numOfDistTargets > 0) {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug(
-              "addDistributionTarget detected that the specified "
-                  + "distribution target exists already. Doing nothing.");
-        }
+
+        LOGGER.debug(
+            "addDistributionTarget detected that the specified "
+                + "distribution target exists already. Doing nothing.");
+
       } else {
         distributionTargetMapper.insert(sourceWorkbasketId, targetWorkbasketId);
 
@@ -697,12 +691,12 @@ public class WorkbasketServiceImpl implements WorkbasketService {
                   taskanaEngine.getEngine().getCurrentUserContext().getUserid(),
                   details));
         }
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug(
-              "addDistributionTarget inserted distribution target sourceId = {}, targetId = {}",
-              sourceWorkbasketId,
-              targetWorkbasketId);
-        }
+
+        LOGGER.debug(
+            "addDistributionTarget inserted distribution target sourceId = {}, targetId = {}",
+            sourceWorkbasketId,
+            targetWorkbasketId);
+
         sourceWorkbasket.setModified(Instant.now());
         workbasketMapper.update(sourceWorkbasket);
       }
@@ -745,32 +739,29 @@ public class WorkbasketServiceImpl implements WorkbasketService {
                     details));
           }
         }
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug(
-              "removeDistributionTarget deleted distribution target sourceId = {}, targetId = {}",
-              sourceWorkbasketId,
-              targetWorkbasketId);
-        }
+
+        LOGGER.debug(
+            "removeDistributionTarget deleted distribution target sourceId = {}, targetId = {}",
+            sourceWorkbasketId,
+            targetWorkbasketId);
 
         try {
           WorkbasketImpl sourceWorkbasket = (WorkbasketImpl) getWorkbasket(sourceWorkbasketId);
           sourceWorkbasket.setModified(Instant.now());
           workbasketMapper.update(sourceWorkbasket);
         } catch (WorkbasketNotFoundException e) {
-          if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(
-                "removeDistributionTarget found that the source workbasket {} "
-                    + "doesn't exist. Ignoring the request... ",
-                sourceWorkbasketId);
-          }
+
+          LOGGER.debug(
+              "removeDistributionTarget found that the source workbasket {} "
+                  + "doesn't exist. Ignoring the request... ",
+              sourceWorkbasketId);
         }
 
       } else {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug(
-              "removeDistributionTarget detected that the specified distribution "
-                  + "target doesn't exist. Doing nothing...");
-        }
+
+        LOGGER.debug(
+            "removeDistributionTarget detected that the specified distribution "
+                + "target doesn't exist. Doing nothing...");
       }
     } finally {
       taskanaEngine.returnConnection();
@@ -792,9 +783,9 @@ public class WorkbasketServiceImpl implements WorkbasketService {
       try {
         workbasketToDelete = this.getWorkbasket(workbasketId);
       } catch (WorkbasketNotFoundException ex) {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("Workbasket with workbasketId = {} is already deleted?", workbasketId);
-        }
+
+        LOGGER.debug("Workbasket with workbasketId = {} is already deleted?", workbasketId);
+
         throw ex;
       }
 
@@ -1029,24 +1020,24 @@ public class WorkbasketServiceImpl implements WorkbasketService {
 
     // Skip permission check if security is not enabled
     if (!taskanaEngine.getEngine().getConfiguration().isSecurityEnabled()) {
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Skipping permissions check since security is disabled.");
-      }
+
+      LOGGER.debug("Skipping permissions check since security is disabled.");
+
       return true;
     }
 
     if (Arrays.asList(requestedPermissions).contains(WorkbasketPermission.READ)) {
 
       if (taskanaEngine.getEngine().isUserInRole(TaskanaRole.ADMIN)) {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("Skipping read permissions check since user is in role ADMIN");
-        }
+
+        LOGGER.debug("Skipping read permissions check since user is in role ADMIN");
+
         return true;
       }
     } else if (taskanaEngine.getEngine().isUserInRole(TaskanaRole.ADMIN, TaskanaRole.TASK_ADMIN)) {
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Skipping permissions check since user is in role ADMIN or TASK_ADMIN.");
-      }
+
+      LOGGER.debug("Skipping permissions check since user is in role ADMIN or TASK_ADMIN.");
+
       return true;
     }
 

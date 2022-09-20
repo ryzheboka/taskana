@@ -38,11 +38,9 @@ public class SimpleHistoryServiceImpl implements TaskanaHistory {
 
     this.taskanaHistoryEngine = getTaskanaEngine(taskanaEngine);
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "Simple history service implementation initialized with schemaName: {} ",
-          taskanaEngine.getConfiguration().getSchemaName());
-    }
+    LOGGER.debug(
+        "Simple history service implementation initialized with schemaName: {} ",
+        taskanaEngine.getConfiguration().getSchemaName());
 
     this.taskHistoryEventMapper =
         this.taskanaHistoryEngine.getSqlSession().getMapper(TaskHistoryEventMapper.class);

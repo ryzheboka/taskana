@@ -245,9 +245,8 @@ public class TaskServiceImpl implements TaskService {
         throw new InvalidArgumentException("taskId must be empty when creating a task");
       }
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Task {} cannot be found, so it can be created.", task.getId());
-      }
+      LOGGER.debug("Task {} cannot be found, so it can be created.", task.getId());
+
       Workbasket workbasket;
 
       if (task.getWorkbasketSummary() != null && task.getWorkbasketSummary().getId() != null) {
@@ -293,9 +292,9 @@ public class TaskServiceImpl implements TaskService {
 
       try {
         this.taskMapper.insert(task);
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("Method createTask() created Task '{}'.", task.getId());
-        }
+
+        LOGGER.debug("Method createTask() created Task '{}'.", task.getId());
+
         if (historyEventManager.isEnabled()) {
 
           String details =
@@ -429,9 +428,9 @@ public class TaskServiceImpl implements TaskService {
       task.setRead(isRead);
       task.setModified(Instant.now());
       taskMapper.update(task);
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Method setTaskRead() set read property of Task '{}' to {} ", task, isRead);
-      }
+
+      LOGGER.debug("Method setTaskRead() set read property of Task '{}' to {} ", task, isRead);
+
       return task;
     } finally {
       taskanaEngine.returnConnection();
@@ -521,9 +520,7 @@ public class TaskServiceImpl implements TaskService {
 
       taskMapper.update(newTaskImpl);
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Method updateTask() updated task '{}' for user '{}'.", task.getId(), userId);
-      }
+      LOGGER.debug("Method updateTask() updated task '{}' for user '{}'.", task.getId(), userId);
 
       if (historyEventManager.isEnabled()) {
 
@@ -678,14 +675,12 @@ public class TaskServiceImpl implements TaskService {
       if (!taskSummaries.isEmpty()) {
         changedTasks = taskSummaries.stream().map(TaskSummary::getId).collect(Collectors.toList());
         taskMapper.updateTasks(changedTasks, updated, fieldSelector);
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("updateTasks() updated the following tasks: {} ", changedTasks);
-        }
+
+        LOGGER.debug("updateTasks() updated the following tasks: {} ", changedTasks);
 
       } else {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("updateTasks() found no tasks for update ");
-        }
+
+        LOGGER.debug("updateTasks() found no tasks for update ");
       }
       return changedTasks;
     } finally {
@@ -712,14 +707,12 @@ public class TaskServiceImpl implements TaskService {
       if (!taskSummaries.isEmpty()) {
         changedTasks = taskSummaries.stream().map(TaskSummary::getId).collect(Collectors.toList());
         taskMapper.updateTasks(changedTasks, updatedTask, fieldSelector);
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("updateTasks() updated the following tasks: {} ", changedTasks);
-        }
+
+        LOGGER.debug("updateTasks() updated the following tasks: {} ", changedTasks);
 
       } else {
-        if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("updateTasks() found no tasks for update ");
-        }
+
+        LOGGER.debug("updateTasks() found no tasks for update ");
       }
       return changedTasks;
     } finally {
@@ -811,14 +804,12 @@ public class TaskServiceImpl implements TaskService {
         taskMapper.setOwnerOfTasks(owner, taskIdsToUpdate.getLeft(), Instant.now());
       }
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "Received the Request to set owner on {} tasks, actually modified tasks = {}"
-                + ", could not set owner on {} tasks.",
-            taskIds.size(),
-            taskIdsToUpdate.getLeft().size(),
-            bulkLog.getFailedIds().size());
-      }
+      LOGGER.debug(
+          "Received the Request to set owner on {} tasks, actually modified tasks = {}"
+              + ", could not set owner on {} tasks.",
+          taskIds.size(),
+          taskIdsToUpdate.getLeft().size(),
+          bulkLog.getFailedIds().size());
 
       return bulkLog;
     } finally {
@@ -930,12 +921,11 @@ public class TaskServiceImpl implements TaskService {
             .map(Pair::getLeft)
             .collect(Collectors.toList());
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "the following tasks are affected by the update of classification {} : {}",
-          classificationId,
-          affectedTaskIds);
-    }
+    LOGGER.debug(
+        "the following tasks are affected by the update of classification {} : {}",
+        classificationId,
+        affectedTaskIds);
+
     return affectedTaskIds;
   }
 
@@ -1059,12 +1049,10 @@ public class TaskServiceImpl implements TaskService {
       taskIds = null;
     }
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "augmentTaskSummariesByContainedSummariesWithoutPartitioning() with sublist {} "
-              + "about to query for attachmentSummaries ",
-          taskSummaries);
-    }
+    LOGGER.debug(
+        "augmentTaskSummariesByContainedSummariesWithoutPartitioning() with sublist {} "
+            + "about to query for attachmentSummaries ",
+        taskSummaries);
 
     List<AttachmentSummaryImpl> attachmentSummaries =
         attachmentMapper.findAttachmentSummariesByTaskIds(taskIds);
@@ -1189,12 +1177,12 @@ public class TaskServiceImpl implements TaskService {
     task.setCompleted(now);
     task.setState(targetState);
     taskMapper.update(task);
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "Task '{}' cancelled by user '{}'.",
-          taskId,
-          taskanaEngine.getEngine().getCurrentUserContext().getUserid());
-    }
+
+    LOGGER.debug(
+        "Task '{}' cancelled by user '{}'.",
+        taskId,
+        taskanaEngine.getEngine().getCurrentUserContext().getUserid());
+
     return task;
   }
 
@@ -1213,9 +1201,9 @@ public class TaskServiceImpl implements TaskService {
       checkPreconditionsForClaimTask(task, forceClaim);
       claimActionsOnTask(task, userId, now);
       taskMapper.update(task);
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Task '{}' claimed by user '{}'.", taskId, userId);
-      }
+
+      LOGGER.debug("Task '{}' claimed by user '{}'.", taskId, userId);
+
       if (historyEventManager.isEnabled()) {
         String changeDetails =
             ObjectAttributeChangeDetector.determineChangesInAttributes(oldTask, task);
@@ -1261,9 +1249,9 @@ public class TaskServiceImpl implements TaskService {
       task.setModified(Instant.now());
 
       taskMapper.requestReview(task);
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Requested review for Task '{}' by user '{}'.", taskId, userId);
-      }
+
+      LOGGER.debug("Requested review for Task '{}' by user '{}'.", taskId, userId);
+
       if (historyEventManager.isEnabled()) {
         String changeDetails =
             ObjectAttributeChangeDetector.determineChangesInAttributes(oldTask, task);
@@ -1311,9 +1299,9 @@ public class TaskServiceImpl implements TaskService {
       task.setModified(Instant.now());
 
       taskMapper.requestChanges(task);
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Requested changes for Task '{}' by user '{}'.", taskId, userId);
-      }
+
+      LOGGER.debug("Requested changes for Task '{}' by user '{}'.", taskId, userId);
+
       if (historyEventManager.isEnabled()) {
         String changeDetails =
             ObjectAttributeChangeDetector.determineChangesInAttributes(oldTask, task);
@@ -1434,9 +1422,9 @@ public class TaskServiceImpl implements TaskService {
       Instant now = Instant.now();
       cancelClaimActionsOnTask(task, now);
       taskMapper.update(task);
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Task '{}' unclaimed by user '{}'.", taskId, userId);
-      }
+
+      LOGGER.debug("Task '{}' unclaimed by user '{}'.", taskId, userId);
+
       if (historyEventManager.isEnabled()) {
         String changeDetails =
             ObjectAttributeChangeDetector.determineChangesInAttributes(oldTask, task);
@@ -1481,9 +1469,9 @@ public class TaskServiceImpl implements TaskService {
       Instant now = Instant.now();
       completeActionsOnTask(task, userId, now);
       taskMapper.update(task);
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Task '{}' completed by user '{}'.", taskId, userId);
-      }
+
+      LOGGER.debug("Task '{}' completed by user '{}'.", taskId, userId);
+
       if (historyEventManager.isEnabled()) {
         historyEventManager.createEvent(
             new TaskCompletedEvent(
@@ -1525,9 +1513,8 @@ public class TaskServiceImpl implements TaskService {
         historyEventManager.deleteEvents(Collections.singletonList(taskId));
       }
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Task {} deleted.", taskId);
-      }
+      LOGGER.debug("Task {} deleted.", taskId);
+
     } finally {
       taskanaEngine.returnConnection();
     }
@@ -1807,10 +1794,9 @@ public class TaskServiceImpl implements TaskService {
   private List<ClassificationSummary> queryClassificationsForTasksAndAttachments(
       Set<String> classificationIds) {
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "queryClassificationsForTasksAndAttachments() about to query classifications and exit");
-    }
+    LOGGER.debug(
+        "queryClassificationsForTasksAndAttachments() about to query classifications and exit");
+
     return this.classificationService
         .createClassificationQuery()
         .idIn(classificationIds.toArray(new String[0]))
@@ -1819,9 +1805,8 @@ public class TaskServiceImpl implements TaskService {
 
   private List<WorkbasketSummary> queryWorkbasketsForTasks(Set<String> workbasketIds) {
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("queryWorkbasketsForTasks() about to query workbaskets and exit");
-    }
+    LOGGER.debug("queryWorkbasketsForTasks() about to query workbaskets and exit");
+
     // perform classification query
     return this.workbasketService
         .createWorkbasketQuery()

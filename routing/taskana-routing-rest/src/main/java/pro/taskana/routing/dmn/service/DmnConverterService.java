@@ -79,9 +79,7 @@ public class DmnConverterService {
         DmnValidatorManager.getInstance(taskanaEngine).validate(patchedModel);
       }
 
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(String.format("Persisting generated DMN table to %s", dmnUploadPath));
-      }
+      LOGGER.debug(String.format("Persisting generated DMN table to %s", dmnUploadPath));
 
       File uploadDestinationFile = new File(dmnUploadPath);
       Dmn.writeModelToFile(uploadDestinationFile, patchedModel);

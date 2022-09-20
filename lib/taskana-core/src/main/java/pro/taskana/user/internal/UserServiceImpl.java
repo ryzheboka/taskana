@@ -47,9 +47,7 @@ public class UserServiceImpl implements UserService {
     validateAndPopulateFields(userToCreate);
     insertIntoDatabase(userToCreate);
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Method createUser() created User '{}'.", userToCreate);
-    }
+    LOGGER.debug("Method createUser() created User '{}'.", userToCreate);
 
     return userToCreate;
   }
@@ -60,9 +58,8 @@ public class UserServiceImpl implements UserService {
     getUser(userToUpdate.getId());
 
     taskanaEngine.executeInDatabaseConnection(() -> userMapper.update((UserImpl) userToUpdate));
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Method updateUser() updated User '{}'.", userToUpdate);
-    }
+
+    LOGGER.debug("Method updateUser() updated User '{}'.", userToUpdate);
 
     return userToUpdate;
   }
@@ -73,9 +70,8 @@ public class UserServiceImpl implements UserService {
     getUser(id);
 
     taskanaEngine.executeInDatabaseConnection(() -> userMapper.delete(id));
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Method deleteUser() deleted User with id '{}'.", id);
-    }
+
+    LOGGER.debug("Method deleteUser() deleted User with id '{}'.", id);
   }
 
   private void insertIntoDatabase(User userToCreate) throws UserAlreadyExistException {

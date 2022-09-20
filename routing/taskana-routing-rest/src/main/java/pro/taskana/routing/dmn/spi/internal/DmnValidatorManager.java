@@ -43,9 +43,8 @@ public class DmnValidatorManager {
 
   public void validate(DmnModelInstance dmnModelInstanceToValidate) {
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Sending DmnModelInstance to DmnValidators: {}", dmnModelInstanceToValidate);
-    }
+    LOGGER.debug("Sending DmnModelInstance to DmnValidators: {}", dmnModelInstanceToValidate);
+
     serviceLoader.forEach(
         dmnValidator -> {
           try {

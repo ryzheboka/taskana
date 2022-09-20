@@ -40,10 +40,8 @@ public class LogfileHistoryServiceImpl implements TaskanaHistory {
       historyLogger = LOGGER;
     }
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "LogfileHistoryServiceProvider initialized with name: {} ", historyLogger.getName());
-    }
+    LOGGER.debug(
+        "LogfileHistoryServiceProvider initialized with name: {} ", historyLogger.getName());
   }
 
   @Override

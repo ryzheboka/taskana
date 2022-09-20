@@ -95,10 +95,10 @@ public class WorkbasketCleanupJob extends AbstractTaskanaJob {
 
     BulkOperationResults<String, TaskanaException> results =
         taskanaEngineImpl.getWorkbasketService().deleteWorkbaskets(workbasketsToBeDeleted);
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(
-          "{} workbasket deleted.", workbasketsToBeDeleted.size() - results.getFailedIds().size());
-    }
+
+    LOGGER.debug(
+        "{} workbasket deleted.", workbasketsToBeDeleted.size() - results.getFailedIds().size());
+
     for (String failedId : results.getFailedIds()) {
       LOGGER.warn(
           "Workbasket with id {} could not be deleted. Reason:",

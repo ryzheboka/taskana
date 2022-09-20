@@ -205,9 +205,7 @@ public class HistoryCleanupJob extends AbstractTaskanaJob {
 
     simpleHistoryService.deleteHistoryEventsByTaskIds(taskIdsToDeleteHistoryEventsFor);
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("{} events deleted.", deletedTasksCount);
-    }
+    LOGGER.debug("{} events deleted.", deletedTasksCount);
 
     return deletedTasksCount;
   }
@@ -241,12 +239,10 @@ public class HistoryCleanupJob extends AbstractTaskanaJob {
       }
     }
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Configured number of history events per transaction: {}", batchSize);
-      LOGGER.debug("HistoryCleanupJob configuration: runs every {}", runEvery);
-      LOGGER.debug(
-          "HistoryCleanupJob configuration: minimum age of history events to be cleanup up is {}",
-          minimumAge);
-    }
+    LOGGER.debug("Configured number of history events per transaction: {}", batchSize);
+    LOGGER.debug("HistoryCleanupJob configuration: runs every {}", runEvery);
+    LOGGER.debug(
+        "HistoryCleanupJob configuration: minimum age of history events to be cleanup up is {}",
+        minimumAge);
   }
 }

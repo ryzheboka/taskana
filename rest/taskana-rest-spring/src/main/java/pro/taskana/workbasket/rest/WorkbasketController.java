@@ -166,15 +166,15 @@ public class WorkbasketController {
     boolean workbasketDeleted = workbasketService.deleteWorkbasket(workbasketId);
 
     if (workbasketDeleted) {
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Workbasket successfully deleted.");
-      }
+
+      LOGGER.debug("Workbasket successfully deleted.");
+
       return ResponseEntity.noContent().build();
     } else {
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "Workbasket was only marked for deletion and will be physically deleted later on.");
-      }
+
+      LOGGER.debug(
+          "Workbasket was only marked for deletion and will be physically deleted later on.");
+
       return ResponseEntity.accepted().build();
     }
   }

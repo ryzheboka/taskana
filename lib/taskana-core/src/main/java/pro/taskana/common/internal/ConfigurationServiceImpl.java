@@ -42,9 +42,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         CheckedRunnable.wrap(
             () -> {
               if (mapper.getAllCustomAttributes(true) == null) {
-                if (LOGGER.isDebugEnabled()) {
-                  LOGGER.debug("custom attributes are not set. Setting default value");
-                }
+
+                LOGGER.debug("custom attributes are not set. Setting default value");
+
                 setAllCustomAttributes(generateDefaultCustomAttributes());
               }
             }));
@@ -69,16 +69,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
   private void initializeSecurityEnabled(boolean securityEnabled) {
 
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Security-mode is not yet set. Setting security flag to {}", securityEnabled);
-    }
+    LOGGER.debug("Security-mode is not yet set. Setting security flag to {}", securityEnabled);
+
     Boolean isStillSecurityEnabled = mapper.isSecurityEnabled(true);
     if (isStillSecurityEnabled == null) {
       mapper.setSecurityEnabled(securityEnabled);
       isStillSecurityEnabled = Boolean.valueOf(securityEnabled);
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Successfully set security mode to {}", securityEnabled);
-      }
+
+      LOGGER.debug("Successfully set security mode to {}", securityEnabled);
     }
     if (isStillSecurityEnabled && !securityEnabled) {
       LOGGER.error("Tried to start TASKANA in unsecured mode while secured mode is enforced!");

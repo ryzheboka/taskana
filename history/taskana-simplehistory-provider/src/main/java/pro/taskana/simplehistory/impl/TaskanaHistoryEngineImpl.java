@@ -87,14 +87,13 @@ public class TaskanaHistoryEngineImpl implements TaskanaHistoryEngine {
 
   public void checkRoleMembership(TaskanaRole... roles) throws NotAuthorizedException {
     if (!isUserInRole(roles)) {
-      if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug(
-            "Throwing NotAuthorizedException because accessIds {} are not member of roles {}",
-            taskanaEngine.getCurrentUserContext().getAccessIds(),
-            Arrays.toString(roles));
-      }
-      throw new MismatchedRoleException(taskanaEngine.getCurrentUserContext().getUserid(), roles);
+
+      LOGGER.debug(
+          "Throwing NotAuthorizedException because accessIds {} are not member of roles {}",
+          taskanaEngine.getCurrentUserContext().getAccessIds(),
+          Arrays.toString(roles));
     }
+    throw new MismatchedRoleException(taskanaEngine.getCurrentUserContext().getUserid(), roles);
   }
 
   public TaskanaEngineConfiguration getConfiguration() {

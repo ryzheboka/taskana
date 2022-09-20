@@ -90,14 +90,14 @@ class ServiceLevelHandler {
   BulkLog setPlannedPropertyOfTasksImpl(Instant planned, List<MinimalTaskSummary> tasks) {
     BulkLog bulkLog = new BulkLog();
     List<AttachmentSummaryImpl> attachments = getAttachmentSummaries(tasks);
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("found attachments {}.", attachments);
-    }
+
+    LOGGER.debug("found attachments {}.", attachments);
+
     List<ClassificationSummary> allInvolvedClassifications =
         findAllClassificationsReferencedByTasksAndAttachments(tasks, attachments);
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("found involved classifications {}.", allInvolvedClassifications);
-    }
+
+    LOGGER.debug("found involved classifications {}.", allInvolvedClassifications);
+
     List<ClassificationWithServiceLevelResolved> allInvolvedClassificationsWithDuration =
         resolveDurationsInClassifications(allInvolvedClassifications);
     Map<Duration, List<String>> durationToTaskIdsMap =
