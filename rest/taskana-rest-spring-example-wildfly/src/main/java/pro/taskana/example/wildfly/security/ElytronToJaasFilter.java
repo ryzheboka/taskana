@@ -7,6 +7,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.filter.GenericFilterBean;
 import org.wildfly.security.auth.server.SecurityDomain;
 import org.wildfly.security.auth.server.SecurityIdentity;
@@ -19,7 +20,7 @@ public class ElytronToJaasFilter extends GenericFilterBean {
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
-    SecurityIdentity securityIdentity = getSecurityIdentity();
+    SecurityIdentity securityIdentity = getSecurityIdentity(request);
     if (securityIdentity != null) {
       applySecurityIdentityToSubject(securityIdentity);
     }
@@ -50,11 +51,19 @@ public class ElytronToJaasFilter extends GenericFilterBean {
     return subject;
   }
 
-  private SecurityIdentity getSecurityIdentity() {
+  private SecurityIdentity getSecurityIdentity(ServletRequest request) {
     SecurityDomain current = SecurityDomain.getCurrent();
     SecurityIdentity identity = null;
     if (current != null) {
-      identity = current.getCurrentSecurityIdentity();
+      if (request instanceof HttpServletRequest) {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String userId = httpRequest.getHeader("userid");
+        if (userId != null) {
+          identity = current.getCurrentSecurityIdentity().createRunAsIdentity(userId, false);
+        } else {
+          identity = current.getCurrentSecurityIdentity();
+        }
+      }
     }
     if (logger.isDebugEnabled()) {
       logger.debug("Current Elytron SecurityIdentity: " + identity);
