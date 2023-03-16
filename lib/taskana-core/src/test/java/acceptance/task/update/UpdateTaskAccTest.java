@@ -41,6 +41,23 @@ import pro.taskana.task.internal.models.TaskImpl;
 @ExtendWith(JaasExtension.class)
 class UpdateTaskAccTest extends AbstractAccTest {
 
+  @WithAccessId(user = "teamlead-1")
+  @Test
+  void should_UpdateTaskWithAdditionalUserInfo() throws Exception {
+    taskanaEngine.getConfiguration().setAddAdditionalUserInfo(true);
+    Task task = taskService.getTask("TKI:000000000000000000000000000000000003");
+    task.setClassificationKey("T2100");
+    task.setOwner("user-1-1");
+
+    Task updatedTask = taskService.updateTask(task);
+
+    assertThat(updatedTask).isNotNull();
+    assertThat(updatedTask.getOwner()).isEqualTo("user-1-1");
+    assertThat(updatedTask.getOwnerLongName()).isEqualTo("Mustermann, Max - (user-1-1)");
+
+    taskanaEngine.getConfiguration().setAddAdditionalUserInfo(false);
+  }
+
   @WithAccessId(user = "user-1-1")
   @Test
   void should_UpdatePrimaryObjectReferenceOfTask_When_Requested() throws Exception {

@@ -57,6 +57,18 @@ class TransferTaskAccTest extends AbstractAccTest {
   }
 
   @WithAccessId(user = "admin")
+  @Test
+  void should_UpdateTaskWithAdditionalUserInfo() throws Exception {
+    taskanaEngine.getConfiguration().setAddAdditionalUserInfo(true);
+
+    Task transferredTask = taskService.transfer("TKI:000000000000000000000000000000000001", "WBI:100000000000000000000000000000000004");
+
+    assertThat(transferredTask).isNotNull();
+    assertThat(transferredTask.getOwner()).isEqualTo("teamlead-1");
+    assertThat(transferredTask.getOwnerLongName()).isEqualTo("Toll, Titus - (teamlead-1)");
+
+    taskanaEngine.getConfiguration().setAddAdditionalUserInfo(false);
+  }  @WithAccessId(user = "admin")
   @TestFactory
   Stream<DynamicTest> should_SetStateCorrectly_When_TransferringSingleTask() {
     List<Pair<String, TaskState>> testCases =

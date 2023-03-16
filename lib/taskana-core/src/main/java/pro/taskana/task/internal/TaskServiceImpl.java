@@ -2053,6 +2053,14 @@ public class TaskServiceImpl implements TaskService {
       throw new InvalidTaskStateException(
           oldTaskImpl.getId(), oldTaskImpl.getState(), TaskState.READY, TaskState.READY_FOR_REVIEW);
     }
+    if (isOwnerChanged && newTaskImpl1.getOwner() != null
+        && !newTaskImpl1.getOwner().isEmpty()
+        && taskanaEngine.getEngine().getConfiguration().getAddAdditionalUserInfo()) {
+      User owner = userMapper.findById(newTaskImpl1.getOwner());
+      if (owner != null) {
+        newTaskImpl1.setOwnerLongName(owner.getLongName());
+      }
+    }
   }
 
   private void updateClassificationSummary(TaskImpl newTaskImpl, TaskImpl oldTaskImpl)
