@@ -38,6 +38,7 @@ public class TaskSummaryImpl implements TaskSummary {
   protected int manualPriority = DEFAULT_MANUAL_PRIORITY;
   protected TaskState state;
   protected ClassificationSummary classificationSummary;
+  protected Integer numberOfHiddenTasks;
   protected WorkbasketSummary workbasketSummary;
   protected String businessProcessId;
   protected String parentBusinessProcessId;
@@ -210,6 +211,12 @@ public class TaskSummaryImpl implements TaskSummary {
 
   public void setReceived(Instant received) {
     this.received = received != null ? received.truncatedTo(ChronoUnit.MILLIS) : null;
+  }
+
+
+  @Override
+  public Integer getNumberOfHiddenTasks() {
+    return this.numberOfHiddenTasks;
   }
 
   @Override
@@ -484,6 +491,10 @@ public class TaskSummaryImpl implements TaskSummary {
   // auxiliary method to allow mybatis access to workbasketSummary
   public void setWorkbasketSummaryImpl(WorkbasketSummaryImpl workbasketSummary) {
     setWorkbasketSummary(workbasketSummary);
+  }
+
+  public void setNumberOfHiddenTasks(Integer n) {
+    numberOfHiddenTasks = n;
   }
 
   public void addAttachmentSummary(AttachmentSummary attachmentSummary) {

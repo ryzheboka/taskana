@@ -24,8 +24,10 @@ public class TaskQuerySqlProvider {
   @SuppressWarnings("unused")
   public static String queryTaskSummaries() {
     return OPENING_SCRIPT_TAG
+        + openOuterClauseForAggregatingByPorOrSor()
         + "SELECT <if test=\"useDistinctKeyword\">DISTINCT</if> "
         + commonSelectFields()
+        + "<if test='aggregateBySorWithType != null'>, o.VALUE as SOR_VALUE </if>"
         + "<if test=\"addAttachmentColumnsToSelectClauseForOrdering\">"
         + ", a.CLASSIFICATION_ID, a.CLASSIFICATION_KEY, a.CHANNEL, a.REF_VALUE, a.RECEIVED"
         + "</if>"
@@ -33,6 +35,8 @@ public class TaskQuerySqlProvider {
         + "<if test=\"addAttachmentClassificationNameToSelectClauseForOrdering\">, ac.NAME </if>"
         + "<if test=\"addWorkbasketNameToSelectClauseForOrdering\">, w.NAME </if>"
         + "<if test=\"joinWithUserInfo\">, u.LONG_NAME </if>"
+        + aggregateByPorIfActive()
+        + aggregateBySorIfActive()
         + "FROM TASK t "
         + "<if test=\"joinWithAttachments\">"
         + "LEFT JOIN ATTACHMENT a ON t.ID = a.TASK_ID "
@@ -57,6 +61,8 @@ public class TaskQuerySqlProvider {
         + commonTaskWhereStatement()
         + "<if test='selectAndClaim == true'> AND t.STATE = 'READY' </if>"
         + CLOSING_WHERE_TAG
+        + closeOuterClauseForAggregatingByPor()
+        + closeOuterClauseForAggregatingBySor()
         + "<if test='!orderBy.isEmpty()'>"
         + "ORDER BY <foreach item='item' collection='orderBy' separator=',' >${item}</foreach>"
         + "</if> "
@@ -377,6 +383,52 @@ public class TaskQuerySqlProvider {
         + "GROUP by WORKBASKET_ID) f "
         + "WHERE MAX_READ = 1) "
         + "</if>";
+  }
+
+  private static String aggregateByPorIfActive() {
+    return "<if test=\"aggregateByPor\"> "
+        + ", ROW_NUMBER() OVER (PARTITION BY POR_VALUE "
+        + "<if test='!orderBy.isEmpty()'>"
+        + "ORDER BY <foreach item='item' collection='orderBy' separator=',' >${item}</foreach>"
+        + "</if> "
+        + ")"
+        + "AS rn"
+        + "</if> ";
+  }
+
+  private static String aggregateBySorIfActive() {
+    return "<if test='aggregateBySorWithType != null'> "
+        + ", ROW_NUMBER() OVER (PARTITION BY o.VALUE "
+        + "<if test='!orderBy.isEmpty()'>"
+        + "ORDER BY <foreach item='item' collection='orderBy' separator=',' >${item}</foreach>"
+        + "</if> "
+        + ")"
+        + "AS rn"
+        + "</if> ";
+  }
+
+  private static String openOuterClauseForAggregatingByPorOrSor() {
+    return "<if test=\"aggregateByPor\"> " + "SELECT * FROM (" + "</if> "
+        + "<if test='aggregateBySorWithType != null'> " + "SELECT * FROM (" + "</if> ";
+  }
+
+  private static String closeOuterClauseForAggregatingByPor() {
+    return "<if test=\"aggregateByPor\"> "
+        + ") tmp LEFT JOIN"
+        + " (SELECT POR_VALUE, COUNT(POR_VALUE) AS R_COUNT "
+        + "FROM TASK GROUP BY POR_VALUE) AS u ON tmp.POR_VALUE=u.POR_VALUE "
+        + "WHERE rn = 1"
+        + "</if> ";
+  }
+  private static String closeOuterClauseForAggregatingBySor() {
+    return "<if test='aggregateBySorWithType != null'> "
+        + ") tmp LEFT JOIN"
+        + " (SELECT o.VALUE, COUNT(o.VALUE) AS R_COUNT "
+        + "FROM TASK LEFT JOIN OBJECT_REFERENCE o on TASK.ID=o.TASK_ID "
+        + "WHERE o.TYPE=#{aggregateBySorWithType} "
+        + "GROUP BY o.VALUE) AS u ON tmp.SOR_VALUE=u.VALUE "
+        + "WHERE rn = 1"
+        + "</if> ";
   }
 
   private static String commonTaskObjectReferenceWhereStatement() {

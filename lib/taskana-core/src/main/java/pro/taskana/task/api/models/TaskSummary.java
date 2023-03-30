@@ -80,6 +80,8 @@ public interface TaskSummary {
    */
   Instant getReceived();
 
+  Integer getNumberOfHiddenTasks();
+
   /**
    * Returns the time when the {@linkplain Task} is due.
    *

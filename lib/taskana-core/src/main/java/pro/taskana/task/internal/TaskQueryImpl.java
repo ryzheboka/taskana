@@ -68,7 +68,8 @@ public class TaskQueryImpl implements TaskQuery {
   private boolean addAttachmentClassificationNameToSelectClauseForOrdering = false;
   private boolean addWorkbasketNameToSelectClauseForOrdering = false;
   private boolean joinWithUserInfo;
-
+  private boolean aggregateByPor;
+  private String aggregateBySorWithType;
   private String[] taskId;
   private String[] taskIdNotIn;
   private String[] externalIdIn;
@@ -1063,6 +1064,19 @@ public class TaskQueryImpl implements TaskQuery {
   public TaskQuery orderByPrimaryObjectReferenceValue(SortDirection sortDirection) {
     return addOrderCriteria("POR_VALUE", sortDirection);
   }
+
+  @Override
+  public TaskQuery aggregateByPrimaryObjectReference(){
+    aggregateByPor = true;
+    return this;
+  }
+
+  @Override
+  public TaskQuery aggregateBySecondaryObjectReferenceWithType(String type){
+    aggregateBySorWithType = type;
+    return sorTypeIn(type);
+  }
+
 
   @Override
   public TaskQuery readEquals(Boolean isRead) {

@@ -1220,6 +1220,10 @@ public interface TaskQuery extends BaseQuery<TaskSummary, TaskQueryColumnName> {
   // endregion
   // region read
 
+  TaskQuery aggregateByPrimaryObjectReference();
+
+  TaskQuery aggregateBySecondaryObjectReferenceWithType(String type);
+
   /**
    * Add the isRead flag to the query.
    *

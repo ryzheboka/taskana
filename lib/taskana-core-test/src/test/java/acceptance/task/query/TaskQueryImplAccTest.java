@@ -23,6 +23,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.function.ThrowingConsumer;
 import pro.taskana.classification.api.ClassificationService;
 import pro.taskana.classification.api.models.ClassificationSummary;
+import pro.taskana.common.api.BaseQuery.SortDirection;
 import pro.taskana.common.api.IntInterval;
 import pro.taskana.common.api.KeyDomain;
 import pro.taskana.common.api.TimeInterval;
@@ -1772,8 +1773,16 @@ class TaskQueryImplAccTest {
         wb = createWorkbasketWithPermission();
         por1 = defaultTestObjectReference().company("15").build();
         ObjectReference por2 = defaultTestObjectReference().build();
-        taskSummary1 = taskInWorkbasket(wb).primaryObjRef(por1).buildAndStoreAsSummary(taskService);
-        taskSummary2 = taskInWorkbasket(wb).primaryObjRef(por2).buildAndStoreAsSummary(taskService);
+        taskSummary1 =
+            taskInWorkbasket(wb)
+                .primaryObjRef(por1)
+                .due(Instant.parse("2022-11-15T09:42:00.000Z"))
+                .buildAndStoreAsSummary(taskService);
+        taskSummary2 =
+            taskInWorkbasket(wb)
+                .primaryObjRef(por2)
+                .due(Instant.parse("2022-11-15T09:45:00.000Z"))
+                .buildAndStoreAsSummary(taskService);
       }
 
       @WithAccessId(user = "user-1-1")
@@ -1787,6 +1796,21 @@ class TaskQueryImplAccTest {
                 .list();
 
         assertThat(list).containsExactly(taskSummary1);
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_AggregateByPor() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .aggregateByPrimaryObjectReference()
+                .orderByDue(SortDirection.ASCENDING)
+                .list();
+        System.out.println(list);
+        assertThat(list).containsExactly(taskSummary1);
+        assertThat(list.get(0).getNumberOfHiddenTasks()).isEqualTo(2);
       }
     }
 
@@ -3066,13 +3090,17 @@ class TaskQueryImplAccTest {
                 .type("SecondType")
                 .build();
         taskSummary2 =
-            taskInWorkbasket(wb).objectReferences(sor2).buildAndStoreAsSummary(taskService);
+            taskInWorkbasket(wb)
+                .objectReferences(sor2)
+                .due(Instant.parse("2022-11-15T09:42:00.000Z"))
+                .buildAndStoreAsSummary(taskService);
 
         ObjectReference sor2copy = sor2.copy();
         ObjectReference sor1copy = sor1.copy();
         taskSummary3 =
             taskInWorkbasket(wb)
                 .objectReferences(sor2copy, sor1copy)
+                .due(Instant.parse("2022-11-15T09:45:00.000Z"))
                 .buildAndStoreAsSummary(taskService);
 
         ObjectReference sor3 =
@@ -3112,6 +3140,20 @@ class TaskQueryImplAccTest {
                 .sorTypeLike("%NoSuchType")
                 .list();
         assertThat(list).isEmpty();
+      }
+
+      @WithAccessId(user = "user-1-1")
+      @Test
+      void should_AggregateBySor() {
+        List<TaskSummary> list =
+            taskService
+                .createTaskQuery()
+                .workbasketIdIn(wb.getId())
+                .aggregateBySecondaryObjectReferenceWithType("SecondType")
+                .orderByDue(SortDirection.ASCENDING)
+                .list();
+        assertThat(list).containsExactly(taskSummary2);
+        assertThat(list.get(0).getNumberOfHiddenTasks()).isEqualTo(2);
       }
     }
 
