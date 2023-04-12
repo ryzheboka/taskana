@@ -129,6 +129,7 @@ public interface TaskQueryMapper {
   @Result(property = "customInt6", column = "CUSTOM_INT_6")
   @Result(property = "customInt7", column = "CUSTOM_INT_7")
   @Result(property = "customInt8", column = "CUSTOM_INT_8")
+  @Result(property = "numberOfHiddenTasks", column = "R_COUNT")
   List<TaskSummaryImpl> queryTaskSummariesDb2(TaskQueryImpl taskQuery);
 
   @SelectProvider(type = TaskQuerySqlProvider.class, method = "queryTaskSummariesOracle")

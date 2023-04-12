@@ -78,16 +78,22 @@ public class TaskQuerySqlProvider {
     return OPENING_SCRIPT_TAG
         + "WITH X ("
         + db2selectFields()
+        +  "<if test='aggregateBySorWithType != null'>, rnn, rn, R_COUNT</if>"
+        + "<if test=\"aggregateByPor\">, rnn, rn, R_COUNT </if>"
         + ") AS ("
+        + openOuterClauseForAggregatingByPorOrSor()
         + "SELECT <if test=\"useDistinctKeyword\">DISTINCT</if> "
         + commonSelectFields()
         + "<if test=\"addAttachmentColumnsToSelectClauseForOrdering\">"
         + ", a.CLASSIFICATION_ID, a.CLASSIFICATION_KEY, a.CHANNEL, a.REF_VALUE, a.RECEIVED"
         + "</if>"
+        + "<if test='aggregateBySorWithType != null'>, o.VALUE as SOR_VALUE </if>"
         + "<if test=\"addClassificationNameToSelectClauseForOrdering\">, c.NAME </if>"
         + "<if test=\"addAttachmentClassificationNameToSelectClauseForOrdering\">, ac.NAME </if>"
         + "<if test=\"addWorkbasketNameToSelectClauseForOrdering\">, w.NAME </if>"
         + "<if test=\"joinWithUserInfo\">, u.LONG_NAME </if>"
+        + aggregateByPorIfActive()
+        + aggregateBySorIfActive()
         + "FROM TASK t "
         + "<if test=\"joinWithAttachments\">"
         + "LEFT JOIN ATTACHMENT a ON t.ID = a.TASK_ID "
@@ -110,11 +116,17 @@ public class TaskQuerySqlProvider {
         + OPENING_WHERE_TAG
         + commonTaskWhereStatement()
         + CLOSING_WHERE_TAG
+        + closeOuterClauseForAggregatingByPor()
+        + closeOuterClauseForAggregatingBySor()
         + "), Y ("
         + db2selectFields()
+        +  "<if test='aggregateBySorWithType != null'>, R_COUNT </if>"
+        + "<if test=\"aggregateByPor\">, R_COUNT </if>"
         + ", FLAG ) AS ("
         + "SELECT "
         + db2selectFields()
+        +  "<if test='aggregateBySorWithType != null'>, R_COUNT </if>"
+        + "<if test=\"aggregateByPor\">, R_COUNT </if>"
         + ", ("
         + "<if test='accessIdIn != null'> "
         + "SELECT 1 "
@@ -132,6 +144,8 @@ public class TaskQuerySqlProvider {
         + "FROM X )"
         + "SELECT "
         + db2selectFields()
+        + "<if test='aggregateBySorWithType != null'>, R_COUNT </if>"
+        + "<if test=\"aggregateByPor\">, R_COUNT </if>"
         + "FROM Y "
         + "WHERE FLAG = 1 "
         + "<if test='!orderBy.isEmpty()'>"
@@ -362,6 +376,7 @@ public class TaskQuerySqlProvider {
         + "<if test=\"addAttachmentColumnsToSelectClauseForOrdering\">"
         + ", ACLASSIFICATION_ID, ACLASSIFICATION_KEY, CHANNEL, REF_VALUE, ARECEIVED"
         + "</if>"
+        + "<if test='aggregateBySorWithType != null'>, SOR_VALUE </if>"
         + "<if test=\"addWorkbasketNameToSelectClauseForOrdering\">, WNAME</if>"
         + "<if test=\"joinWithUserInfo\">, ULONG_NAME </if>";
   }
