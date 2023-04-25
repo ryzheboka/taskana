@@ -41,8 +41,8 @@ public class BootWebSecurityConfigurer {
   public BootWebSecurityConfigurer(
       @Value("${taskana.ldap.serverUrl:ldap://localhost:10389}") String ldapServerUrl,
       @Value("${taskana.ldap.baseDn:OU=Test,O=TASKANA}") String ldapBaseDn,
-      @Value("${taskana.ldap.userDnPatterns:uid={0},cn=users}") String ldapUserDnPatterns,
-      @Value("${taskana.ldap.groupSearchBase:cn=groups}") String ldapGroupSearchBase,
+      @Value("${taskana.ldap.userDnPatterns:cn={0},ou=Benutzer}") String ldapUserDnPatterns,
+      @Value("${taskana.ldap.groupSearchBase:ou=groups}") String ldapGroupSearchBase,
       @Value("${taskana.ldap.groupSearchFilter:uniqueMember={0}}") String ldapGroupSearchFilter,
       @Value("${enableCsrf:false}") boolean enableCsrf,
       @Value("${devMode:false}") boolean devMode) {

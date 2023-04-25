@@ -19,7 +19,7 @@ public class LdapConfiguration {
   public LdapConfiguration(
       @Value("${taskana.ldap.serverUrl:ldap://localhost:10389}") String ldapServerUrl,
       @Value("${taskana.ldap.baseDn:OU=Test,O=TASKANA}") String ldapBaseDn,
-      @Value("${taskana.ldap.bindDn:uid=admin}") String ldapBindDn,
+      @Value("${taskana.ldap.bindDn:cn=admin}") String ldapBindDn,
       @Value("${taskana.ldap.bindPassword:secret}") String ldapBindPassword) {
     this.ldapServerUrl = ldapServerUrl;
     this.ldapBaseDn = ldapBaseDn;

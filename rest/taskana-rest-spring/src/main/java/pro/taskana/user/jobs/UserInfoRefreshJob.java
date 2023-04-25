@@ -27,10 +27,6 @@ public class UserInfoRefreshJob extends AbstractTaskanaJob {
   private final SqlConnectionRunner sqlConnectionRunner;
   private final RefreshUserPostprocessorManager refreshUserPostprocessorManager;
 
-  public UserInfoRefreshJob(TaskanaEngine taskanaEngine) {
-    this(taskanaEngine, null, null);
-  }
-
   public UserInfoRefreshJob(
       TaskanaEngine taskanaEngine,
       TaskanaTransactionProvider txProvider,
@@ -42,6 +38,9 @@ public class UserInfoRefreshJob extends AbstractTaskanaJob {
     refreshUserPostprocessorManager = new RefreshUserPostprocessorManager();
   }
 
+  public UserInfoRefreshJob(TaskanaEngine taskanaEngine) {
+    this(taskanaEngine, null, null);
+  }
   @Override
   protected String getType() {
     return UserInfoRefreshJob.class.getName();
