@@ -290,6 +290,8 @@ jobs:
             database: POSTGRES
           - module: taskana-simplehistory-provider
             database: ORACLE
+          - module: taskana-rest-spring
+            database: POSTGRES
           - module: taskana-rest-spring-example-boot
             database: DB2
           - module: taskana-rest-spring-example-boot
