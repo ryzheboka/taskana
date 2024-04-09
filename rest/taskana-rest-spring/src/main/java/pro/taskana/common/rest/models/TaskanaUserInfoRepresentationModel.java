@@ -14,6 +14,8 @@ public class TaskanaUserInfoRepresentationModel
   private String userId;
   /** All groups the current user is a member of. */
   private List<String> groupIds = new ArrayList<>();
+  /** All permissions the current user has. */
+  private List<String> permissionIds = new ArrayList<>();
   /** All taskana roles the current user fulfills. */
   private List<TaskanaRole> roles = new ArrayList<>();
 
@@ -33,6 +35,14 @@ public class TaskanaUserInfoRepresentationModel
     this.groupIds = groupIds;
   }
 
+  public List<String> getPermissionIds() {
+    return permissionIds;
+  }
+
+  public void setPermissionIds(List<String> permissionIds) {
+    this.permissionIds = permissionIds;
+  }
+
   public List<TaskanaRole> getRoles() {
     return roles;
   }
@@ -47,6 +57,8 @@ public class TaskanaUserInfoRepresentationModel
         + userId
         + ", groupIds="
         + groupIds
+        + ", permissionIds="
+        + permissionIds
         + ", roles="
         + roles
         + "]";

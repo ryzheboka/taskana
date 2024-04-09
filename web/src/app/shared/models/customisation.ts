@@ -28,6 +28,7 @@ export interface ClassificationCategoryImages {
 
 export interface WorkbasketsCustomisation {
   information?: { owner: LookupField } & CustomFields;
+  time?: DebounceTime;
   'access-items'?: AccessItemsCustomisation;
 }
 
@@ -44,6 +45,10 @@ export interface CustomField {
 
 export interface LookupField {
   lookupField: boolean;
+}
+
+export interface DebounceTime {
+  debounceTime: number;
 }
 
 export function getCustomFields(amount: number): OperatorFunction<CustomFields, CustomField[]> {

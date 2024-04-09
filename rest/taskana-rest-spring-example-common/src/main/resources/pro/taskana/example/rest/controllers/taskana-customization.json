@@ -1,6 +1,9 @@
 {
   "EN": {
     "workbaskets": {
+      "time": {
+        "debounceTime": 750
+      },
       "information": {
         "owner": {
           "lookupField": true

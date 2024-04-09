@@ -4,6 +4,8 @@ import { TypeAheadComponent } from './type-ahead.component';
 import { AccessIdsService } from '../../services/access-ids/access-ids.service';
 import { of } from 'rxjs';
 import { NgxsModule } from '@ngxs/store';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -19,6 +21,8 @@ describe('TypeAheadComponent with AccessId input', () => {
   let fixture: ComponentFixture<TypeAheadComponent>;
   let debugElement: DebugElement;
   let component: TypeAheadComponent;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -30,7 +34,9 @@ describe('TypeAheadComponent with AccessId input', () => {
         MatTooltipModule,
         NoopAnimationsModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        HttpClientModule,
+        HttpClientTestingModule
       ],
       declarations: [TypeAheadComponent],
       providers: [{ provide: AccessIdsService, useValue: accessIdService }]
@@ -40,6 +46,8 @@ describe('TypeAheadComponent with AccessId input', () => {
     debugElement = fixture.debugElement;
     component = fixture.componentInstance;
     fixture.detectChanges();
+    httpClient = TestBed.get(HttpClient);
+    httpTestingController = TestBed.get(HttpTestingController);
   }));
 
   it('should create component', () => {
@@ -53,7 +61,7 @@ describe('TypeAheadComponent with AccessId input', () => {
     input.dispatchEvent(new Event('input'));
     component.accessIdForm.get('accessId').updateValueAndValidity({ emitEvent: true });
 
-    tick();
+    tick(750);
     expect(component.name).toBe('Gerda');
   }));
 
@@ -63,7 +71,7 @@ describe('TypeAheadComponent with AccessId input', () => {
     component.accessIdForm.get('accessId').setValue('invalid-user');
     component.accessIdForm.get('accessId').updateValueAndValidity({ emitEvent: true });
 
-    tick();
+    tick(750);
     fixture.detectChanges();
     expect(emitSpy).toHaveBeenCalledWith(false);
   }));
@@ -73,7 +81,7 @@ describe('TypeAheadComponent with AccessId input', () => {
     component.accessIdForm.get('accessId').setValue('user-g-1');
     component.accessIdForm.get('accessId').updateValueAndValidity({ emitEvent: true });
 
-    tick();
+    tick(750);
     fixture.detectChanges();
     expect(emitSpy).toHaveBeenCalledWith(true);
   }));

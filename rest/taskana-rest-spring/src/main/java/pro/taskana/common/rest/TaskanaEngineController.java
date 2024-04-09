@@ -2,6 +2,7 @@ package pro.taskana.common.rest;
 
 import java.util.List;
 import java.util.Map;
+import javax.naming.InvalidNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import pro.taskana.TaskanaConfiguration;
 import pro.taskana.common.api.ConfigurationService;
 import pro.taskana.common.api.TaskanaEngine;
 import pro.taskana.common.api.security.CurrentUserContext;
+import pro.taskana.common.rest.ldap.LdapClient;
 import pro.taskana.common.rest.models.CustomAttributesRepresentationModel;
 import pro.taskana.common.rest.models.TaskanaUserInfoRepresentationModel;
 import pro.taskana.common.rest.models.VersionRepresentationModel;
@@ -28,17 +30,19 @@ public class TaskanaEngineController {
   private final TaskanaEngine taskanaEngine;
   private final CurrentUserContext currentUserContext;
   private final ConfigurationService configurationService;
+  private final LdapClient ldapClient;
 
   @Autowired
   TaskanaEngineController(
       TaskanaConfiguration taskanaConfiguration,
       TaskanaEngine taskanaEngine,
       CurrentUserContext currentUserContext,
-      ConfigurationService configurationService) {
+      ConfigurationService configurationService, LdapClient ldapClient) {
     this.taskanaConfiguration = taskanaConfiguration;
     this.taskanaEngine = taskanaEngine;
     this.currentUserContext = currentUserContext;
     this.configurationService = configurationService;
+    this.ldapClient = ldapClient;
   }
 
   /**
@@ -97,13 +101,18 @@ public class TaskanaEngineController {
    * This endpoint computes all information of the current user.
    *
    * @return the information of the current user.
+   * @throws InvalidNameException if the dn is invalid.
    */
   @GetMapping(path = RestEndpoints.URL_CURRENT_USER)
   @Transactional(readOnly = true, rollbackFor = Exception.class)
-  public ResponseEntity<TaskanaUserInfoRepresentationModel> getCurrentUserInfo() {
+  public ResponseEntity<TaskanaUserInfoRepresentationModel> getCurrentUserInfo()
+      throws InvalidNameException {
     TaskanaUserInfoRepresentationModel resource = new TaskanaUserInfoRepresentationModel();
     resource.setUserId(currentUserContext.getUserid());
-    resource.setGroupIds(currentUserContext.getGroupIds());
+    Map<String, List<String>> groupsAndPermissions =
+        ldapClient.searchAccessIdForGroupsAndPermissionsByDn(currentUserContext.getGroupIds());
+    resource.setPermissionIds(groupsAndPermissions.get("permissions"));
+    resource.setGroupIds(groupsAndPermissions.get("groups"));
     taskanaConfiguration.getRoleMap().keySet().stream()
         .filter(taskanaEngine::isUserInRole)
         .forEach(resource.getRoles()::add);

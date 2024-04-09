@@ -2,11 +2,14 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChange
 import { AccessIdsService } from '../../services/access-ids/access-ids.service';
 import { Observable, Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Customisation } from '../../../shared/models/customisation';
 import { AccessId } from '../../models/access-id';
-import { take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil, distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
 import { Select } from '@ngxs/store';
 import { WorkbasketSelectors } from '../../store/workbasket-store/workbasket.selectors';
 import { ButtonAction } from '../../../administration/models/button-action';
+import { HttpClient } from '@angular/common/http';
+const customisationUrl = 'environments/data-sources/taskana-customization.json';
 
 @Component({
   selector: 'taskana-shared-type-ahead',
@@ -30,13 +33,23 @@ export class TypeAheadComponent implements OnInit, OnDestroy {
   name: string = '';
   lastSavedAccessId: string = '';
   filteredAccessIds: AccessId[] = [];
+  time: number;
   destroy$ = new Subject<void>();
   accessIdForm = new FormGroup({
     accessId: new FormControl('')
   });
   emptyAccessId: AccessId = { accessId: '', name: '' };
 
-  constructor(private accessIdService: AccessIdsService) {}
+  constructor(private accessIdService: AccessIdsService, private httpClient: HttpClient) {
+    this.httpClient
+      .get<Customisation>(customisationUrl)
+      .pipe(take(1))
+      .subscribe((customisation) => {
+        Object.keys(customisation).forEach((lang) => {
+          this.time = customisation[lang].workbaskets.time.debounceTime;
+        });
+      });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     // currently needed because when saving, workbasket-details components sends old workbasket which reverts changes in this component
@@ -57,14 +70,31 @@ export class TypeAheadComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.accessIdForm.controls['accessId'].valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      const value = this.accessIdForm.controls['accessId'].value;
-      if (value === '') {
-        this.handleEmptyAccessId();
-        return;
-      }
-      this.searchForAccessId(value);
-    });
+    this.accessIdForm.controls['accessId'].valueChanges
+      .pipe(debounceTime(this.time), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        const value = this.accessIdForm.controls['accessId'].value;
+        if (value === '') {
+          this.handleEmptyAccessId();
+          return;
+        }
+        this.searchForAccessId(value);
+      });
+
+    this.setAccessIdFromInput();
+  }
+
+  accessIdValueChanges() {
+    this.accessIdForm.controls['accessId'].valueChanges
+      .pipe(debounceTime(this.time), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        const value = this.accessIdForm.controls['accessId'].value;
+        if (value === '') {
+          this.handleEmptyAccessId();
+          return;
+        }
+        this.searchForAccessId(value);
+      });
 
     this.setAccessIdFromInput();
   }

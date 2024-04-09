@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import pro.taskana.common.api.TaskanaRole;
@@ -86,6 +88,26 @@ class TaskanaEngineControllerIntTest {
   }
 
   @Test
+  void should_ReturnUserInformation_WhenCurrentUserNotAuthorizedToUseUserFromHeader() {
+    HttpHeaders headers = RestHelper.generateHeadersForUser("user-2-1");
+    headers.add("userid", "user-1-1");
+    ResponseEntity<TaskanaUserInfoRepresentationModel> response =
+        TEMPLATE.exchange(
+            restHelper.toUrl(RestEndpoints.URL_CURRENT_USER),
+            HttpMethod.GET,
+            new HttpEntity<>(headers),
+            ParameterizedTypeReference.forType(TaskanaUserInfoRepresentationModel.class));
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    TaskanaUserInfoRepresentationModel currentUser = response.getBody();
+    assertThat(currentUser).isNotNull();
+    assertThat(currentUser.getUserId()).isEqualTo("user-2-1");
+    assertThat(currentUser.getGroupIds()).hasSize(2);
+    assertThat(currentUser.getPermissionIds()).hasSize(1);
+    assertThat(currentUser.getRoles()).hasSize(1);
+  }
+
+  @Test
   void testGetCurrentUserInfo() {
     String url = restHelper.toUrl(RestEndpoints.URL_CURRENT_USER);
     HttpEntity<?> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("teamlead-1"));
@@ -100,8 +122,34 @@ class TaskanaEngineControllerIntTest {
     assertThat(response.getBody().getUserId()).isEqualTo("teamlead-1");
     assertThat(response.getBody().getGroupIds())
         .contains("cn=business-admins,cn=groups,ou=test,o=taskana");
+    assertThat(response.getBody().getPermissionIds()).isEmpty();
     assertThat(response.getBody().getRoles())
         .contains(TaskanaRole.BUSINESS_ADMIN)
+        .doesNotContain(TaskanaRole.ADMIN);
+  }
+
+  @Test
+  void testGetCurrentUserInfoWithPermission() {
+    String url = restHelper.toUrl(RestEndpoints.URL_CURRENT_USER);
+    HttpEntity<?> auth = new HttpEntity<>(RestHelper.generateHeadersForUser("user-1-2"));
+
+    ResponseEntity<TaskanaUserInfoRepresentationModel> response =
+        TEMPLATE.exchange(
+            url,
+            HttpMethod.GET,
+            auth,
+            ParameterizedTypeReference.forType(TaskanaUserInfoRepresentationModel.class));
+    assertThat(response.getBody()).isNotNull();
+    assertThat(response.getBody().getUserId()).isEqualTo("user-1-2");
+    assertThat(response.getBody().getGroupIds())
+        .containsExactlyInAnyOrder("cn=organisationseinheit ksc 1,cn=organisationseinheit "
+                + "ksc,cn=organisation,ou=test,o=taskana",
+            "cn=ksc-users,cn=groups,ou=test,o=taskana");
+    assertThat(response.getBody().getPermissionIds())
+        .containsExactlyInAnyOrder("perm:userleads",
+            "perm/other");
+    assertThat(response.getBody().getRoles())
+        .contains(TaskanaRole.USER)
         .doesNotContain(TaskanaRole.ADMIN);
   }
 

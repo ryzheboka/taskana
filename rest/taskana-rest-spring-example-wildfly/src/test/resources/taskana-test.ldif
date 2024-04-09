@@ -11,6 +11,11 @@ cn: groups
 objectclass: top
 objectclass: container
 
+dn: cn=permissions,OU=Test,O=TASKANA
+cn: permissions
+objectclass: top
+objectclass: container
+
 dn: cn=users,OU=Test,O=TASKANA
 cn: users
 objectclass: top
@@ -133,6 +138,8 @@ objectclass: top
 givenName: Elena
 description: desc
 memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
+permission: perm:userleads
+permission: perm/other
 memberOf: cn=Organisationseinheit KSC 1,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
 uid: user-1-2
 sn: Eifrig
@@ -182,6 +189,7 @@ givenName: Simone
 description: desc
 memberOf: cn=Organisationseinheit KSC 2,cn=Organisationseinheit KSC,cn=organisation,OU=Test,O=TASKANA
 memberOf: cn=ksc-users,cn=groups,OU=Test,O=TASKANA
+permission: perm:userleads
 uid: user-2-1
 sn: Müller
 ou: Organisationseinheit/Organisationseinheit KSC/Organisationseinheit KSC 2
@@ -406,6 +414,35 @@ dn: cn=monitor-users,cn=groups,OU=Test,O=TASKANA
 uniquemember: uid=teamlead-1,cn=users,OU=Test,O=TASKANA
 uniquemember: uid=teamlead-2,cn=users,OU=Test,O=TASKANA
 cn: monitor-users
+objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=Postkorb:Sachbearbeitung:LV:LV/A:Sachbearbeitung,cn=groups,OU=Test,O=TASKANA
+cn: Postkorb:Sachbearbeitung:LV:LV/A:Sachbearbeitung
+objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=Postkorb:Sachbearbeitung:LV:LV/A:Sachbearbeitung_vip,cn=groups,OU=Test,O=TASKANA
+cn: Postkorb:Sachbearbeitung:LV:LV/A:Sachbearbeitung_vip
+objectclass: groupofuniquenames
+objectclass: top
+
+########################
+# Permissions
+########################
+
+dn: cn=g01,cn=groups,OU=Test,O=TASKANA
+uniquemember: uid=user-1-2,cn=users,OU=Test,O=TASKANA
+uniquemember: uid=user-2-1,cn=users,OU=Test,O=TASKANA
+permission: perm:userleads
+cn: g01
+objectclass: groupofuniquenames
+objectclass: top
+
+dn: cn=g02,cn=groups,OU=Test,O=TASKANA
+uniquemember: uid=user-1-2,cn=users,OU=Test,O=TASKANA
+permission: perm/other
+cn: g02
 objectclass: groupofuniquenames
 objectclass: top
 

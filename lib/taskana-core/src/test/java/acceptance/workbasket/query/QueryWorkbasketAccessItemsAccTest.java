@@ -34,7 +34,7 @@ class QueryWorkbasketAccessItemsAccTest extends AbstractAccTest {
 
     columnValueList =
         workbasketService.createWorkbasketAccessItemQuery().listValues(ACCESS_ID, null);
-    assertThat(columnValueList).hasSize(10);
+    assertThat(columnValueList).hasSize(11);
 
     columnValueList =
         workbasketService.createWorkbasketAccessItemQuery().listValues(WORKBASKET_KEY, null);
@@ -51,9 +51,9 @@ class QueryWorkbasketAccessItemsAccTest extends AbstractAccTest {
     List<WorkbasketAccessItem> results =
         workbasketService
             .createWorkbasketAccessItemQuery()
-            .accessIdIn("user-1-1", GROUP_1_DN)
+            .accessIdIn("user-1-1", GROUP_1_DN, PERM_1_DN)
             .list();
-    assertThat(results).hasSize(8);
+    assertThat(results).hasSize(11);
   }
 
   @WithAccessId(user = "unknownuser")
@@ -78,12 +78,12 @@ class QueryWorkbasketAccessItemsAccTest extends AbstractAccTest {
     WorkbasketAccessItemQuery query =
         workbasketService
             .createWorkbasketAccessItemQuery()
-            .accessIdIn("user-1-1", GROUP_1_DN)
+            .accessIdIn("user-1-1", GROUP_1_DN, PERM_1_DN)
             .orderByAccessId(SortDirection.DESCENDING)
             .orderByWorkbasketId(SortDirection.DESCENDING);
     List<WorkbasketAccessItem> results = query.list();
     long count = query.count();
-    assertThat(results).hasSize(8).size().isEqualTo(count);
+    assertThat(results).hasSize(11).size().isEqualTo(count);
     assertThat(results.get(0).getId()).isEqualTo("WAI:100000000000000000000000000000000003");
   }
 
@@ -94,12 +94,13 @@ class QueryWorkbasketAccessItemsAccTest extends AbstractAccTest {
     List<WorkbasketAccessItem> results =
         workbasketService
             .createWorkbasketAccessItemQuery()
-            .accessIdIn("user-1-1", GROUP_1_DN)
+            .accessIdIn("user-1-1", GROUP_1_DN, PERM_1_DN)
             .workbasketIdIn(
                 "WBI:100000000000000000000000000000000006",
-                "WBI:100000000000000000000000000000000002")
+                "WBI:100000000000000000000000000000000002",
+                "WBI:100000000000000000000000000000000005")
             .list();
-    assertThat(results).hasSize(3);
+    assertThat(results).hasSize(5);
   }
 
   @WithAccessId(user = "businessadmin")
@@ -133,9 +134,9 @@ class QueryWorkbasketAccessItemsAccTest extends AbstractAccTest {
     List<WorkbasketAccessItem> results =
         workbasketService
             .createWorkbasketAccessItemQuery()
-            .workbasketIdIn("WBI:100000000000000000000000000000000006")
+            .workbasketIdIn("WBI:100000000000000000000000000000000005")
             .list();
-    assertThat(results).hasSize(3);
+    assertThat(results).hasSize(4);
   }
 
   @WithAccessId(user = "businessadmin")
@@ -145,12 +146,12 @@ class QueryWorkbasketAccessItemsAccTest extends AbstractAccTest {
     List<WorkbasketAccessItem> results =
         workbasketService
             .createWorkbasketAccessItemQuery()
-            .workbasketIdIn("WBI:100000000000000000000000000000000006")
+            .workbasketIdIn("WBI:100000000000000000000000000000000005")
             .orderByWorkbasketId(SortDirection.DESCENDING)
             .orderByAccessId(SortDirection.ASCENDING)
             .list();
-    assertThat(results).hasSize(3);
-    assertThat(results.get(0).getId()).isEqualTo("WAI:100000000000000000000000000000000009");
+    assertThat(results).hasSize(4);
+    assertThat(results.get(0).getId()).isEqualTo("WAI:100000000000000000000000000000000008");
   }
 
   @WithAccessId(user = "businessadmin")
@@ -160,7 +161,7 @@ class QueryWorkbasketAccessItemsAccTest extends AbstractAccTest {
     String[] expectedIds = {
       "WAI:100000000000000000000000000000000001",
       "WAI:100000000000000000000000000000000015",
-      "WAI:100000000000000000000000000000000007"
+      "WAI:100000000000000000000000000000000005"
     };
     List<WorkbasketAccessItem> results =
         workbasketService.createWorkbasketAccessItemQuery().idIn(expectedIds).list();
