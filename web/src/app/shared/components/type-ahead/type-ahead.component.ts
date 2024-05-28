@@ -40,16 +40,7 @@ export class TypeAheadComponent implements OnInit, OnDestroy {
   });
   emptyAccessId: AccessId = { accessId: '', name: '' };
 
-  constructor(private accessIdService: AccessIdsService, private httpClient: HttpClient) {
-    this.httpClient
-      .get<Customisation>(customisationUrl)
-      .pipe(take(1))
-      .subscribe((customisation) => {
-        Object.keys(customisation).forEach((lang) => {
-          this.time = customisation[lang].workbaskets.time.debounceTime;
-        });
-      });
-  }
+  constructor(private accessIdService: AccessIdsService, private httpClient: HttpClient) {}
 
   ngOnChanges(changes: SimpleChanges) {
     // currently needed because when saving, workbasket-details components sends old workbasket which reverts changes in this component
@@ -59,6 +50,16 @@ export class TypeAheadComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.httpClient
+      .get<Customisation>(customisationUrl)
+      .pipe(take(1))
+      .subscribe((customisation) => {
+        Object.keys(customisation).forEach((lang) => {
+          this.time = customisation[lang].workbaskets.time.debounceTime;
+          this.accessIdValueChanges();
+        });
+      });
+
     if (this.isDisabled) {
       this.accessIdForm.controls['accessId'].disable();
     }
@@ -69,19 +70,6 @@ export class TypeAheadComponent implements OnInit, OnDestroy {
         this.accessIdForm.controls['accessId'].setValue(this.lastSavedAccessId);
       }
     });
-
-    this.accessIdForm.controls['accessId'].valueChanges
-      .pipe(debounceTime(this.time), distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(() => {
-        const value = this.accessIdForm.controls['accessId'].value;
-        if (value === '') {
-          this.handleEmptyAccessId();
-          return;
-        }
-        this.searchForAccessId(value);
-      });
-
-    this.setAccessIdFromInput();
   }
 
   accessIdValueChanges() {
