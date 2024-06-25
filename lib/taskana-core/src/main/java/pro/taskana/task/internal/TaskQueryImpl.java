@@ -337,6 +337,7 @@ public class TaskQueryImpl implements TaskQuery {
   private CallbackState[] callbackStateNotIn;
   private WildcardSearchField[] wildcardSearchFieldIn;
   private String wildcardSearchValueLike;
+  private boolean lockResults;
 
   TaskQueryImpl(InternalTaskanaEngine taskanaEngine) {
     this.taskanaEngine = taskanaEngine;
@@ -2113,6 +2114,11 @@ public class TaskQueryImpl implements TaskQuery {
 
   public TaskQuery selectAndClaimEquals(boolean selectAndClaim) {
     this.selectAndClaim = selectAndClaim;
+    return this;
+  }
+
+  public TaskQuery lockResultsEquals(boolean lockResults) {
+    this.lockResults = lockResults;
     return this;
   }
 
